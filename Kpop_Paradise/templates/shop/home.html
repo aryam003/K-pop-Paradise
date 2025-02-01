@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Weverse Shop Navbar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .navbar-nav .nav-link {
+            font-weight: 500;
+        }
+        .dropdown-menu {
+            min-width: 200px;
+        }
+        .currency-lang {
+            font-size: 14px;
+            font-weight: 500;
+            margin-left: auto;
+        }
+        .navbar-toggler {
+            border: none;
+        }
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        .offcanvas{
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+    <a class="navbar-brand" href="#">Weverse Shop</a>
+    <div class="currency-lang d-flex align-items-center">
+        <span class="me-3">EN ▼</span>
+        <span>$ (USD) ▼</span>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">MENU</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item"><a class="nav-link" href="#">Log In</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="#">Order History</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Returns & Exchanges</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Shipping Addresses</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Billing Addresses</a></li> -->
+                <li class="nav-item"><a class="nav-link" href="#">Weverse Shop Cash</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Language: English ▼</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>
