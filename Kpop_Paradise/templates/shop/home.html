@@ -2,67 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Weverse Shop Navbar</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/shop/home.css' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        .navbar-nav .nav-link {
-            font-weight: 500;
-        }
-        .dropdown-menu {
-            min-width: 200px;
-        }
-        .currency-lang {
-            font-size: 14px;
-            font-weight: 500;
-            margin-left: auto;
-        }
-        .navbar-toggler {
-            border: none;
-        }
-        .navbar-toggler:focus {
-            box-shadow: none;
-        }
-        .offcanvas{
-            width: 50px;
-        }
-    </style>
+        .black { color: rgb(44, 44, 44);font-size: 29px;font-weight: 600; font-family: Georgia, 'Times New Roman', Times, serif;}
+        .deep-violet { color: #5b0ca5; font-family: Georgia, 'Times New Roman', Times, serif;font-weight: 700;font-size: 35px; }
+    </style>  
 </head>
 <body>
+    <!-- <div class="main" style="background-color: #8a2be2; width: 100%; height: 50px;" ></div> -->
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light " style="background-color: white;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" style="font-size: 30px; "><span class="deep-violet">K-pop</span><span class="deep-violet"></span> <span class="black">Paradise</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Add product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Bookings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Carousel -->
+<div id="demo" class="carousel slide" data-bs-ride="carousel">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
-    <a class="navbar-brand" href="#">Weverse Shop</a>
-    <div class="currency-lang d-flex align-items-center">
-        <span class="me-3">EN ▼</span>
-        <span>$ (USD) ▼</span>
+    <!-- Indicators/dots -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
     </div>
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
-        <span class="navbar-toggler-icon"></span>
+    
+<!-- The slideshow/carousel -->
+<div class="carousel-inner">
+  <div class="carousel-item active">
+    <div class="crosl">
+      <img src="{% static 'image/ot7.png' %}" alt="">
+      <div class="text-overlay">
+        <h2>BTS</h2>
+        <p>bts</p>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-item">
+    <div class="crosl">
+      <img src="{% static 'image/ot7.png' %}" alt="">
+      <div class="text-overlay">
+        <h2>BTS</h2>
+        <p>bts</p>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-item">
+    <div class="crosl">
+      <img src="{% static 'image/ot7.png' %}" alt="">
+      <div class="text-overlay">
+        <h2>BTS</h2>
+        <p>bts</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- <img src="{% static 'image/OIP (4).jpg' %}" alt="New York" class="d-block" style="width:30%; height: auto; padding: 5px;" > -->
+    <!-- Left and right controls/icons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
     </button>
-
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title">MENU</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body">
-            <ul class="navbar-nav flex-grow-1">
-                <li class="nav-item"><a class="nav-link" href="#">Log In</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
-                <!-- <li class="nav-item"><a class="nav-link" href="#">Order History</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Returns & Exchanges</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Shipping Addresses</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Billing Addresses</a></li> -->
-                <li class="nav-item"><a class="nav-link" href="#">Weverse Shop Cash</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Language: English ▼</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
+    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+  
+    
+        <!-- Bootstrap JS & Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script> -->
 </body>
 </html>

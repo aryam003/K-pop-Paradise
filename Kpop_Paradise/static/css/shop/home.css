@@ -1,0 +1,132 @@
+.crosl{
+  position: relative;
+  padding: 10px;
+  text-align: left;
+  padding-left: 16%;
+}
+.crosl img{
+  width: 40%;
+  max-width: 300px;
+  border-radius: 10px;
+ 
+}
+.text-overlay{
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  text-shadow: 1px 1px 5px rgba(red, green, blue, alpha);
+}
+/* Base styles for the carousel container */
+.carousel-inner {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+/* Base styles for the carousel items */
+.carousel-item {
+  width: 100%;
+  height: auto;
+}
+
+/* Styling for the carousel items with images */
+.crosl {
+  position: relative;
+  width: 100%;
+  min-height: 300px;  /* Default min-height */
+  height: auto;
+  background-color: violet;
+  overflow: hidden;  /* Ensures content doesn't overflow */
+}
+
+.crosl img {
+  width: 40%;
+  height: 100%;
+  object-fit: cover;  /* Ensures the image covers the space */
+  object-position: center; /* Keeps the focus in the center of the image */
+}
+
+/* Text overlay styles */
+.text-overlay {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: rgb(14, 13, 13);
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%; 
+  height: 540px;
+}
+
+.text-overlay h2 {
+  font-size: 2rem;  /* Font size for headings */
+  margin-bottom: 10px;
+}
+
+.text-overlay p {
+  font-size: 1rem;  /* Font size for paragraph */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .crosl {
+    min-height: 350px;  /* Adjust height for large tablets/small desktops */
+  }
+
+  .text-overlay h2 {
+    font-size: 1.8rem;
+  }
+
+  .text-overlay p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .crosl {
+    min-height: 300px;  /* Adjust height for tablets */
+  }
+
+  .text-overlay h2 {
+    font-size: 1.6rem;
+  }
+
+  .text-overlay p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .crosl {
+    min-height: 250px;  /* Adjust height for smaller tablets or large phones */
+  }
+
+  .text-overlay h2 {
+    font-size: 1.4rem;
+  }
+
+  .text-overlay p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .crosl {
+    min-height: 200px;  /* Adjust height for small phones */
+  }
+
+  .text-overlay {
+    width: 90%;  /* Slightly wider text container */
+    padding: 10px;
+  }
+
+  .text-overlay h2 {
+    font-size: 1.2rem;
+  }
+
+  .text-overlay p {
+    font-size: 0
+  }
+}
