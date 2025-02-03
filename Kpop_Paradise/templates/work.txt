@@ -1,0 +1,196 @@
+[10:31 pm, 03/02/2025] Arya: 
+
+from django.db import models
+
+class Band(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    image = models.ImageField(upload_to='bands/', null=True, blank=True)
+    description = models.TextField()
+
+    def _str_(self):
+        return self.name
+
+class Concert(models.Model):
+    band = models.ForeignKey(Band, on_delete=models.CASCADE, related_name="concerts")
+    date = models.DateField()
+    location = models.CharField(max_length=200)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+
+    def _str_(self):
+        return f"{self.band.name} - {self.location} on {self.date}"
+
+class Ticket(models.Model):
+    concert = models.ForeignKey(Concert, on_delete=models.CASCADE, related_name="tickets")
+    buyer_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    quantity = models.PositiveIntegerField()
+
+    def _str_(self):
+        return f"{self.buyer_name} - {self.concert.band.name}"
+[10:33 pm, 03/02/2025] Arya:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Band, Concert, Ticket
+from django.contrib import messages
+
+def home(request):
+    bands = Band.objects.all()
+    return render(request, 'home.html', {'bands': bands})
+
+def concert_list(request, band_id):
+    band = get_object_or_404(Band, id=band_id)
+    concerts = band.concerts.all()
+    return render(request, 'concert_list.html', {'band': band, 'concerts': concerts})
+
+def book_ticket(request, concert_id):
+    concert = get_object_or_404(Concert, id=concert_id)
+    if request.method == "POST":
+        buyer_name = request.POST.get("name")
+        email = request.POST.get("email")
+        quantity = request.POST.get("quantity")
+
+        Ticket.objects.create(concert=concert, buyer_name=buyer_name, email=email, quantity=quantity)
+        messages.success(request, "Ticket booked successfully!")
+        return redirect('home')
+
+    return render(request, 'book_ticket.html', {'concert': concert})
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+[10:33 pm, 03/02/2025] Arya:
+ from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('band/<int:band_id>/', views.concert_list, name='concert_list'),
+    path('concert/<int:concert_id>/book/', views.book_ticket, name='book_ticket'),
+]
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+[10:33 pm, 03/02/2025] Arya:
+
+
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>K-Pop Ticket Booking</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">K-Pop Bands</h1>
+        <div class="row">
+            {% for band in bands %}
+                <div class="col-md-4 text-center">
+                    <div class="card">
+                        {% if band.image %}
+                            <img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ band.name }}</h5>
+                            <p>{{ band.description }}</p>
+                            <a href="{% url 'concert_list' band.id %}" class="btn btn-primary">View Concerts</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+[10:34 pm, 03/02/2025] Arya:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Concerts - {{ band.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">{{ band.name }} - Concerts</h1>
+        <div class="row">
+            {% for concert in concerts %}
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ concert.location }}</h5>
+                            <p>Date: {{ concert.date }}</p>
+                            <p>Price: ${{ concert.price }}</p>
+                            <a href="{% url 'book_ticket' concert.id %}" class="btn btn-success">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No concerts available for this band.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+[10:34 pm, 03/02/2025] Arya:
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book Ticket</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Book Ticket for {{ concert.band.name }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" name="quantity" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Book Ticket</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+[10:34 pm, 03/02/2025] Arya: body {
+    background-color: #f8f9fa;
+}
+.card {
+    margin-top: 20px;
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------
