@@ -12,6 +12,7 @@ class Band(models.Model):
 
 class Concert(models.Model):
     band = models.ForeignKey(Band, on_delete=models.CASCADE, related_name="concerts")
+    artist = 
     date = models.DateField()
     location = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=8, decimal_places=2)
