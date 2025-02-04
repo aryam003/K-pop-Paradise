@@ -36,7 +36,7 @@
                             <a class="nav-link" href="#">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Logout</a>
+                            <a class="nav-link" href="logout">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -163,6 +163,28 @@
       <span class="carousel-control-next-icon"></span>
     </button>
   </div>
+
+  <div class="container mt-5">
+    <h1 class="text-center">K-Pop Bands</h1>
+    <div class="row">
+        {% for band in bands %}
+            <div class="col-md-4 text-center">
+                <div class="card">
+                    {% if band.image %}
+                        <img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ band.name }}</h5>
+                        <p>{{ band.description }}</p>
+
+                        <a href="../band/{{ band.id }}/" class="btn btn-primary">View Concerts</a>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
   
     
         <!-- Bootstrap JS & Popper -->

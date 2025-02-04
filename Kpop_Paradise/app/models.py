@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -7,7 +8,7 @@ class Band(models.Model):
     image = models.ImageField(upload_to='bands/', null=True, blank=True)
     description = models.TextField()
 
-    def _str_(self):
+    def __str__(self):
         return self.name
 
 class Concert(models.Model):
@@ -16,6 +17,7 @@ class Concert(models.Model):
     date = models.DateField()
     location = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=8, decimal_places=2)
+    image = models.ImageField(upload_to='bands/', null=True, blank=True)
     total_ticket = models.PositiveIntegerField(default=100)
     
     # def available_tickets(self):

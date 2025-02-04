@@ -1,3 +1,50 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book Ticket for {{ concert.band.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Book Ticket for {{ concert.band.name }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" name="quantity" class="form-control" id="quantity" value="1" min="1" max="{{ concert.total_ticket }}" required>
+                    </div>
+                    <p>Total Price: $<span id="total-price">{{ concert.price }}</span></p>
+                    <button type="submit" class="btn btn-primary">Book Ticket</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to dynamically update the total price based on quantity
+        document.getElementById('quantity').addEventListener('input', function() {
+            const price = {{ concert.price }};  // Price per ticket
+            const quantity = this.value;  // Selected quantity
+            const totalPrice = price * quantity;  // Calculate the total price
+            document.getElementById('total-price').innerText = totalPrice;  // Update the total price display
+        });
+    </script>
+</body>
+</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +53,6 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <h1>book</h1>
 </body>
 </html>

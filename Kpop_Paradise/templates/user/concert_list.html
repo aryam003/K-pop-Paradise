@@ -1,0 +1,46 @@
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Concerts - {{ band.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Concerts for {{ band.name }}</h1>
+        <div class="row">
+            {% for concert in concerts %}
+                <div class="col-md-4 text-center">
+                    <div class="card">
+                        <!-- Band Details -->
+                        <h3 class="card-title">{{ concert.band.name }}</h3>
+                        {% if concert.band.image %}
+                            <img src="{{ concert.band.image.url }}" alt="{{ concert.band.name }}" class="img-fluid mb-3">
+                        {% endif %}
+                        <p>{{ concert.band.description }}</p>
+    
+                        <!-- Concert Details -->
+                        <h5 class="card-title">{{ concert.artist }}</h5>
+                        <p>Date: {{ concert.date }}</p>
+                        <p>Location: {{ concert.location }}</p>
+                        <p>Price: ${{ concert.price }}</p>
+                        <p>Total Tickets: {{ concert.total_ticket }}</p>
+                        <img src="{{ concert.image.url }}" alt="{{ concert.band.name }}" class="img-fluid mb-3">
+
+    
+                        <!-- Buy Button -->
+                        <a href="../concerts/{{ concert.id }}/book/" class="btn btn-primary">Buy</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    
+    
+</body>
+</html>
