@@ -36,10 +36,25 @@
                         <a href="../concerts/{{ concert.id }}/book/" class="btn btn-primary">Buy</a>
                     </div>
                 </div>
+            {% empty %}
+            <p>no concerts</p>
             {% endfor %}
         </div>
     </div>
     
+    <h2>Products for {{ band.name }}</h2>
+    <ul>
+        {% for product in products %}
+            <li>
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p>Price: ${{ product.price }}</p>
+            </li>
+        {% empty %}
+            <p>No products available.</p>
+        {% endfor %}
+    </ul>
     
     
 </body>

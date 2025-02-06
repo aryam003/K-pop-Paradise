@@ -56,7 +56,7 @@ def register(req):
         return render(req,'register.html')
 
     
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#----SHOP-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -69,15 +69,16 @@ def shop_home(req):
         return redirect(shop_login) 
     
 def shop_concert_list(req, id):
-#     log_user = User.objects.get(username=req.session['user'])  
+#     log_user = User.objects.get(username=req.session['user']) 
     band = Band.objects.get(id=id)  
     concerts = Concert.objects.filter(band=band) 
-    return render(req, 'shop/concert_list.html', {'band': band, 'concerts': concerts})
+    product = products.objects.filter(band=band)
+    return render(req, 'shop/concert_list.html', {'band': band, 'concerts': concerts , 'products': product})
 
     
  
 
-#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
+#-----USER---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
 
 
 def user_home(req):
@@ -92,7 +93,8 @@ def concert_list(req, id):
     # log_user = User.objects.get(username=req.session['user'])  
     band = Band.objects.get(id=id)  
     concerts = Concert.objects.filter(band=band) 
-    return render(req, 'user/concert_list.html', {'band': band, 'concerts': concerts})
+    product = products.objects.filter(band=band)
+    return render(req, 'user/concert_list.html', {'band': band, 'concerts': concerts, 'products': product})
 
 
 

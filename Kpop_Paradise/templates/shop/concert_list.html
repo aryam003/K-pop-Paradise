@@ -85,6 +85,22 @@
             {% endfor %}
         </div>
     </div>
+
+    
+    <h2>Products for {{ band.name }}</h2>
+<ul>
+    {% for product in products %}
+        <li>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p>Price: ${{ product.price }}</p>
+        </li>
+    {% empty %}
+        <p>No products available.</p>
+    {% endfor %}
+</ul>
+
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     

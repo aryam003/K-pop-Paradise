@@ -20,17 +20,9 @@ class Concert(models.Model):
     image = models.ImageField(upload_to='bands/', null=True, blank=True)
     total_ticket = models.PositiveIntegerField(default=100)
     
-    # def available_tickets(self):
-    #     booking_tickets=sum(ticket.quantity for in self)
-
     def _str_(self):
         return f"{self.band.name} - {self.location} on {self.date}"
 
-# CATEGORY_CHOICES=[
-#     ('VIP','VIP'),
-#     ('regular','regular')
-# ]
-    
 
 class Ticket(models.Model):
     concert = models.ForeignKey(Concert, on_delete=models.CASCADE, related_name="tickets")
@@ -41,3 +33,13 @@ class Ticket(models.Model):
     def _str_(self):
         return f"{self.buyer_name} - {self.concert.band.name}"
     
+    
+#-------PRODUCTS-----------------------------------------------------------------------------------------------------------
+
+class products(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    band = models.ForeignKey(Band, on_delete=models.CASCADE)

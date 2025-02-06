@@ -4,3 +4,4 @@ from . models import *
 admin.site.register(Band)
 admin.site.register(Concert)
 admin.site.register(Ticket)
+admin.site.register(products)
