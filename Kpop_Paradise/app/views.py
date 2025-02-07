@@ -69,14 +69,115 @@ def shop_home(req):
         return redirect(shop_login) 
     
 def shop_concert_list(req, id):
-#     log_user = User.objects.get(username=req.session['user']) 
+    # log_user = User.objects.get(username=req.session['user']) 
     band = Band.objects.get(id=id)  
     concerts = Concert.objects.filter(band=band) 
     product = products.objects.filter(band=band)
     return render(req, 'shop/concert_list.html', {'band': band, 'concerts': concerts , 'products': product})
 
+def add_concert(req):
+    if req.method == 'POST':
+        artist = req.POST['artist']
+        date = req.POST['date']
+        location = req.POST['location']
+        price = req.POST['price']
+        total_ticket = req.POST['total_ticket']
+        file = req.FILES.get('image')  
+        band_id = req.POST['band_name']
+        try:
+            band = Band.objects.get(id=band_id)
+        except Band.DoesNotExist:
+            messages.error(req, "Band does not exist!")
+            return redirect(add_concert)
+        concert = Concert.objects.create(
+            band=band,
+            artist=artist, 
+            date=date, 
+            location=location, 
+            price=price, 
+            total_ticket=total_ticket, 
+            image=file)
+        concert.save()
+        messages.success(req, "Concert added successfully!")
+        return redirect(shop_home)
+    bands = Band.objects.all()
+    return render(req, 'shop/add_concert.html', {'bands': bands})
+
+#----------------------------------------------------------------------------Product
+def add_product(req):
+    if req.method == 'POST':
+        name = req.POST['name']
+        description = req.POST['description']
+        price = req.POST['price']
+        file = req.FILES.get('image')  # Handle image upload
+
+        # Get the band from the POST data using the band ID
+        band_id = req.POST['band_name']
+        try:
+            band = Band.objects.get(id=band_id)
+        except Band.DoesNotExist:
+            messages.error(req, "Band does not exist!")
+            return redirect(add_product)
+
+        # Create and save the product data
+        product = products.objects.create(
+            name=name, 
+            description=description, 
+            price=price, 
+            image=file, 
+            band=band
+        )
+        product.save()
+
+        messages.success(req, "Product added successfully!")
+        return redirect(shop_home)  # Redirect to product list page or wherever necessary
+
+    bands = Band.objects.all()  # Fetch all available bands for the dropdown
+    return render(req, 'shop/add_product.html', {'bands': bands})
+
+
+
+def edit_product(req, id):
+    product = products.objects.get(pk=id)  # Get the product based on the provided id
     
- 
+    if req.method == 'POST':
+        name = req.POST['name']
+        description = req.POST['description']
+        price = req.POST['price']
+        band_id = req.POST['band_name']
+        file = req.FILES.get('image')  # Handle file upload
+        
+        try:
+            band = Band.objects.get(id=band_id)
+        except Band.DoesNotExist:
+            messages.error(req, "Band does not exist!")
+            return redirect(edit_product, id=id)  # Redirect back to the same edit page if band doesn't exist
+
+        # Update the product object with new data
+        if file:
+            # If the file is provided, update the product including the image
+            product.name = name
+            product.description = description
+            product.price = price
+            product.band = band
+            product.image = file
+        else:
+            # If no new file is uploaded, update only the text fields
+            product.name = name
+            product.description = description
+            product.price = price
+            product.band = band
+
+        product.save()  # Save the updated product
+        
+        messages.success(req, "Product updated successfully!")
+        # return redirect(product_list)  # Redirect to the product list (or a relevant page)
+
+    # Pass the product data and available bands to the template
+    bands = Band.objects.all()  # Get all bands for the dropdown
+    return render(req, 'shop/edit_product.html', {'product': product, 'bands': bands})
+
+
 
 #-----USER---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
 
@@ -90,7 +191,7 @@ def user_home(req):
     
 
 def concert_list(req, id):
-    # log_user = User.objects.get(username=req.session['user'])  
+    log_user = User.objects.get(username=req.session['user'])  
     band = Band.objects.get(id=id)  
     concerts = Concert.objects.filter(band=band) 
     product = products.objects.filter(band=band)

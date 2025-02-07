@@ -4,7 +4,7 @@ body, html {
 
   .login-container {
     /* background-image: url('static/image/login.jpg'); */
-    background: url('/static/image/login.jpg') ;
+    background: url('/static/image/login2.jpg') ;
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -32,7 +32,7 @@ body, html {
   .login-form input {
     margin-bottom: 15px;
     background-color: rgba(0, 0, 0, 0.075);
-    color: white;
+    color: rgba(255, 255, 255, 0.227);
   }
 
   .btn-primary {
@@ -40,7 +40,7 @@ body, html {
   }
  
   .login-form p a {
-    color: #ddd;
+    color: #009dff77;
   }
 /* 
   .login-form p a:hover {

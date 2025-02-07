@@ -32,13 +32,13 @@
                         </li>
                         {% endfor %} -->
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="">Add Band</a>
+                          <a class="nav-link active" aria-current="page" href="add-concert/">Add Concert</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link active" aria-current="page" href="#">Add ticket</a>
+                          <a class="nav-link active" aria-current="page" href="add_product/">Add product</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link active" aria-current="page" href="#">Add product</a>
+                          <a class="nav-link" href="#">Tickets</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Bookings</a>
@@ -189,7 +189,7 @@
                         <h5 class="card-title">{{ band.name }}</h5>
                         <p>{{ band.description }}</p>
 
-                        <a href="../band/{{ band.id }}/" class="btn btn-primary">View Concerts</a>
+                        <a href="../shop_band/{{ band.id }}/" class="btn btn-primary">View Concerts</a>
 
                     </div>
                 </div>
