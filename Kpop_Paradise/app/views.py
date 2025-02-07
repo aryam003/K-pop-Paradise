@@ -103,78 +103,107 @@ def add_concert(req):
     bands = Band.objects.all()
     return render(req, 'shop/add_concert.html', {'bands': bands})
 
+
+def edit_concert(req, id):
+    concert = Concert.objects.get(pk=id) 
+    if req.method == 'POST':
+        artist = req.POST['artist']
+        date = req.POST['date']
+        location = req.POST['location']
+        price = req.POST['price']
+        band_id = req.POST['band_name']
+        file = req.FILES.get('image') 
+        try:
+            band = Band.objects.get(id=band_id) 
+        except Band.DoesNotExist:
+            messages.error(req, "Band does not exist!")
+            return redirect(edit_concert, id=id)
+        concert.artist = artist
+        concert.date = date
+        concert.location = location
+        concert.price = price
+        concert.band = band
+        if file:
+            concert.image = file  
+        concert.save()  
+        messages.success(req, "Concert updated successfully!")
+        return redirect(shop_home)  
+    bands = Band.objects.all() 
+    return render(req, 'shop/edit_concert.html', {'concert': concert, 'bands': bands})
+
+def delete_concert(req, id):
+    try:
+        concert = Concert.objects.get(pk=id) 
+        if concert.image:
+            image_path = concert.image.path  
+            if os.path.exists(image_path):
+                os.remove(image_path)  
+        concert.delete()  
+        messages.success(req, "Concert deleted successfully!")
+    except Concert.DoesNotExist:
+        messages.error(req, "Concert not found!")
+    
+    return redirect(shop_home) 
+
+
+
+
 #----------------------------------------------------------------------------Product
 def add_product(req):
     if req.method == 'POST':
         name = req.POST['name']
         description = req.POST['description']
         price = req.POST['price']
-        file = req.FILES.get('image')  # Handle image upload
-
-        # Get the band from the POST data using the band ID
+        file = req.FILES.get('image') 
         band_id = req.POST['band_name']
         try:
             band = Band.objects.get(id=band_id)
         except Band.DoesNotExist:
             messages.error(req, "Band does not exist!")
             return redirect(add_product)
-
-        # Create and save the product data
         product = products.objects.create(
             name=name, 
             description=description, 
             price=price, 
             image=file, 
-            band=band
-        )
+            band=band)
         product.save()
-
         messages.success(req, "Product added successfully!")
-        return redirect(shop_home)  # Redirect to product list page or wherever necessary
-
-    bands = Band.objects.all()  # Fetch all available bands for the dropdown
+        return redirect(shop_home)  
+    bands = Band.objects.all()  
     return render(req, 'shop/add_product.html', {'bands': bands})
 
 
 
 def edit_product(req, id):
-    product = products.objects.get(pk=id)  # Get the product based on the provided id
-    
+    product = products.objects.get(pk=id)  
     if req.method == 'POST':
         name = req.POST['name']
         description = req.POST['description']
         price = req.POST['price']
         band_id = req.POST['band_name']
-        file = req.FILES.get('image')  # Handle file upload
-        
+        file = req.FILES.get('image')  
         try:
             band = Band.objects.get(id=band_id)
         except Band.DoesNotExist:
             messages.error(req, "Band does not exist!")
-            return redirect(edit_product, id=id)  # Redirect back to the same edit page if band doesn't exist
-
-        # Update the product object with new data
+            return redirect(edit_product, id=id)  
         if file:
-            # If the file is provided, update the product including the image
             product.name = name
             product.description = description
             product.price = price
             product.band = band
             product.image = file
         else:
-            # If no new file is uploaded, update only the text fields
             product.name = name
             product.description = description
             product.price = price
             product.band = band
-
-        product.save()  # Save the updated product
-        
+        product.save()      
         messages.success(req, "Product updated successfully!")
-        # return redirect(product_list)  # Redirect to the product list (or a relevant page)
+        return redirect(shop_home)  
 
-    # Pass the product data and available bands to the template
-    bands = Band.objects.all()  # Get all bands for the dropdown
+    bands = Band.objects.all()  
     return render(req, 'shop/edit_product.html', {'product': product, 'bands': bands})
 
 
@@ -197,5 +226,56 @@ def concert_list(req, id):
     product = products.objects.filter(band=band)
     return render(req, 'user/concert_list.html', {'band': band, 'concerts': concerts, 'products': product})
 
+# def view_pro(req,id):
+#     log_user=User.objects.get(username=req.session['user'])
+#     product=products.objects.get(pk=id)
+#     try:
+#         cart=Cart.objects.get(product=product,user=log_user)
+#     except:
+#         cart=None
+#     return render(req,'user/view_pro.html',{'product':product,'cart':cart})
 
+def view_pro(req, id):
+    if 'user' not in req.session:
+        messages.error(req, "You need to be logged in to view this page.")
+        return redirect('login')  
+    log_user = User.objects.get(username=req.session['user'])
+
+    try:
+        product = products.objects.get(pk=id)
+    except products.DoesNotExist:
+        messages.error(req, "Product not found!")
+        return redirect('shop_home')  
+    try:
+        cart = Cart.objects.get(product=product, user=log_user)
+    except Cart.DoesNotExist:
+        cart = None
+    return render(req, 'user/view_pro.html', {'product': product, 'cart': cart})
+
+
+def cart_display(req):
+    user = User.objects.get(username=req.session['user'])
+    cart_items = Cart.objects.filter(user=user) 
+    return render(req, 'shop/cart_display.html', {'cart_items': cart_items})
+
+
+def add_to_cart(req, id):
+    try:
+        product = products.objects.get(pk=id)
+    except products.DoesNotExist:
+        messages.error(req, "Product not found!")
+        return redirect('shop_home') 
+    try:
+        user = User.objects.get(username=req.session['user'])
+    except User.DoesNotExist:
+        messages.error(req, "User not found!")
+        return redirect('login') 
+    cart_item, created = Cart.objects.get_or_create(user=user, product=product)
+    if created:
+        messages.success(req, f"{product.name} added to your cart!")
+    else:
+        cart_item.quantity += 1
+        cart_item.save()
+        messages.success(req, f"Quantity of {product.name} updated in your cart!")
+    return redirect('cart_display') 
 

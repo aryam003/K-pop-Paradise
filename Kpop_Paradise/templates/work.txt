@@ -992,3 +992,31 @@ window.onclick = function(event) {
 
 </body>
 </html>
+
+
+
+
+add to cart 
+<form method="POST" action="{% url 'add_to_cart' id=product.id %}">
+    {% csrf_token %}
+    <button type="submit">Add to Cart</button>
+  </form>
+  from django.shortcuts import render
+  from .models import Cart
+  
+  def cart_display(req):
+      user = User.objects.get(username=req.session['user'])
+      cart_items = Cart.objects.filter(user=user)  # Fetch cart items for the user
+      return render(req, 'shop/cart_display.html', {'cart_items': cart_items})
+      <h2>Your Cart</h2>
+      {% if cart_items %}
+        <ul>
+          {% for item in cart_items %}
+            <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - Price: ${{ item.product.price }}</li>
+          {% endfor %}
+        </ul>
+        <button>Proceed to Checkout</button>
+      {% else %}
+        <p>Your cart is empty.</p>
+      {% endif %}
+          

@@ -55,13 +55,7 @@
     <!-- Band -->
     <div>
         <label for="band_name">Band:</label>
-        <select id="band_name" name="band_name" required>
-          <option value="" disabled selected>Select a Band</option>
-          <!-- Dynamically populate the band options -->
-          {% for band in bands %}
-            <option value="{{ band.id }}">{{ band.name }}</option>
-          {% endfor %}
-        </select>
+      <input type="text" id="band_name" name="band_name" required>
       </div>
       
     
