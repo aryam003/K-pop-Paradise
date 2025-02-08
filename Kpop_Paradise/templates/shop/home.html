@@ -13,6 +13,41 @@
     <style>
         .black { color: rgb(44, 44, 44);font-size: 29px;font-weight: 600; font-family: Georgia, 'Times New Roman', Times, serif;}
         .deep-violet { color: #5b0ca5; font-family: Georgia, 'Times New Roman', Times, serif;font-weight: 700;font-size: 35px; }
+  .container {
+      max-width: 1200px;
+  }
+
+  .card {
+      transition: transform 0.3s ease-in-out;
+  }
+
+  .card:hover {
+      transform: scale(1.05);
+  }
+
+  .card-body {
+      padding: 1.5rem;
+  }
+
+  .card-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+  }
+
+  .card-text {
+      font-size: 1rem;
+  }
+
+  .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+  }
+
     </style>  
 </head>
 <body>
@@ -176,7 +211,7 @@
   </div>
 
 
-  <div class="container mt-5">
+  <!-- <div class="container mt-5">
     <h1 class="text-center">K-Pop Bands</h1>
     <div class="row">
         {% for band in bands %}
@@ -196,7 +231,30 @@
             </div>
         {% endfor %}
     </div>
+</div> -->
+<div class="container mt-5">
+  <h1 class="text-center mb-4 text-primary">K-Pop Bands</h1>
+  <div class="row">
+      {% for band in bands %}
+          <div class="col-md-4 mb-4">
+              <div class="card shadow-sm rounded-lg">
+                  {% if band.image %}
+                      <img src="{{ band.image.url }}" class="card-img-top rounded-top" alt="{{ band.name }}">
+                  {% endif %}
+                  <div class="card-body">
+                      <h5 class="card-title text-center text-dark">{{ band.name }}</h5>
+                      <p class="card-text text-muted text-center">{{ band.description }}</p>
+
+                      <a href="../shop_band/{{ band.id }}/" class="btn btn-primary btn-block">View Concerts</a>
+                  </div>
+              </div>
+          </div>
+      {% endfor %}
+  </div>
 </div>
+
+
+
 
   
     
