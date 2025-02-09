@@ -123,32 +123,6 @@
             </div>
         </nav>
         
-
-        
-        
-        <div class="container mt-5">
-            <h2 class="text-center mb-4">Products for {{ band.name }}</h2>
-            {% if products %}
-                <div class="row">
-                    {% for product in products %}
-                        <div class="col-md-4 mb-4">
-                            <div class="card shadow-sm">
-                                <div class="card-body text-center">
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid mb-3 rounded" style="max-height: 200px; object-fit: cover;">
-                                    <h3 class="card-title">{{ product.name }}</h3>
-                                    <p class="card-text">{{ product.description }}</p>
-                                    <p><strong>Price:</strong> ${{ product.price }}</p>
-                                    <a href="{% url 'edit_product' id=product.id %}" class="btn btn-primary">Edit Product</a>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p class="text-center">No products available.</p>
-            {% endif %}
-        </div>
-        
         <div class="container mt-5">
             <h1 class="text-center mb-4">Concerts for {{ band.name }}</h1>
             <div class="row">
@@ -186,10 +160,39 @@
                     </div>
                 {% endfor %}
             </div>
+            <p class="text-center">No Concert Available.</p>
+           
         </div>
         
-
         
+        <div class="container mt-5">
+            <h2 class="text-center mb-4">Products for {{ band.name }}</h2>
+            {% if products %}
+                <div class="row">
+                    {% for product in products %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm">
+                                <div class="card-body text-center">
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid mb-3 rounded" style="max-height: 200px; object-fit: cover;">
+                                    <h3 class="card-title">{{ product.name }}</h3>
+                                    <p class="card-text">{{ product.description }}</p>
+                                    <p><strong>Price:</strong> ${{ product.price }}</p>
+                                    <a href="{% url 'edit_product' id=product.id %}" class="btn btn-primary">Edit Product</a>
+                                                                <!-- Delete Button -->
+                                    <form action="{% url 'delete_product' id=product.id %}" method="post" class="d-inline-block">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Delete Product</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center">No products available.</p>
+            {% endif %}
+        </div>
+                
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     

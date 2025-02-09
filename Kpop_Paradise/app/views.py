@@ -145,7 +145,18 @@ def delete_concert(req, id):
     
     return redirect(shop_home) 
 
-
+def delete_product(req, id):
+    try:
+        product = products.objects.get(pk=id) 
+        if product.image:
+            image_path = product.image.path  
+            if os.path.exists(image_path):
+                os.remove(image_path)  
+        product.delete()
+        messages.success(req, "Product deleted successfully!")
+    except products.DoesNotExist:
+        messages.error(req, "Product not found!")
+    return redirect(shop_home) 
 
 
 #----------------------------------------------------------------------------Product
@@ -206,6 +217,19 @@ def edit_product(req, id):
     bands = Band.objects.all()  
     return render(req, 'shop/edit_product.html', {'product': product, 'bands': bands})
 
+def delete_concert(req, id):
+    try:
+        concert = products.objects.get(pk=id) 
+        if concert.image:
+            image_path = concert.image.path  
+            if os.path.exists(image_path):
+                os.remove(image_path)  
+        concert.delete()  
+        messages.success(req, "Product deleted successfully!")
+    except Concert.DoesNotExist:
+        messages.error(req, "Product not found!")
+    
+    return redirect(shop_home) 
 
 
 #-----USER---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    

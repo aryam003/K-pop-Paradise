@@ -17,6 +17,7 @@ urlpatterns=[
 #product
     path('add-product/', views.add_product, name='add_product'),
     path('edit-product/<int:id>/', views.edit_product, name='edit_product'),
+    path('product/delete/<int:id>/', views.delete_product, name='delete_product'),
 
 #------------------------------------------------------------------------------------------USER
 

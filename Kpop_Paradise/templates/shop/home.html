@@ -239,14 +239,13 @@
           <div class="col-md-4 mb-4">
               <div class="card shadow-sm rounded-lg">
                   {% if band.image %}
-                      <img src="{{ band.image.url }}" class="card-img-top rounded-top" alt="{{ band.name }}">
+                  <a href="../shop_band/{{ band.id }}/" class="btn btn-block"><img src="{{ band.image.url }}" class="card-img-top rounded-top" alt="{{ band.name }}"></a>
+                  <h5 class="card-title text-center text-dark">{{ band.name }} </h5>
                   {% endif %}
-                  <div class="card-body">
+                  <!-- <div class="card-body">
                       <h5 class="card-title text-center text-dark">{{ band.name }}</h5>
                       <p class="card-text text-muted text-center">{{ band.description }}</p>
-
-                      <a href="../shop_band/{{ band.id }}/" class="btn btn-primary btn-block">View Concerts</a>
-                  </div>
+                  </div> -->
               </div>
           </div>
       {% endfor %}

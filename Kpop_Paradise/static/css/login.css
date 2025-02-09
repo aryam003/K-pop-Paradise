@@ -4,7 +4,7 @@ body, html {
 
   .login-container {
     /* background-image: url('static/image/login.jpg'); */
-    background: url('/static/image/login2.jpg') ;
+    background: url('/static/image/login.webp') ;
     background-size: cover;
     background-position: center;
     height: 100vh;
