@@ -174,14 +174,10 @@
             <div class="col-md-4 text-center">
                 <div class="card">
                     {% if band.image %}
-                        <img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}">
+                    <a href="../user_band/{{ band.id }}/" class="btn "><img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}"></a>
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ band.name }}</h5>
-                        <p>{{ band.description }}</p>
-
-                        <a href="../user_band/{{ band.id }}/" class="btn btn-primary">View Concerts</a>
-
                     </div>
                 </div>
             </div>
@@ -189,6 +185,8 @@
     </div>
 </div>
   
+
+
     
         <!-- Bootstrap JS & Popper -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

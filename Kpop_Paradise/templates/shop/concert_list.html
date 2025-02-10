@@ -28,12 +28,7 @@
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
             }
         
-            .ticket-header {
-                background-color: #333; /* Dark background */
-                color: #fff; /* White text */
-                padding: 20px;
-                border-radius: 10px 10px 0 0;
-            }
+        
         
             .ticket-img {
                 max-height: 200px;
@@ -132,19 +127,20 @@
                             <!-- Ticket Header -->
                             <div class="ticket-header text-center">
                                 <h3 class="text-dark">{{ concert.band.name }}</h3>
-                                {% if concert.band.image %}
+                                <!-- {% if concert.band.image %}
                                     <img src="{{ concert.band.image.url }}" alt="{{ concert.band.name }}" class="ticket-img rounded mb-3">
-                                {% endif %}
+                                {% endif %} -->
                             </div>
         
                             <!-- Ticket Body -->
                             <div class="ticket-body">
-                                <h5 class="artist-name">{{ concert.artist }}</h5>
+                                
                                 <p><strong>Date:</strong> {{ concert.date }}</p>
                                 <p><strong>Location:</strong> {{ concert.location }}</p>
                                 <p><strong>Price:</strong> ${{ concert.price }}</p>
                                 <p><strong>Total Tickets:</strong> {{ concert.total_ticket }}</p>
                                 <img src="{{ concert.image.url }}" alt="{{ concert.band.name }}" class="img-fluid mb-3 rounded">
+                                <h6 class="artist-name">{{ concert.artist }}</h6>
                                 
                             </div>
         

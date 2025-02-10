@@ -24,8 +24,12 @@ urlpatterns=[
 
     path('user_home',views.user_home),
     path('user_band/<int:id>/', views.concert_list, name='concert_list'),
-    path('product/<int:id>/', views.view_pro, name='view_pro'),
-    path('add_to_cart/<int:id>/', views.add_to_cart, name='add_to_cart'),
+    
+    # path('product/<int:id>/', views.view_pro, name='view_pro'),
+    # path('add_to_cart/<int:id>/', views.add_to_cart, name='add_to_cart'),
+    # path('product/<int:id>/', views.view_pro, name='view_product'),
+    # path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    # path('cart/', views.view_cart, name='cart_view'),
 
  
     ]

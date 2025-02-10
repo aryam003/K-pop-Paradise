@@ -7,23 +7,113 @@
     <title>Concerts - {{ band.name }}</title>
     <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .ticket-container {
+          display: flex;
+          border: 2px solid #b9b9b9d2;
+          border-radius: 10px;
+          overflow: hidden;
+         
+          width: 100%;
+          height: auto;
+        }
+        .ticket-image {
+          width: 100%;
+          background-size: cover;
+          background-position: center;
+        }
+        .ticket-details {
+        
+          padding: 20px;
+          background-color: #f8f9fa;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          text-align: left;
+        }
+        .ticket-title {
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: #333;
+        }
+        .ticket-description {
+          font-size: 1rem;
+          color: #666;
+          margin-bottom: 10px;
+        }
+        .ticket-footer {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+        }
+        .ticket-footer .btn {
+          background-color: #007bff;
+          color: white;
+        }
+        
+.card {
+    border-radius: 10px; 
+    overflow: hidden; 
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover; 
+}
+
+.card-body {
+    background-color: #f8f9fa; 
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #666;
+    height: 60px;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
+.price {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #333;
+}
+
+@media (max-width: 767px) {
+    .card {
+        margin-bottom: 15px;
+    }
+}
+
+      </style>
 </head>
 <body>
 
-    <div class="container mt-5">
+     <!-- <div class="container mt-5">
         <h1 class="text-center">Concerts for {{ band.name }}</h1>
         <div class="row">
             {% for concert in concerts %}
                 <div class="col-md-4 text-center">
                     <div class="card">
-                        <!-- Band Details -->
+                       
                         <h3 class="card-title">{{ concert.band.name }}</h3>
                         {% if concert.band.image %}
                             <img src="{{ concert.band.image.url }}" alt="{{ concert.band.name }}" class="img-fluid mb-3">
                         {% endif %}
                         <p>{{ concert.band.description }}</p>
     
-                        <!-- Concert Details -->
+                   
                         <h5 class="card-title">{{ concert.artist }}</h5>
                         <p>Date: {{ concert.date }}</p>
                         <p>Location: {{ concert.location }}</p>
@@ -32,7 +122,7 @@
                         <img src="{{ concert.image.url }}" alt="{{ concert.band.name }}" class="img-fluid mb-3">
 
     
-                        <!-- Buy Button -->
+                      
                         <a href="../concerts/{{ concert.id }}/book/" class="btn btn-primary">Buy</a>
                     </div>
                 </div>
@@ -40,25 +130,72 @@
             <p>no concerts</p>
             {% endfor %}
         </div>
+    </div>  -->
+    <div class="container mt-5">
+        <h1 class="text-center">Concerts for {{ band.name }}</h1>
+        <div class="row">
+            {% for concert in concerts %}
+                <div class="col-md-12 text-center mb-6">
+                    <div class="ticket-container">
+                        <!-- Left Side: Image -->
+                        <div class="ticket-image" style="background-image: url('{{ concert.image.url }}');"></div>
+    
+                        <!-- Right Side: Details -->
+                        <div class="ticket-details">
+                            <!-- Band Details -->
+                            <div class="ticket-title">{{ concert.band.name }}</div>
+                            <div class="ticket-description">
+                                <p>{{ concert.band.description }}</p>
+                                <p>{{ concert.artist }}</p>
+                            </div>
+    
+                            <!-- Concert Details -->
+                            <div>
+                                <p>Date: {{ concert.date }}</p>
+                                <p>Location: {{ concert.location }}</p>
+                                <p>Price: ${{ concert.price }}</p>
+                                <p>Total Tickets: {{ concert.total_ticket }}</p>
+                            </div>
+    
+                            <!-- Buy Button -->
+                            <div class="ticket-footer">
+                                <a href="../concerts/{{ concert.id }}/book/" class="btn btn-primary">Buy Ticket</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No concerts available</p>
+            {% endfor %}
+        </div>
     </div>
     
-    <h2>Products for  {{ band.name }}.</h2>
-    <ul>
-        {% for product in products %}
-            <li>
-                <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                <!-- <h3>{{ product.name }}</h3>
-                <p>{{ product.description }}</p>  -->
-                <p>Price: ${{ product.price }}</p>
-                <a href="{% url 'view_pro' id=product.id %}">
-                    <button>View Details</button>
-                </a>
+<!-- ------------------------------------------------------------------------------------------------------------------------------------- -->
 
-            </li>
+
+    <h2 class="text-center my-5">Products for {{ band.name }}</h2>
+
+<div class="container">
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="price">Price: ${{ product.price }}</p>
+                    </div>
+                </div>
+            </div>
         {% empty %}
-            <p>No products available.</p>
+            <div class="col-12">
+                <p class="text-center">No products available.</p>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
+</div>
+
     
     
 </body>

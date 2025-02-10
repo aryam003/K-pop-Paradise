@@ -244,38 +244,31 @@ def user_home(req):
     
 
 def concert_list(req, id):
-    log_user = User.objects.get(username=req.session['user'])  
-    band = Band.objects.get(id=id)  
+    # log_user = User.objects.get(username=req.session['user'])  
+    band = Band.objects.get(pk=id)  
     concerts = Concert.objects.filter(band=band) 
     product = products.objects.filter(band=band)
     return render(req, 'user/concert_list.html', {'band': band, 'concerts': concerts, 'products': product})
 
-# def view_pro(req,id):
-#     log_user=User.objects.get(username=req.session['user'])
-#     product=products.objects.get(pk=id)
-#     try:
-#         cart=Cart.objects.get(product=product,user=log_user)
-#     except:
-#         cart=None
-#     return render(req,'user/view_pro.html',{'product':product,'cart':cart})
+def buy_ticket(req,id):
+    concert = Concert.objects.get(id=id)
+    return render(req,'user/user_dtls.html',{'concert':concert}) 
 
-def view_pro(req, id):
-    if 'user' not in req.session:
-        messages.error(req, "You need to be logged in to view this page.")
-        return redirect('login')  
-    log_user = User.objects.get(username=req.session['user'])
 
+
+
+
+
+#---------------------------------------------------------------------------------PRODUCTS
+
+def view_pro(req,id):
+    log_user=User.objects.get(username=req.session['user'])
+    product=products.objects.get(pk=id)
     try:
-        product = products.objects.get(pk=id)
-    except products.DoesNotExist:
-        messages.error(req, "Product not found!")
-        return redirect('shop_home')  
-    try:
-        cart = Cart.objects.get(product=product, user=log_user)
-    except Cart.DoesNotExist:
-        cart = None
-    return render(req, 'user/view_pro.html', {'product': product, 'cart': cart})
-
+        cart=Cart.objects.get(product=product,user=log_user)
+    except:
+        cart=None
+    return render(req,'user/view_pro.html',{'product':product,'cart':cart})
 
 def cart_display(req):
     user = User.objects.get(username=req.session['user'])
