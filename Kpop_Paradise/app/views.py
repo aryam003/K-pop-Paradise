@@ -250,19 +250,6 @@ def concert_list(req, id):
     product = products.objects.filter(band=band)
     return render(req, 'user/concert_list.html', {'band': band, 'concerts': concerts, 'products': product})
 
-# def book_ticket(request, concert_id):
-#     concert = Concert.objects.get( id=concert_id) 
-#     # concert = get_object_or_404(Concert, id=concert_id)
-#     if request.method == "POST":
-#         buyer_name = request.POST.get("name")
-#         email = request.POST.get("email")
-#         quantity = request.POST.get("quantity")
-
-#         Ticket.objects.create(concert=concert, buyer_name=buyer_name, email=email, quantity=quantity)
-#         messages.success(request, "Ticket booked successfully!")
-#         return redirect(concert_list)
-
-#     return render(request, 'user/book_ticket.html', {'concert': concert})
 
 
 def book_ticket(request, concert_id):
@@ -270,12 +257,9 @@ def book_ticket(request, concert_id):
     if request.method == "POST":
         buyer_name = request.POST.get("name")
         email = request.POST.get("email")
-        quantity = int(request.POST.get("quantity"))  # Ensure quantity is an integer
-
-        # Calculate the total price for the tickets
+        quantity = int(request.POST.get("quantity")) 
         total_price = concert.price * quantity
 
-        # Create the ticket entry
         Ticket.objects.create(
             concert=concert, 
             buyer_name=buyer_name, 
@@ -283,14 +267,21 @@ def book_ticket(request, concert_id):
             quantity=quantity,
             total_price=total_price
         )
-
-        # Optionally, you can store the total price in the Ticket model, 
-        # but for now, we just pass the value in the message.
         messages.success(request, f"Ticket booked successfully! Total price: {total_price:.2f}")
         return redirect(user_home)
 
     return render(request, 'user/book_ticket.html', {'concert': concert})
 
+# def user_view_bookings(req):
+#     user=User.objects.get(username=req.session['user'])
+#     data=Ticket.objects.filter(user=user)
+#     return render(req,'user/view_booking.html',{'data':data})
+
+def user_view_bookings(req):
+    # ticket = Ticket.objects.filter(pk=id)  
+    # band = Band.objects.filter(band=band) 
+    # concerts = Concert.objects.filter(band=band) 
+    return render(req,'user/view_ticket.html')
 
 
 
@@ -306,6 +297,11 @@ def view_pro(req,id):
     except:
         cart=None
     return render(req,'user/view_pro.html',{'product':product,'cart':cart})
+
+
+
+
+
 
 def cart_display(req):
     user = User.objects.get(username=req.session['user'])

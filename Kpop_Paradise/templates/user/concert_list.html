@@ -229,7 +229,10 @@ h2 {
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p class="card-text">{{ product.description }}</p>
                         <p class="price">Price: ${{ product.price }}</p>
+                    
                     </div>
+                   <a href="../view_pro/{{ product.pk }}/" class="btn btn-success">view</a>
+                   <!-- ../view_pro/{{ jewelry.pk }} -->
                 </div>
             </div>
         {% empty %}
