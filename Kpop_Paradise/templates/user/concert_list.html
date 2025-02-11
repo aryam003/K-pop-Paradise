@@ -99,6 +99,33 @@ h2 {
       </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: white;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-size: 30px; "><span class="deep-violet">K-pop</span><span class="deep-violet"></span> <span class="black">Paradise</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Ticket</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Booked products</a>
+                  </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
      <!-- <div class="container mt-5">
         <h1 class="text-center">Concerts for {{ band.name }}</h1>
@@ -154,13 +181,30 @@ h2 {
                                 <p>Date: {{ concert.date }}</p>
                                 <p>Location: {{ concert.location }}</p>
                                 <p>Price: ${{ concert.price }}</p>
-                                <p>Total Tickets: {{ concert.total_ticket }}</p>
+                                <p>Tickets: {{ concert.total_ticket }}</p>
                             </div>
     
                             <!-- Buy Button -->
-                            <div class="ticket-footer">
-                                <a href="../concerts/{{ concert.id }}/book/" class="btn btn-primary">Buy Ticket</a>
-                            </div>
+                          <!-- Assuming you're inside the concert context -->
+                            <!-- <a href="" class="btn btn-primary">Buy Ticket</a> -->
+                                     <!-- Cart Status -->
+        {% if cart %}
+        <div class="alert alert-info mt-3">
+          <strong>Item already in your cart.</strong>
+        </div>
+        {% else %}
+        <div class="mt-4">
+
+          <a href="{% url 'book_ticket' concert.id %}" class="btn btn-success">Book Now</a>
+
+         
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+                            
                         </div>
                     </div>
                 </div>

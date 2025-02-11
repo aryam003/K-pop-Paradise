@@ -1,58 +1,228 @@
-<!-- {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Book Ticket for {{ concert.band.name }}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container mt-5">
-        <h1 class="text-center">Book Ticket for {{ concert.band.name }}</h1>
-        <div class="card">
-            <div class="card-body">
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Your Name</label>
-                        <input type="text" name="name" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity</label>
-                        <input type="number" name="quantity" class="form-control" id="quantity" value="1" min="1" max="{{ concert.total_ticket }}" required>
-                    </div>
-                    <p>Total Price: $<span id="total-price">{{ concert.price }}</span></p>
-                    <button type="submit" class="btn btn-primary">Book Ticket</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // JavaScript to dynamically update the total price based on quantity
-        document.getElementById('quantity').addEventListener('input', function() {
-            const price = {{ concert.price }};  // Price per ticket
-            const quantity = this.value;  // Selected quantity
-            const totalPrice = price * quantity;  // Calculate the total price
-            document.getElementById('total-price').innerText = totalPrice;  // Update the total price display
-        });
-    </script>
-</body>
-</html> -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Book Tickets</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}"> <!-- Add CSS if needed -->
+    <style>
+        /* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.concert-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.concert-details img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.concert-details h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.concert-details p {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"] {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus {
+    border-color: #007bff;
+}
+
+button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.total-price {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+.alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .concert-details img {
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="number"] {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+}
+
+    </style>
 </head>
 <body>
-    <h1>book</h1>
+    <div class="container">
+        <h1>Book Tickets for {{ concert.band.name }} Concert</h1>
+        
+        <!-- Display concert details -->
+        <div class="concert-details">
+            <img src="{{ concert.image.url }}" alt="Concert Image" class="concert-image">
+            <h2>{{ concert.band.name }} - {{ concert.artist }}</h2>
+            <p>Date: {{ concert.date }}</p>
+            <p>Location: {{ concert.location }}</p>
+            <p>Price per Ticket: ${{ concert.price }}</p>
+            <!-- <p>Total Tickets Available: {{ concert.total_ticket }}</p> -->
+        </div>
+
+        <!-- Display success message if any -->
+        {% if messages %}
+            <div class="alert">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Ticket booking form -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Your Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="quantity">Number of Tickets:</label>
+                <input type="number" id="quantity" name="quantity" min="1" max="{{ concert.total_ticket }}" required>
+            </div>
+
+            <!-- Display calculated total price -->
+            <div class="total-price">
+                <p>Total Price: $<span id="totalPrice">0.00</span></p>
+            </div>
+
+            <button type="submit">Book Tickets</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // When the quantity input changes
+            $("#quantity").on("input", function() {
+                var quantity = parseInt($(this).val()); // Get the quantity value as an integer
+                if (isNaN(quantity) || quantity < 1) {
+                    quantity = 0; // Ensure quantity is a positive number
+                }
+                
+                var pricePerTicket = parseFloat("{{ concert.price }}"); // Convert price to float
+                var totalPrice = (quantity * pricePerTicket).toFixed(2); // Calculate total price and format to 2 decimal places
+                
+                // Update the total price display
+                $("#totalPrice").text(totalPrice);
+            });
+        });
+    </script>
+    
+
 </body>
 </html>

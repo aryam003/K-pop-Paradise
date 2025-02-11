@@ -24,7 +24,13 @@ urlpatterns=[
 
     path('user_home',views.user_home),
     path('user_band/<int:id>/', views.concert_list, name='concert_list'),
-    
+   
+    # path('user_booking',views.user_view_bookings),
+    # path('view_bookings/', views.user_view_bookings, name='view_bookings'),
+
+    # path('concert/<int:concert_id>/book/', views.book_ticket, name='book_ticket'),
+
+
     # path('product/<int:id>/', views.view_pro, name='view_pro'),
     # path('add_to_cart/<int:id>/', views.add_to_cart, name='add_to_cart'),
     # path('product/<int:id>/', views.view_pro, name='view_product'),

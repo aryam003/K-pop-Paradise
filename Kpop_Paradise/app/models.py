@@ -29,6 +29,9 @@ class Ticket(models.Model):
     buyer_name = models.CharField(max_length=100)
     email = models.EmailField()
     quantity = models.PositiveIntegerField()
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)  
+   
+
 
     def _str_(self):
         return f"{self.buyer_name} - {self.concert.band.name}"

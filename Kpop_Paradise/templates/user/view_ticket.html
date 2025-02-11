@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Booked Tickets</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <div class="container">
+        <h1>Your Booked Tickets</h1>
+
+        {% if data %}
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Concert</th>
+                        <th>Band</th>
+                        <th>Artist</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th>Concert Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in data %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'concert_detail' ticket.concert.id %}">{{ ticket.concert.band.name }} - {{ ticket.concert.artist }}</a>
+                            </td>
+                            <td>{{ ticket.concert.band.name }}</td>
+                            <td>{{ ticket.concert.artist }}</td>
+                            <td>{{ ticket.quantity }}</td>
+                            <td>${{ ticket.total_price }}</td>
+                            <td>{{ ticket.concert.date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You have no booked tickets.</p>
+        {% endif %}
+        
+        <!-- <a href="{% url 'concert_list' %}">Back to Concerts</a> Link back to concert list -->
+    </div>
+
+    <style>
+        /* Simple CSS for better presentation */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .ticket-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .ticket-table th, .ticket-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .ticket-table th {
+            background-color: #f2f2f2;
+        }
+        .ticket-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .ticket-table a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .ticket-table a:hover {
+            text-decoration: underline;
+        }
+        p {
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</body>
+</html>
