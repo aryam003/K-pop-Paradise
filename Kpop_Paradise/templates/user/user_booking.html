@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+</head>
+<body>
+    <h1>Your Cart</h1>
+
+    <!-- Loop through cart items and display their details -->
+    <ul>
+        {% for item in cart_items %}
+            <li>
+                <!-- Display Product Details -->
+                <h2>{{ item.product.name }}</h2>
+                <p><strong>Band:</strong> {{ item.product.band.name }}</p>
+                <p><strong>Description:</strong> {{ item.product.description }}</p>
+                <p><strong>Price:</strong> ${{ item.product.price }}</p>
+                <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+              
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-width: 200px;">
+
+                <form action="{% url 'delete_cart' item.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Display Total Price -->
+    <h3>Total Price: ${{ total_price }}</h3>
+
+</body>
+</html>
+
+

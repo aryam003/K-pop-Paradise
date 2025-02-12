@@ -289,27 +289,24 @@ def user_view_bookings(req):
 
 #---------------------------------------------------------------------------------PRODUCTS
 
-def product_detail(request, product_id):
+def product_detail(req, product_id):
     product = products.objects.get(id=product_id)
-    return render(request, 'user/product_detail.html', {'product': product})
+    return render(req, 'user/product_detail.html', {'product': product})
 
 
 def buy_product(request, product_id):
     product = products.objects.get(id=product_id)
     
     if request.method == 'POST':
-        # Get user information from the POST request or assume user is logged in
         user = request.user if request.user.is_authenticated else None
         
         buyer_name = request.POST.get('buyer_name', '')
         email = request.POST.get('email', '')
         
-        # If the user is not logged in, create the booking without linking a user
         if not user and (not buyer_name or not email):
             messages.error(request, 'You must provide your name and email.')
             return redirect('buy_product', product_id=product_id)
 
-        # Create the booking record
         booking = Booking.objects.create(
             product=product,
             user=user,
@@ -323,7 +320,28 @@ def buy_product(request, product_id):
     return render(request, 'user/book_product.html', {'product': product})
 
 
+def add_to_cart(req, product_id):
+    product = products.objects.get(id=product_id)  
+
+    cart_item, created = Cart.objects.get_or_create(user=req.user, product=product)
+
+    if not created:  
+        cart_item.quantity += 1
+        cart_item.save()
+
+    return redirect(user_home)
+
+def cart_view(request):
+    cart_items = Cart.objects.filter(user=request.user)
+
+    # Calculate the total price by summing the product price multiplied by quantity
+    total_price = sum(item.product.price * item.quantity for item in cart_items)
+
+    return render(request, 'user/user_booking.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
-
+def delete_cart(request, id):
+    cart_item=Cart.objects.get(pk=id)
+    cart_item.delete()  
+    return redirect(cart_view)
 
