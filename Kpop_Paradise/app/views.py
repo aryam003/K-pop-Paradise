@@ -289,43 +289,41 @@ def user_view_bookings(req):
 
 #---------------------------------------------------------------------------------PRODUCTS
 
-def view_pro(req,id):
-    log_user=User.objects.get(username=req.session['user'])
-    product=products.objects.get(pk=id)
-    try:
-        cart=Cart.objects.get(product=product,user=log_user)
-    except:
-        cart=None
-    return render(req,'user/view_pro.html',{'product':product,'cart':cart})
+def product_detail(request, product_id):
+    product = products.objects.get(id=product_id)
+    return render(request, 'user/product_detail.html', {'product': product})
+
+
+def buy_product(request, product_id):
+    product = products.objects.get(id=product_id)
+    
+    if request.method == 'POST':
+        # Get user information from the POST request or assume user is logged in
+        user = request.user if request.user.is_authenticated else None
+        
+        buyer_name = request.POST.get('buyer_name', '')
+        email = request.POST.get('email', '')
+        
+        # If the user is not logged in, create the booking without linking a user
+        if not user and (not buyer_name or not email):
+            messages.error(request, 'You must provide your name and email.')
+            return redirect('buy_product', product_id=product_id)
+
+        # Create the booking record
+        booking = Booking.objects.create(
+            product=product,
+            user=user,
+            buyer_name=buyer_name,
+            email=email
+        )
+
+        messages.success(request, f'You have successfully booked the {product.name}!')
+        return redirect('product_detail', product_id=product_id)
+
+    return render(request, 'user/book_product.html', {'product': product})
 
 
 
 
 
-
-def cart_display(req):
-    user = User.objects.get(username=req.session['user'])
-    cart_items = Cart.objects.filter(user=user) 
-    return render(req, 'shop/cart_display.html', {'cart_items': cart_items})
-
-
-def add_to_cart(req, id):
-    try:
-        product = products.objects.get(pk=id)
-    except products.DoesNotExist:
-        messages.error(req, "Product not found!")
-        return redirect('shop_home') 
-    try:
-        user = User.objects.get(username=req.session['user'])
-    except User.DoesNotExist:
-        messages.error(req, "User not found!")
-        return redirect('login') 
-    cart_item, created = Cart.objects.get_or_create(user=user, product=product)
-    if created:
-        messages.success(req, f"{product.name} added to your cart!")
-    else:
-        cart_item.quantity += 1
-        cart_item.save()
-        messages.success(req, f"Quantity of {product.name} updated in your cart!")
-    return redirect('cart_display') 
 

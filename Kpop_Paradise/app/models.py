@@ -29,7 +29,7 @@ class Ticket(models.Model):
     buyer_name = models.CharField(max_length=100)
     email = models.EmailField()
     quantity = models.PositiveIntegerField()
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)  
+    total_price = models.DecimalField(max_digits=10, decimal_places=2 ,null=True, blank=True)  
    
 
 
@@ -47,6 +47,10 @@ class products(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
 
+
+
+    
+
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(products, on_delete=models.CASCADE)
@@ -55,3 +59,12 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"{self.product.name} in {self.user.username}'s cart"
+
+class Booking(models.Model):
+    product = models.ForeignKey(products, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Assuming the user is logged in
+    booking_date = models.DateTimeField(auto_now_add=True)
+    buyer_name = models.CharField(max_length=100)
+    email = models.EmailField()
+
+ 

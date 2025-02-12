@@ -24,16 +24,17 @@ urlpatterns=[
 
     path('user_home',views.user_home),
     path('user_band/<int:id>/', views.concert_list, name='concert_list'),
-   
     path('view_bookings/', views.user_view_bookings),
-
     path('concert/<int:concert_id>/book/', views.book_ticket, name='book_ticket'),
 
 
+#---product
     
-    path('add_to_cart/<int:id>/', views.add_to_cart, name='add_to_cart'),
- 
-    path('view_pro/<id>',views.view_pro),
+    path('product/<int:product_id>/', views.product_detail, name='product_detail'),
+    path('buy/<int:product_id>/', views.buy_product, name='buy_product'),
+
+
+  
   
  
     ]

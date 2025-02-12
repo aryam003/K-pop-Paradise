@@ -231,8 +231,9 @@ h2 {
                         <p class="price">Price: ${{ product.price }}</p>
                     
                     </div>
-                   <a href="../view_pro/{{ product.pk }}/" class="btn btn-success">view</a>
-                   <!-- ../view_pro/{{ jewelry.pk }} -->
+                    <a href="{% url 'product_detail' product.id %}">
+                        <button type="button">View Details</button>
+                    </a>
                 </div>
             </div>
         {% empty %}
