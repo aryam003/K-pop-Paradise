@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
+from django.utils import timezone
+
 
 # Create your views here.
 
@@ -231,6 +233,15 @@ def delete_concert(req, id):
     
     return redirect(shop_home) 
 
+# def shop_view_bookings(request):
+
+#     booking=Booking.objects.all()[::-1]
+
+#     bookings = Booking.objects.filter(user=request.user)
+    
+   
+#     return render(request, 'shop/view_pro_booking.html', {'bookings': bookings ,'book':booking})
+
 
 #-----USER---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
 
@@ -277,11 +288,11 @@ def book_ticket(request, concert_id):
 #     data=Ticket.objects.filter(user=user)
 #     return render(req,'user/view_booking.html',{'data':data})
 
-def user_view_bookings(req):
-    # ticket = Ticket.objects.filter(pk=id)  
-    # band = Band.objects.filter(band=band) 
-    # concerts = Concert.objects.filter(band=band) 
-    return render(req,'user/view_ticket.html')
+def ticket_view_bookings(request):
+    # Get all bookings for the authenticated user
+    bookings = Booking.objects.filter(user=request.user)
+
+    return render(request, 'user/view_ticket.html', {'bookings': bookings})
 
 
 
@@ -289,9 +300,15 @@ def user_view_bookings(req):
 
 #---------------------------------------------------------------------------------PRODUCTS
 
+# def product_detail(req, product_id):
+#     product = products.objects.get(id=product_id)
+#     return render(req, 'user/product_detail.html', {'product': product})
 def product_detail(req, product_id):
     product = products.objects.get(id=product_id)
-    return render(req, 'user/product_detail.html', {'product': product})
+    # Check if the product is already in the user's cart
+    product_in_cart = Cart.objects.filter(user=req.user, product=product).exists() if req.user.is_authenticated else False
+    return render(req, 'user/product_detail.html', {'product': product, 'product_in_cart': product_in_cart})
+
 
 
 def buy_product(request, product_id):
@@ -337,7 +354,7 @@ def cart_view(request):
     # Calculate the total price by summing the product price multiplied by quantity
     total_price = sum(item.product.price * item.quantity for item in cart_items)
 
-    return render(request, 'user/user_booking.html', {'cart_items': cart_items, 'total_price': total_price})
+    return render(request, 'user/user_cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
 def delete_cart(request, id):
@@ -345,3 +362,22 @@ def delete_cart(request, id):
     cart_item.delete()  
     return redirect(cart_view)
 
+def view_bookings(request):
+    # Get all bookings for the authenticated user
+    bookings = Booking.objects.filter(user=request.user)
+
+    return render(request, 'user/view_pro_booking.html', {'bookings': bookings})
+
+# def cancel_booking(request, booking_id):
+#     # Get the booking object or return a 404 if not found
+#     # booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+#     booking = Booking.objects.get(id=booking_id)  
+    
+#     # Check if the booking was made within the last 2 days
+#     if timezone.now() - booking.booking_date <= timezone.timedelta(days=2):
+#         booking.delete()  # Delete the booking
+#         messages.success(request, 'Your booking has been canceled successfully.')
+#     else:
+#         messages.error(request, 'You can only cancel bookings within 2 days of the booking date.')
+
+#     return redirect('view_bookings')  

@@ -25,12 +25,16 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
+           
+
             </li>
         {% endfor %}
     </ul>
 
     <!-- Display Total Price -->
     <h3>Total Price: ${{ total_price }}</h3>
+   
+
 
 </body>
 </html>

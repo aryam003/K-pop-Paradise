@@ -43,23 +43,19 @@
         <button type="submit" class="btn btn-primary">Add to Cart</button>
     </form> -->
     <!-- Add to Cart or Already in Cart Button -->
-
     {% if product_in_cart %}
-        <!-- Product is already in the cart -->
-        <button type="button" class="btn btn-secondary" disabled>Already in Cart</button>
-    {% else %}
-        <!-- Product is not in the cart, show Add to Cart button -->
-        <form action="{% url 'add_to_cart' product.id %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary">Add to Cart</button>
-        </form>
-    {% endif %}
-
-
-
-
+    <!-- Product is already in the cart -->
+    <a href="{% url 'cart_view' %}" class="btn btn-secondary">Go to Cart</a>
+{% else %}
+    <!-- Product is not in the cart, show Add to Cart button -->
+    <form action="{% url 'add_to_cart' product.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+    </form>
+{% endif %}
 
     <a href="{% url 'buy_product' product.id %}" class="btn btn-primary">Buy Now</a>
 </body>
 </html>
 
+<!--  -->
