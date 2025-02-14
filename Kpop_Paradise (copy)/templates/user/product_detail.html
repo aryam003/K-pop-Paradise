@@ -1,0 +1,61 @@
+
+
+<!-- templates/product_detail.html -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} Details</title>
+</head>
+<body>
+    <h1>{{ product.name }}</h1>
+    <p><strong>Band:</strong> {{ product.band.name }}</p>
+    <p><strong>Description:</strong> {{ product.description }}</p>
+    <p><strong>Price:</strong> ${{ product.price }}</p>
+    <p><strong>Created at:</strong> {{ product.created_at }}</p>
+    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+
+    <a href="{% url 'buy_product' product.id %}" class="btn btn-primary">Buy Now</a>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} Details</title>
+</head>
+<body>
+    <h1>{{ product.name }}</h1>
+    <p><strong>Band:</strong> {{ product.band.name }}</p>
+    <p><strong>Description:</strong> {{ product.description }}</p>
+    <p><strong>Price:</strong> ${{ product.price }}</p>
+    <p><strong>Created at:</strong> {{ product.created_at }}</p>
+    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+
+    <!-- Add to Cart Button -->
+    <!-- <form action="{% url 'add_to_cart' product.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+    </form> -->
+    <!-- Add to Cart or Already in Cart Button -->
+    {% if product_in_cart %}
+    <!-- Product is already in the cart -->
+    <a href="{% url 'cart_view' %}" class="btn btn-secondary">Go to Cart</a>
+{% else %}
+    <!-- Product is not in the cart, show Add to Cart button -->
+    <form action="{% url 'add_to_cart' product.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+    </form>
+{% endif %}
+
+    <a href="{% url 'buy_product' product.id %}" class="btn btn-primary">Buy Now</a>
+</body>
+</html>
+
+<!--  -->

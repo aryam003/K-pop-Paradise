@@ -1,0 +1,130 @@
+.crosl{
+  position: relative;
+  padding: 10px;
+  text-align: left;
+  padding-left: 16%;
+}
+.crosl img{
+  width: 40%;
+  max-width: 300px;
+  border-radius: 10px;
+ 
+}
+.text-overlay{
+  position: absolute;
+  top: 100px;
+  left: 40%;
+  transform: translateX(-50%);
+  color: white;
+}
+.carousel-inner {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.carousel-item {
+  width: 100%;
+  height: auto;
+}
+
+
+.crosl {
+  position: relative;
+  width: 100%;
+  min-height: 300px;  
+  height: auto;
+  overflow: hidden;  
+}
+
+.crosl img {
+  border-radius: 10%;
+  width: 40%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: center;
+}
+
+
+
+.text-overlay h2 {
+  font-size: 2rem;  
+  margin-bottom: 10px;
+}
+
+.text-overlay p {
+  font-size: 1rem;  
+}
+
+@media (max-width: 1200px) {
+  .crosl {
+    min-height: 350px; 
+  }
+
+  .text-overlay h2 {
+    font-size: 1.8rem;
+  }
+
+  .text-overlay p {
+    font-size: 0.9rem;
+  }
+  .crosl img{
+    padding-top: 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .crosl {
+    min-height: 300px; 
+  }
+
+  .text-overlay h2 {
+    font-size: 1.6rem;
+  }
+
+  .text-overlay p {
+    font-size: 0.85rem;
+  }
+  .crosl img{
+    padding-top: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .crosl {
+    min-height: 250px; 
+  }
+
+  .text-overlay h2 {
+    font-size: 1.4rem;
+  }
+
+  .text-overlay p {
+    font-size: 0.8rem;
+  }
+  .crosl img{
+    padding-top: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .crosl {
+    min-height: 200px;  
+  }
+
+  .text-overlay {
+    width: 90%;  
+    padding: 10px;
+  }
+
+  .text-overlay h2 {
+    font-size: 1.2rem;
+  }
+
+  .text-overlay p {
+    font-size: 0
+  }
+  .crosl img{
+    padding-top: 18px;
+  }
+}

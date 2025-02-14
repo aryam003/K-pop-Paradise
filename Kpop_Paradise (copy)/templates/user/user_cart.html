@@ -1,0 +1,208 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+</head>
+<body>
+    <h1>Your Cart</h1>
+
+    <ul>
+        {% for item in cart_items %}
+            <li>
+                <h2>{{ item.product.name }}</h2>
+                <p><strong>Band:</strong> {{ item.product.band.name }}</p>
+                <p><strong>Description:</strong> {{ item.product.description }}</p>
+                <p><strong>Price:</strong> ${{ item.product.price }}</p>
+                <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+              
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-width: 200px;">
+
+                <form action="{% url 'delete_cart' item.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+           
+
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Total Price: ${{ total_price }}</h3>
+   
+
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            background-color: #4c5baf;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .cart-item {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .cart-item img {
+            max-width: 200px;
+            height: auto;
+            margin-right: 20px;
+            border-radius: 8px;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-details p {
+            margin: 5px 0;
+        }
+
+        .delete-button {
+            background-color: #3c8ce7;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .delete-button:hover {
+            background-color: #2b53c0;
+        }
+
+        .total-price {
+            text-align: right;
+            font-size: 1.2em;
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .cart-item img {
+                margin-bottom: 15px;
+                max-width: 150px;
+            }
+
+            .item-details {
+                margin-top: 10px;
+            }
+
+            .total-price {
+                font-size: 1.1em;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cart-item img {
+                max-width: 120px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .total-price {
+                font-size: 1em;
+            }
+
+            .delete-button {
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Your Cart</h1>
+
+    <div class="container">
+        <!-- Loop through cart items and display their details -->
+        <ul>
+            {% for item in cart_items %}
+                <li class="cart-item">
+                    <!-- Display Product Details -->
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+
+                    <div class="item-details">
+                        <h2>{{ item.product.name }}</h2>
+                        <p><strong>Band:</strong> {{ item.product.band.name }}</p>
+                        <p><strong>Description:</strong> {{ item.product.description }}</p>
+                        <p><strong>Price:</strong> {{ item.product.price }}</p>
+                        <!-- <p><strong>Quantity:</strong> {{ item.quantity }}</p> -->
+                    </div>
+
+                    <!-- Delete Button -->
+                    <form action="{% url 'delete_cart' item.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">Delete</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Display Total Price -->
+        <div class="total-price">
+            <h3>Total Price: ${{ total_price }}</h3>
+        </div>
+    </div>
+
+</body>
+</html>
