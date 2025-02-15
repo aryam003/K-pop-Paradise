@@ -368,16 +368,4 @@ def view_bookings(request):
 
     return render(request, 'user/view_pro_booking.html', {'bookings': bookings})
 
-# def cancel_booking(request, booking_id):
-#     # Get the booking object or return a 404 if not found
-#     # booking = get_object_or_404(Booking, id=booking_id, user=request.user)
-#     booking = Booking.objects.get(id=booking_id)  
-    
-#     # Check if the booking was made within the last 2 days
-#     if timezone.now() - booking.booking_date <= timezone.timedelta(days=2):
-#         booking.delete()  # Delete the booking
-#         messages.success(request, 'Your booking has been canceled successfully.')
-#     else:
-#         messages.error(request, 'You can only cancel bookings within 2 days of the booking date.')
 
-#     return redirect('view_bookings')  

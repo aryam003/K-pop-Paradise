@@ -68,8 +68,8 @@
 <!-- The slideshow/carousel -->
 <div class="carousel-inner">
   <div class="carousel-item active">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(175, 76, 5) ,rgb(216, 131, 67), rgb(180, 61, 10));">
-      <img src="{% static 'image/carousel10.png' %}" alt="" >
+      <div class="crosl" style=" background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
+        <img src="{% static 'image/carousel1.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>BTS</h2>
         <p>bts</p> -->
@@ -131,8 +131,8 @@
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
-      <img src="{% static 'image/carousel1.png' %}" alt="">
+    <div class="crosl" style=" background: linear-gradient(to right,rgb(175, 76, 5) ,rgb(216, 131, 67), rgb(180, 61, 10));">
+      <img src="{% static 'image/carousel10.png' %}" alt="" >
       <div class="text-overlay">
         <!-- <h2>BTS</h2>
         <p>bts</p> -->
@@ -170,13 +170,13 @@
   </div>
 
   <div class="container mt-5">
-    <h1 class="text-center">K-Pop Bands</h1>
-    <div class="row">
+    <h1 class="text-center" style="background: radial-gradient(circle, lightblue, pink); width: 100%;padding: 10px; border-radius: 10px;">K-Pop Bands</h1>
+    <div class="row" style="padding: 10px;">
         {% for band in bands %}
             <div class="col-md-4 text-center">
-                <div class="card">
+                <div class="card" style="padding: 10px;">
                     {% if band.image %}
-                    <a href="../user_band/{{ band.id }}/" class="btn "><img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}"></a>
+                    <a href="../user_band/{{ band.id }}/" class="btn "><img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}" style="height: 330px;"></a>
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ band.name }}</h5>
