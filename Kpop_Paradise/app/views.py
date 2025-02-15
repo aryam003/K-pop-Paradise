@@ -66,12 +66,11 @@ def shop_home(req):
     if 'shop' in req.session:
         bands=Band.objects.all()
         return render(req,'shop/home.html',{'bands':bands})
-        # return render(req,'shop/shop_home.html')
     else:
         return redirect(shop_login) 
     
 def shop_concert_list(req, id):
-    # log_user = User.objects.get(username=req.session['user']) 
+    log_user = User.objects.get(username=req.session['user']) 
     band = Band.objects.get(id=id)  
     concerts = Concert.objects.filter(band=band) 
     product = products.objects.filter(band=band)
@@ -233,14 +232,12 @@ def delete_concert(req, id):
     
     return redirect(shop_home) 
 
-# def shop_view_bookings(request):
+def booking_list(request):
+    # Fetch all bookings from the database, ordered by the most recent
+    bookings = Booking.objects.all().order_by('-booking_date')
 
-#     booking=Booking.objects.all()[::-1]
-
-#     bookings = Booking.objects.filter(user=request.user)
-    
-   
-#     return render(request, 'shop/view_pro_booking.html', {'bookings': bookings ,'book':booking})
+    # Pass the bookings to the template
+    return render(request, 'shop/booking_list.html', {'bookings': bookings})
 
 
 #-----USER---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
@@ -255,7 +252,7 @@ def user_home(req):
     
 
 def concert_list(req, id):
-    # log_user = User.objects.get(username=req.session['user'])  
+    log_user = User.objects.get(username=req.session['user'])  
     band = Band.objects.get(pk=id)  
     concerts = Concert.objects.filter(band=band) 
     product = products.objects.filter(band=band)
@@ -289,9 +286,7 @@ def book_ticket(request, concert_id):
 #     return render(req,'user/view_booking.html',{'data':data})
 
 def ticket_view_bookings(request):
-    # Get all bookings for the authenticated user
-    bookings = Booking.objects.filter(user=request.user)
-
+    bookings = Ticket.objects.filter(user=request.user)
     return render(request, 'user/view_ticket.html', {'bookings': bookings})
 
 
@@ -300,12 +295,9 @@ def ticket_view_bookings(request):
 
 #---------------------------------------------------------------------------------PRODUCTS
 
-# def product_detail(req, product_id):
-#     product = products.objects.get(id=product_id)
-#     return render(req, 'user/product_detail.html', {'product': product})
+
 def product_detail(req, product_id):
     product = products.objects.get(id=product_id)
-    # Check if the product is already in the user's cart
     product_in_cart = Cart.objects.filter(user=req.user, product=product).exists() if req.user.is_authenticated else False
     return render(req, 'user/product_detail.html', {'product': product, 'product_in_cart': product_in_cart})
 
@@ -330,30 +322,22 @@ def buy_product(request, product_id):
             buyer_name=buyer_name,
             email=email
         )
-
         messages.success(request, f'You have successfully booked the {product.name}!')
         return redirect('product_detail', product_id=product_id)
-
     return render(request, 'user/book_product.html', {'product': product})
 
 
 def add_to_cart(req, product_id):
     product = products.objects.get(id=product_id)  
-
     cart_item, created = Cart.objects.get_or_create(user=req.user, product=product)
-
     if not created:  
         cart_item.quantity += 1
         cart_item.save()
-
     return redirect(user_home)
 
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user)
-
-    # Calculate the total price by summing the product price multiplied by quantity
     total_price = sum(item.product.price * item.quantity for item in cart_items)
-
     return render(request, 'user/user_cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
@@ -363,9 +347,17 @@ def delete_cart(request, id):
     return redirect(cart_view)
 
 def view_bookings(request):
-    # Get all bookings for the authenticated user
     bookings = Booking.objects.filter(user=request.user)
-
     return render(request, 'user/view_pro_booking.html', {'bookings': bookings})
 
 
+def ticket_booking_details(request):
+    # Fetch all the tickets with related concert and user data
+    tickets = Ticket.objects.select_related('concert', 'user').all()
+
+    # Pass the tickets to the template
+    return render(request, 'shop/booking_details.html', {'tickets': tickets})
+
+def user_tickets(request):
+    tickets = Ticket.objects.filter(user=request.user)  # Fetch tickets of the logged-in user
+    return render(request, 'user/user_tickets.html', {'tickets': tickets})

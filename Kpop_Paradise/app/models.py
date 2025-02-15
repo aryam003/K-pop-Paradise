@@ -26,6 +26,7 @@ class Concert(models.Model):
 
 class Ticket(models.Model):
     concert = models.ForeignKey(Concert, on_delete=models.CASCADE, related_name="tickets")
+    user = models.ForeignKey(User, on_delete=models.CASCADE ,null=True, blank=True)  # Assuming the user is logged in
     buyer_name = models.CharField(max_length=100)
     email = models.EmailField()
     quantity = models.PositiveIntegerField()

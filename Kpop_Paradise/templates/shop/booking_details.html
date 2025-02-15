@@ -1,0 +1,128 @@
+<!-- booking_details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #4CAF50;
+        }
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            background-color: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination a {
+            padding: 8px 12px;
+            margin: 0 5px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .pagination a:hover {
+            background-color: #45a049;
+        }
+        .pagination .current {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Booking Details</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Concert</th>
+                    <th>Band</th>
+                    <th>Location</th>
+                    <th>Date</th>
+                    <th>Buyer Name</th>
+                    <th>Email</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>User (If Logged In)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.concert.band.name }} - {{ ticket.concert.location }}</td>
+                    <td>{{ ticket.concert.band.name }}</td>
+                    <td>{{ ticket.concert.location }}</td>
+                    <td>{{ ticket.concert.date }}</td>
+                    <td>{{ ticket.buyer_name }}</td>
+                    <td>{{ ticket.email }}</td>
+                    <td>{{ ticket.quantity }}</td>
+                    <td>{{ ticket.total_price }}</td>
+                    <td>
+                        {% if ticket.user %}
+                            {{ ticket.user.username }} ({{ ticket.user.email }})
+                        {% else %}
+                            Guest
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination (Optional) -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if tickets.has_previous %}
+                    <a href="?page=1">&laquo; First</a>
+                    <a href="?page={{ tickets.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ tickets.number }} of {{ tickets.paginator.num_pages }}.
+                </span>
+
+                {% if tickets.has_next %}
+                    <a href="?page={{ tickets.next_page_number }}">Next</a>
+                    <a href="?page={{ tickets.paginator.num_pages }}">Last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #4CAF50;
+        }
+
+        .table-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            max-width: 1200px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td img {
+            max-width: 100px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-details {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-details div {
+            margin-bottom: 10px;
+        }
+
+        .product-details strong {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        /* Add some spacing between product details */
+        .product-image {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .product-details {
+                padding: 10px;
+            }
+
+            .product-image img {
+                max-width: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .table-container {
+                padding: 10px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 6px;
+            }
+
+            .product-details div {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Booking List</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>User</th>
+                    <th>Booking Date</th>
+                    <th>Buyer Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>
+                        <div class="product-details">
+                            <h3>Product Details:</h3>
+                            <div><strong>Product Name:</strong> {{ booking.product.name }}</div>
+                            <div><strong>Description:</strong> {{ booking.product.description }}</div>
+                            <div><strong>Price:</strong> ${{ booking.product.price }}</div>
+
+                            <div class="product-image">
+                                <strong>Product Image:</strong>
+                                <img src="{{ booking.product.image.url }}" alt="{{ booking.product.name }}">
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ booking.user.username }}</td>
+                    <td>{{ booking.booking_date }}</td>
+                    <td>{{ booking.buyer_name }}</td>
+                    <td>{{ booking.email }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center;">No bookings found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -19,7 +19,8 @@ urlpatterns=[
     path('edit-product/<int:id>/', views.edit_product, name='edit_product'),
     path('product/delete/<int:id>/', views.delete_product, name='delete_product'),
     # path('shop_view-bookings/', views.shop_view_bookings, name='view_bookings'),
-    
+    path('bookings/', views.booking_list, name='booking_list'),
+    path('booking-details/', views.ticket_booking_details, name='ticket_booking_details'), 
 #------------------------------------------------------------------------------------------USER
 
 
@@ -28,8 +29,8 @@ urlpatterns=[
     # path('shop_view_bookings/', views.user_view_bookings),
     path('concert/<int:concert_id>/book/', views.book_ticket, name='book_ticket'),
     path('ticket-details/', views.ticket_view_bookings, name='ticket_details'),
-
-
+    # path('my-tickets/', views.user_tickets, name='user_tickets'),
+    path('user/tickets/', views.user_tickets, name='user_tickets'),
 
 #---product
     
