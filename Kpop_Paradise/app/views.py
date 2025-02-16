@@ -70,7 +70,7 @@ def shop_home(req):
         return redirect(shop_login) 
     
 def shop_concert_list(req, id):
-    log_user = User.objects.get(username=req.session['user']) 
+    # log_user = User.objects.get(username=req.session['user']) 
     band = Band.objects.get(id=id)  
     concerts = Concert.objects.filter(band=band) 
     product = products.objects.filter(band=band)
