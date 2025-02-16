@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>About Us - K-pop Tickets & Merchandise</title>
+    {% load static %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        /* header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        } */
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .about-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+        .about-content p {
+            line-height: 1.6;
+            color: #555;
+        }
+        .about-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .team {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        .team-member {
+            text-align: center;
+            background-color: #e2e2e2;
+            padding: 20px;
+            border-radius: 8px;
+            width: 30%;
+        }
+        .team-member img {
+            width: 70%;
+            height: auto;
+            height: 250px;
+            border-radius: 50%;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<div class="container">
+    <section class="about-content">
+        <img src="{% static 'image/R.jpg' %}" alt="K-pop concert" class="about-image">
+        <h2>Who We Are</h2>
+        <p>We are your ultimate source for all things K-pop! From exclusive concert tickets to authentic K-pop merchandise, we bring you closer to your favorite idols and bands. Our website is dedicated to providing the most reliable and easy-to-use platform for purchasing tickets and merchandise from your favorite K-pop artists, all in one place.</p>
+
+        <h2>Our Mission</h2>
+        <p>Our mission is to bridge the gap between K-pop fans and the exciting world of live performances and exclusive products. We believe every fan deserves access to the best tickets for concerts, fan meetings, and other live events, as well as high-quality merchandise to show their love and support for their idols.</p>
+
+        <h2>What We Offer</h2>
+        <ul>
+            <li><strong>Concert Tickets:</strong> Get your hands on the hottest tickets for upcoming K-pop concerts and events.</li>
+            <li><strong>Official Merchandise:</strong> Browse through a wide selection of official albums, clothing, accessories, and limited-edition items from your favorite artists.</li>
+            <li><strong>Exclusive Deals:</strong> Access limited-time offers and special promotions on K-pop-related products and tickets.</li>
+        </ul>
+    </section>
+
+    <section class="team">
+        <div class="team-member">
+            <img src="{% static 'image/kim.jpg' %}" alt="Team Member 1">
+            <h3>Kim Namjoon</h3>
+           
+        </div>
+        <div class="team-member">
+            <img src="{% static 'image/min.jpg' %}" alt="Team Member 2">
+            <h3>Min Yoongi</h3>
+           
+        </div>
+        <div class="team-member">
+            <img src="{% static 'image/v.jpg' %}" alt="Team Member 3">
+            <h3>Kim Taehyung</h3>
+          
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2025 K-pop Ticket & Merchandise Hub. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

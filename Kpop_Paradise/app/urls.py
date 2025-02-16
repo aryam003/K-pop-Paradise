@@ -10,6 +10,7 @@ urlpatterns=[
 
     path('shop_home',views.shop_home),
     path('shop_band/<int:id>/', views.shop_concert_list, name='concert_list'),
+    path('about/',views.about),
 #concert
     path('add-concert/', views.add_concert, name='add_concert'),
     path('edit_concert/<int:id>/', views.edit_concert, name='edit_concert'),
@@ -41,6 +42,7 @@ urlpatterns=[
     path('delete_cart/<int:id>/', views.delete_cart, name='delete_cart'),  # Delete cart item
     path('view-bookings/', views.view_bookings, name='view_bookings'),
     # path('cancel-booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
+    # path('checkout/', views.checkout, name='checkout'),
 
   
  

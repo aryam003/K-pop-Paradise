@@ -1,89 +1,18 @@
-<!-- user_tickets.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Tickets</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f7fc;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-            margin-top: 30px;
-            color: #4CAF50;
-        }
-        .container {
-            width: 80%;
-            margin: 30px auto;
-            background-color: white;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            border-radius: 8px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        .message {
-            text-align: center;
-            color: #ff6347;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-    </style>
+    <title>Ticket Details</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Your Ticket Details</h1>
+    <h1>Your Ticket Details</h1>
 
-        {% if message %}
-            <p class="message">{{ message }}</p>
-        {% else %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Concert</th>
-                        <th>Band</th>
-                        <th>Location</th>
-                        <th>Date</th>
-                        <th>Quantity</th>
-                        <th>Total Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for ticket in tickets %}
-                    <tr>
-                        <td>{{ ticket.concert.band.name }} - {{ ticket.concert.location }}</td>
-                        <td>{{ ticket.concert.band.name }}</td>
-                        <td>{{ ticket.concert.location }}</td>
-                        <td>{{ ticket.concert.date }}</td>
-                        <td>{{ ticket.quantity }}</td>
-                        <td>{{ ticket.total_price }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-    </div>
-    
+    <p><strong>Concert:</strong> {{ ticket.concert.band.name }} - {{ ticket.concert.name }}</p>
+    <p><strong>Buyer Name:</strong> {{ ticket.buyer_name }}</p>
+    <p><strong>Email:</strong> {{ ticket.email }}</p>
+    <p><strong>Quantity:</strong> {{ ticket.quantity }}</p>
+    <p><strong>Total Price:</strong> ${{ ticket.total_price }}</p>
+
+
 </body>
 </html>
+

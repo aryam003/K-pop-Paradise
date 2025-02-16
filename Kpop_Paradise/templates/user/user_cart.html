@@ -183,8 +183,8 @@
 
                     <div class="item-details">
                         <h2>{{ item.product.name }}</h2>
-                        <p><strong>Band:</strong> {{ item.product.band.name }}</p>
-                        <p><strong>Description:</strong> {{ item.product.description }}</p>
+                        <!-- <p><strong>Band:</strong> {{ item.product.band.name }}</p>
+                        <p><strong>Description:</strong> {{ item.product.description }}</p> -->
                         <p><strong>Price:</strong> {{ item.product.price }}</p>
                         <!-- <p><strong>Quantity:</strong> {{ item.quantity }}</p> -->
                     </div>
@@ -193,6 +193,10 @@
                     <form action="{% url 'delete_cart' item.id %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="delete-button">Delete</button>
+                    </form><br>
+                    <form action="{% url 'buy_product' item.product.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">view</button>
                     </form>
                 </li>
             {% endfor %}
@@ -201,7 +205,9 @@
         <!-- Display Total Price -->
         <div class="total-price">
             <h3>Total Price: ${{ total_price }}</h3>
+            
         </div>
+
     </div>
 
 </body>
