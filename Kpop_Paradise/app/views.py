@@ -281,15 +281,15 @@ def book_ticket(request, concert_id):
     return render(request, 'user/book_ticket.html', {'concert': concert})
 
 # def user_view_bookings(req):
-#     user=User.objects.get(username=req.session['user'])
+# user=User.objects.get(username=request.session['user'])
 #     data=Ticket.objects.filter(user=user)
 #     return render(req,'user/view_booking.html',{'data':data})
 
-def ticket_view_bookings(request):
-    bookings = Ticket.objects.filter(user=request.user)
-    return render(request, 'user/view_ticket.html', {'bookings': bookings})
 
-
+def user_tickets(request):
+    user=User.objects.get(username=request.session['user'])
+    tickets = Ticket.objects.filter(user=request.user) [::-1]
+    return render(request, 'user/user_tickets.html', {'tickets': tickets})
 
 
 
@@ -341,7 +341,7 @@ def cart_view(request):
     return render(request, 'user/user_cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
-def delete_cart(request, id):
+def delete_cart(req, id):
     cart_item=Cart.objects.get(pk=id)
     cart_item.delete()  
     return redirect(cart_view)
@@ -352,51 +352,13 @@ def view_bookings(request):
 
 
 def ticket_booking_details(request):
-    # Fetch all the tickets with related concert and user data
     tickets = Ticket.objects.select_related('concert', 'user').all()
-
-    # Pass the tickets to the template
     return render(request, 'shop/booking_details.html', {'tickets': tickets})
 
-def user_tickets(request):
-    tickets = Ticket.objects.filter(user=request.user)  # Fetch tickets of the logged-in user
-    return render(request, 'user/user_tickets.html', {'tickets': tickets})
+
 
 
 def about(req):
     return render(req,'user/about.html')
 
 
-
-# def checkout(request):
-#     cart_items = Cart.objects.filter(user=request.user)
-    
-#     if not cart_items:
-#         messages.error(request, "Your cart is empty.")
-#         return redirect('cart_view')
-
-#     total_price = sum(item.product.price * item.quantity for item in cart_items)
-    
-#     if request.method == 'POST':
-#         # Proceed to process the checkout
-#         # Create a booking for each item in the cart
-#         for item in cart_items:
-#             product = item.product
-#             user = request.user
-#             Booking.objects.create(
-#                 product=product,
-#                 user=user,
-#                 buyer_name=user.username,  # Assuming the user is logged in
-#                 email=user.email  # Assuming user email is available
-#             )
-#             # You could also reduce the stock of the product if needed
-#             product.price -= item.quantity
-#             product.save()
-        
-#         # Clear the cart
-#         cart_items.delete()
-        
-#         messages.success(request, "Your order has been placed successfully!")
-#         return redirect(user_home)
-
-#     return render(request, 'user/checkout.html', {'cart_items': cart_items, 'total_price': total_price})

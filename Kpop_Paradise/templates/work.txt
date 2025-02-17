@@ -97,3 +97,77 @@ send_mail(
     fail_silently=False,
 )
           
+
+
+
+from django.utils import timezone
+
+class Booking(models.Model):
+    product = models.ForeignKey(products, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Assuming the user is logged in
+    booking_date = models.DateTimeField(auto_now_add=True)
+    buyer_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    canceled = models.BooleanField(default=False)  # Track if the booking is canceled
+    cancellation_date = models.DateTimeField(null=True, blank=True)  # Track cancellation date
+
+    def cancel(self):
+        """Cancel the booking and set cancellation date."""
+        self.canceled = True
+        self.cancellation_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return f"Booking for {self.product.name} by {self.buyer_name} on {self.booking_date}"
+
+
+
+        from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Booking
+
+def cancel_booking(request, booking_id):
+    """Handle booking cancellation."""
+    # Get the booking object or return 404 if not found
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+
+    # Check if the booking has already been canceled
+    if booking.canceled:
+        messages.error(request, 'This booking has already been canceled.')
+    else:
+        # Cancel the booking
+        booking.cancel()
+        messages.success(request, 'Your booking has been successfully canceled.')
+
+    # Redirect the user back to their booking page
+    return redirect('user_tickets')  # Assuming the user_tickets page shows all the bookings
+
+
+    {% for booking in bookings %}
+    <tr>
+        <td>{{ booking.product.name }}</td>
+        <td>{{ booking.buyer_name }}</td>
+        <td>{{ booking.email }}</td>
+        <td>{{ booking.booking_date }}</td>
+        <td>
+            {% if not booking.canceled %}
+                <form action="{% url 'cancel_booking' booking.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="cancel-btn">Cancel Booking</button>
+                </form>
+            {% else %}
+                <span>Booking Canceled</span>
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+
+
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    # Other routes...
+    path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
+]

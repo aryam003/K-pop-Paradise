@@ -29,9 +29,9 @@ urlpatterns=[
     path('user_band/<int:id>/', views.concert_list, name='concert_list'),
     # path('shop_view_bookings/', views.user_view_bookings),
     path('concert/<int:concert_id>/book/', views.book_ticket, name='book_ticket'),
-    path('ticket-details/', views.ticket_view_bookings, name='ticket_details'),
+    # path('ticket-details/', views.ticket_view_bookings, name='ticket_details'),
     # path('my-tickets/', views.user_tickets, name='user_tickets'),
-    path('user/tickets/', views.user_tickets, name='user_tickets'),
+    path('user_tickets/', views.user_tickets, name='user_tickets'),
 
 #---product
     

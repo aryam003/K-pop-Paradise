@@ -1,18 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Ticket Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Tickets</title>
+  
 </head>
 <body>
-    <h1>Your Ticket Details</h1>
+    <div class="container">
+        <h1>Your Tickets</h1>
 
-    <p><strong>Concert:</strong> {{ ticket.concert.band.name }} - {{ ticket.concert.name }}</p>
-    <p><strong>Buyer Name:</strong> {{ ticket.buyer_name }}</p>
-    <p><strong>Email:</strong> {{ ticket.email }}</p>
-    <p><strong>Quantity:</strong> {{ ticket.quantity }}</p>
-    <p><strong>Total Price:</strong> ${{ ticket.total_price }}</p>
-
-
+        {% if tickets %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concert</th>
+                        <th>Buyer Name</th>
+                        <th>Email</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in tickets %}
+                        <tr>
+                            <td>{{ ticket.concert.name }}</td>
+                            <td>{{ ticket.buyer_name }}</td>
+                            <td>{{ ticket.email }}</td>
+                            <td>{{ ticket.quantity }}</td>
+                            <td>${{ ticket.total_price}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You do not have any tickets.</p>
+        {% endif %}
+    </div>
 </body>
 </html>
+
 
