@@ -171,3 +171,173 @@ urlpatterns = [
     # Other routes...
     path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
 ]
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Artists</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="recommended-artists">
+        <h2>Recommended Artists</h2>
+        <div class="artist-list">
+            <div class="artist"><img src="bts.png" alt="BTS"><p>BTS</p></div>
+            <div class="artist"><img src="txt.png" alt="TXT"><p>TOMORROW X TOGETHER</p></div>
+            <div class="artist"><img src="gfriend.png" alt="GFRIEND"><p>GFRIEND</p></div>
+            <div class="artist"><img src="seventeen.png" alt="SEVENTEEN"><p>SEVENTEEN</p></div>
+            <div class="artist"><img src="enhypen.png" alt="ENHYPEN"><p>ENHYPEN</p></div>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" id="artistSearch" placeholder="Search Artist">
+            <button onclick="searchArtist()">Search</button>
+        </div>
+    </div>
+
+    <script>
+        function searchArtist() {
+            let searchQuery = document.getElementById("artistSearch").value;
+            alert("Searching for: " + searchQuery);
+        }
+    </script>
+
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    text-align: center;
+}
+
+.recommended-artists {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.artist-list {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.artist {
+    text-align: center;
+}
+
+.artist img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    padding: 5px;
+}
+
+.artist p {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.search-container {
+    margin-top: 20px;
+}
+
+.search-container input {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-container button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recommended Artists</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .artist-card {
+            text-align: center;
+        }
+        .artist-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Recommended Artists</h2>
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-2 col-4 artist-card">
+            <img src="bts.png" alt="BTS">
+            <p>BTS</p>
+        </div>
+        <div class="col-md-2 col-4 artist-card">
+            <img src="txt.png" alt="TXT">
+            <p>TOMORROW X TOGETHER</p>
+        </div>
+        <div class="col-md-2 col-4 artist-card">
+            <img src="gfriend.png" alt="GFRIEND">
+            <p>GFRIEND</p>
+        </div>
+        <div class="col-md-2 col-4 artist-card">
+            <img src="seventeen.png" alt="SEVENTEEN">
+            <p>SEVENTEEN</p>
+        </div>
+        <div class="col-md-2 col-4 artist-card">
+            <img src="enhypen.png" alt="ENHYPEN">
+            <p>ENHYPEN</p>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" id="artistSearch" placeholder="Search Artist">
+                <button class="btn btn-primary" onclick="searchArtist()">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function searchArtist() {
+        let searchQuery = document.getElementById("artistSearch").value;
+        alert("Searching for: " + searchQuery);
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

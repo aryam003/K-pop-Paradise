@@ -21,6 +21,40 @@
             text-align: center;
             margin-top: 50px;
         }
+        .container {
+          max-width: 1200px;
+      }
+    
+      .card {
+          transition: transform 0.3s ease-in-out;
+      }
+    
+      .card:hover {
+          transform: scale(1.05);
+      }
+    
+      .card-body {
+          padding: 1.5rem;
+      }
+    
+      .card-title {
+          font-size: 1.25rem;
+          font-weight: bold;
+      }
+    
+      .card-text {
+          font-size: 1rem;
+      }
+    
+      .btn-primary {
+          background-color: #007bff;
+          border-color: #007bff;
+      }
+    
+      .btn-primary:hover {
+          background-color: #0056b3;
+   
+      }
 
         .footer h2 {
             font-size: 2rem;
@@ -69,6 +103,14 @@
             font-size: 0.9rem;
             color: #95a5a6;
         }
+        .artist-card {
+          text-align: center;
+      }
+      .artist-card img {
+          width: 80px;
+          height: 80px;
+         
+      }
 
         /* Responsiveness */
         @media (max-width: 768px) {
@@ -102,11 +144,6 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="cart/"><i class="bi bi-cart"></i></a>
-                            <!-- {% comment %} <a href="{% url 'cart_view' %}" class="btn btn-info">View Cart</a> {% endcomment %} -->
-
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="user_tickets/">Ticket</a>
                         </li>
                         <li class="nav-item">
@@ -116,12 +153,16 @@
                             <a class="nav-link" href="about/">About</a>
                         </li>
                         <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="cart/"><i class="bi bi-cart"></i></a>
+                      </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="logout">Logout</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
       <h1 style="width: 100%; height: 30px; background-color: white;"></h1>
         <!-- Carousel -->
@@ -246,14 +287,44 @@
     </button>
   </div>
 
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+  
+<div class="container-1 mt-5">
+  <h2 class="text-center" style="background: radial-gradient(circle, lightblue, pink); width: 100%; padding: 10px; border-radius: 10px;">Recommended Artists</h2>
+  
+  <div class="row justify-content-center mt-3" style="border: none;">
+      {% for band in bands|slice:":7" %} <!-- Correct slice format -->
+          <div class="col-md-2 col-sm-4 col-6 artist-card text-center" style="padding: 10px;">
+              {% if band.image %}
+                  <a href="../user_band/{{ band.id }}/"> 
+                      <img src="{{ band.image.url }}" alt="{{ band.name }}" style="height: 150px; width: 150px; border-radius: 100px;">
+                  </a>
+              {% endif %}
+          </div>
+      {% endfor %}
+  </div>
+
+  <div class="row justify-content-center mt-4">
+      <div class="col-md-6">
+          <div class="input-group">
+              <input type="text" class="form-control" id="artistSearch" placeholder="Search Artist">
+              <button class="btn btn-primary" onclick="searchArtist()">Search</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+    
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
   <div class="container mt-5">
     <h1 class="text-center" style="background: radial-gradient(circle, lightblue, pink); width: 100%;padding: 10px; border-radius: 10px;">K-Pop Bands</h1>
     <div class="row" style="padding: 10px;">
         {% for band in bands %}
             <div class="col-md-4 text-center">
-                <div class="card" style="padding: 10px;">
+                <div class="card" style="padding: 10px;border:none;">
                     {% if band.image %}
-                    <a href="../user_band/{{ band.id }}/" class="btn "><img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}" style="height: 330px;"></a>
+                    <a href="../user_band/{{ band.id }}/" class="btn "><img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}" style="height: 330px; border-radius: 20px;"></a>
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ band.name }}</h5>
@@ -263,6 +334,8 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
   
 <footer class="footer">
   <h2>Welcome to K-pop World</h2>
@@ -280,9 +353,36 @@
   </div>
 </footer>
 
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+
+<script>
+  // Check if there's a stored search query in the sessionStorage
+  if (sessionStorage.getItem("artistSearchQuery")) {
+    document.getElementById("artistSearch").value = sessionStorage.getItem("artistSearchQuery");
+  }
+
+  function searchArtist() {
+    let searchQuery = document.getElementById("artistSearch").value;
+
+    // Save the search query in sessionStorage
+    sessionStorage.setItem("artistSearchQuery", searchQuery);
+
+    // You can implement your search functionality here
+    alert("Searching for: " + searchQuery);
+  }
+</script>
+
+
+<script>
+function searchArtist() {
+  let searchQuery = document.getElementById("artistSearch").value;
+  alert("Searching for: " + searchQuery);
+}
+</script>
     
-        <!-- Bootstrap JS & Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
         <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script> -->
 </body>
 </html>
