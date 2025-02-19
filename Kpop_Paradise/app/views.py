@@ -9,6 +9,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
 
 
 # Create your views here.
@@ -42,20 +44,67 @@ def shop_logout(req):
     req.session.flush()
     return redirect(shop_login)
 
+# def register(req):
+#     if req.method=='POST':
+#         name=req.POST['name']
+#         email=req.POST['email']
+#         password=req.POST['password']
+#         try:
+#             data=User.objects.create_user(first_name=name,username=email,email=email,password=password)
+#             data.save()
+#             return redirect(shop_login)
+#         except:
+#             messages.warning(req,"user details already exits.")
+#             return redirect(register)
+#     else:
+#         return render(req,'register.html')
+
 def register(req):
-    if req.method=='POST':
-        name=req.POST['name']
-        email=req.POST['email']
-        password=req.POST['password']
-        try:
-            data=User.objects.create_user(first_name=name,username=email,email=email,password=password)
-            data.save()
-            return redirect(shop_login)
-        except:
-            messages.warning(req,"user details already exits.")
+    if req.method == 'POST':
+        name = req.POST['name']
+        email = req.POST['email']
+        password = req.POST['password']
+        # password_confirm = req.POST['password_confirm']  # If you have a confirm password field
+
+        # Validation for empty fields
+        if not name or not email or not password:
+            messages.warning(req, "All fields are required.")
             return redirect(register)
+
+        # Validate email format
+        try:
+            EmailValidator()(email)
+        except ValidationError:
+            messages.warning(req, "Please enter a valid email address.")
+            return redirect(register)
+
+        # Validate password length and strength
+        if len(password) < 8:
+            messages.warning(req, "Password must be at least 8 characters long.")
+            return redirect(register)
+
+        # Check if passwords match (if you have a confirmation password field)
+        # if password != password_confirm:
+        #     messages.warning(req, "Passwords do not match.")
+        #     return redirect(register)
+
+        # Check if the email already exists
+        if User.objects.filter(email=email).exists():
+            messages.warning(req, "User with this email already exists.")
+            return redirect(register)
+
+        try:
+            # Create the user
+            data = User.objects.create_user(first_name=name, username=email, email=email, password=password)
+            data.save()
+            return redirect(shop_login)  # Assuming shop_login is the login view
+        except Exception as e:
+            # Catch unexpected errors
+            messages.warning(req, f"Error: {str(e)}")
+            return redirect(register)
+
     else:
-        return render(req,'register.html')
+        return render(req, 'register.html')
 
     
 #----SHOP-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

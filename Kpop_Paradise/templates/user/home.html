@@ -289,30 +289,33 @@
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
   
-<div class="container-1 mt-5">
+<div class="container-1 mt-3">
   <h2 class="text-center" style="background: radial-gradient(circle, lightblue, pink); width: 100%; padding: 10px; border-radius: 10px;">Recommended Artists</h2>
-  
-  <div class="row justify-content-center mt-3" style="border: none;">
-      {% for band in bands|slice:":7" %} <!-- Correct slice format -->
-          <div class="col-md-2 col-sm-4 col-6 artist-card text-center" style="padding: 10px;">
-              {% if band.image %}
-                  <a href="../user_band/{{ band.id }}/"> 
-                      <img src="{{ band.image.url }}" alt="{{ band.name }}" style="height: 150px; width: 150px; border-radius: 100px;">
-                  </a>
-              {% endif %}
-          </div>
-      {% endfor %}
-  </div>
 
-  <div class="row justify-content-center mt-4">
-      <div class="col-md-6">
-          <div class="input-group">
-              <input type="text" class="form-control" id="artistSearch" placeholder="Search Artist">
-              <button class="btn btn-primary" onclick="searchArtist()">Search</button>
-          </div>
+  <div class="row justify-content-center mt-2" style="border: none;">
+    {% for band in bands|slice:":6" %}
+      <div class="col-2 col-sm-4 col-md-3 col-lg-1 artist-card text-center mb-4">
+        {% if band.image %}
+          <a href="../user_band/{{ band.id }}/"> 
+            <img src="{{ band.image.url }}" alt="{{ band.name }}" class="img-fluid rounded-circle" style="height: 90px; width: 90px;">
+          </a>
+        {% endif %}
       </div>
+    {% endfor %}
   </div>
 </div>
+
+<div class="row justify-content-center mt-4">
+  <div class="col-6 col-sm-6 col-md-4 col-lg-12">
+    <div class="input-group">
+      <input type="text" class="form-control" id="artistSearch" placeholder="Search Artist">
+      <button class="btn btn-primary" onclick="searchArtist()">Search</button>
+    </div>
+  </div>
+</div>
+
+
+
 
     
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
