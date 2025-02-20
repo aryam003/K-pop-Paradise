@@ -44,6 +44,8 @@ urlpatterns=[
     # path('cancel-booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
     # path('checkout/', views.checkout, name='checkout'),
 
-  
+    path('profile/', views.user_profile, name='user_profile'),
+    path('profile/edit/',views. add_edit_profile, name='edit_profile'),
+
  
     ]

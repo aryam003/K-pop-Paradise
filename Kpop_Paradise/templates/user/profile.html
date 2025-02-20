@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        /* General styles for layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        div {
+            margin: 20px;
+        }
+
+        p {
+            color: #555;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin: 20px 0;
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        /* Profile Picture Style */
+        img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Tickets and Bookings List */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Empty message styles */
+        p.no-items {
+            text-align: center;
+            color: #888;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            div {
+                margin: 15px;
+            }
+
+            img {
+                max-width: 150px;
+            }
+
+            ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            li {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            li {
+                font-size: 12px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>User Profile</h1>
+
+    {% if profile %}
+        <div>
+            {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
+            {% else %}
+                <p>No profile picture uploaded.</p>
+            {% endif %}
+        </div>
+    
+        <div>
+            <p><strong>Bio:</strong> {{ profile.bio }}</p>
+        </div>
+    
+        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+    {% else %}
+        <p>User profile not found.</p>
+    {% endif %}
+
+    <h3>Your Tickets</h3>
+    <ul>
+        {% for ticket in tickets %}
+            <li>{{ ticket.concert.band.name }} - {{ ticket.concert.location }} - {{ ticket.quantity }} tickets</li>
+        {% empty %}
+            <p class="no-items">No tickets found.</p>
+        {% endfor %}
+    </ul>
+    
+    <h3>Your Bookings</h3>
+    <ul>
+        {% for booking in bookings %}
+            <li>{{ booking.product.name }} - {{ booking.booking_date }}</li>
+        {% empty %}
+            <p class="no-items">No bookings found.</p>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

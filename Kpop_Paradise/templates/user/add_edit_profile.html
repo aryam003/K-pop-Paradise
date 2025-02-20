@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Update Profile</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- Display current profile picture if it exists -->
+    {% if profile.profile_picture %}
+        <div>
+            <label for="current_picture">Current Profile Picture:</label>
+            <img src="{{ profile.profile_picture.url }}" alt="Current Profile Picture" width="150">
+        </div>
+        <br>
+    {% else %}
+        <p>No profile picture uploaded yet.</p>
+    {% endif %}
+    
+    <!-- Bio field -->
+    <label for="bio">Bio:</label>
+    <textarea name="bio" id="bio">{{ profile.bio }}</textarea><br><br>
+
+    <!-- Profile picture input field (user can change the image here) -->
+    <label for="profile_picture">Change Profile Picture:</label>
+    <input type="file" name="profile_picture" id="profile_picture"><br><br>
+
+    <!-- Save button -->
+    <button type="submit">Save</button>
+</form>
+
+</body>
+</html>

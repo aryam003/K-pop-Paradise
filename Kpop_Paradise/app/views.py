@@ -410,4 +410,45 @@ def ticket_booking_details(request):
 def about(req):
     return render(req,'user/about.html')
 
+# ---------------------User profile----------------------------------------------------------------------------------------------------------------
 
+
+def user_profile(request):
+    # Get the logged-in user
+    user = request.user
+    # Fetch or create a UserProfile instance
+    profile = UserProfile.objects.get(user=user) if hasattr(user, 'userprofile') else None
+    # Get user's tickets and bookings
+    tickets = Ticket.objects.filter(user=user)
+    bookings = Booking.objects.filter(user=user)
+    
+    return render(request, 'user/profile.html', {
+        'profile': profile,
+        'tickets': tickets,
+        'bookings': bookings,
+    })
+
+
+def add_edit_profile(request):
+    # Get the logged-in user
+    user = request.user
+    
+    # Try to get the existing profile or create a new one if it doesn't exist
+    try:
+        profile = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist:
+        profile = UserProfile(user=user)
+    
+    # Handle the form submission
+    if request.method == 'POST':
+        # If the user uploads a new profile picture or bio, we update the profile.
+        profile.bio = request.POST.get('bio', profile.bio)
+        if 'profile_picture' in request.FILES:
+            profile.profile_picture = request.FILES['profile_picture']
+        
+        profile.save()  # Save the updated profile
+        
+        return redirect('user_profile')  # Redirect to the profile page after saving
+    
+    # Render the edit profile page
+    return render(request, 'user/add_edit_profile.html', {'profile': profile})
