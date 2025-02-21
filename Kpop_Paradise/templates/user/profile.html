@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <style>
-        /* General styles for layout */
+        /* General styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f4f7f6;
+            color: #333;
         }
 
         h1, h3 {
             text-align: center;
-            color: #333;
+            color: #2c3e50;
         }
 
         div {
@@ -24,6 +25,7 @@
 
         p {
             color: #555;
+            line-height: 1.6;
         }
 
         a {
@@ -31,24 +33,33 @@
             text-align: center;
             margin: 20px 0;
             text-decoration: none;
-            color: #007BFF;
+            color: #2980b9;
             font-weight: bold;
+            background-color: #ecf0f1;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         a:hover {
-            color: #0056b3;
+            color: #fff;
+            background-color: #3498db;
+            transform: scale(1.05);
+            transition: all 0.3s ease-in-out;
         }
 
-        /* Profile Picture Style */
+        /* Profile Picture */
         img {
-            max-width: 200px;
+            max-width: 180px;
             height: auto;
             border-radius: 50%;
             display: block;
             margin: 0 auto;
+            border: 4px solid #ecf0f1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Tickets and Bookings List */
+        /* Tickets and Bookings */
         ul {
             list-style-type: none;
             padding: 0;
@@ -56,52 +67,31 @@
 
         li {
             background-color: #fff;
-            margin: 10px 0;
-            padding: 10px;
+            margin: 15px 0;
+            padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Empty message styles */
+        li:hover {
+            background-color: #ecf0f1;
+        }
+
+        .product-image {
+            max-width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Empty message */
         p.no-items {
             text-align: center;
             color: #888;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            div {
-                margin: 15px;
-            }
-
-            img {
-                max-width: 150px;
-            }
-
-            ul {
-                margin: 0;
-                padding: 0;
-            }
-
-            li {
-                padding: 15px;
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 24px;
-            }
-
-            h3 {
-                font-size: 20px;
-            }
-
-            li {
-                font-size: 12px;
-                padding: 12px;
-            }
+            font-size: 16px;
         }
     </style>
 </head>
@@ -117,11 +107,12 @@
                 <p>No profile picture uploaded.</p>
             {% endif %}
         </div>
-    
+
         <div>
+            <p><strong>Name:</strong> {{ profile.name }}</p>  <!-- Display name -->
             <p><strong>Bio:</strong> {{ profile.bio }}</p>
         </div>
-    
+
         <a href="{% url 'edit_profile' %}">Edit Profile</a>
     {% else %}
         <p>User profile not found.</p>
@@ -130,16 +121,21 @@
     <h3>Your Tickets</h3>
     <ul>
         {% for ticket in tickets %}
-            <li>{{ ticket.concert.band.name }} - {{ ticket.concert.location }} - {{ ticket.quantity }} tickets</li>
+            <li>
+                <span>{{ ticket.concert.band.name }} - {{ ticket.concert.location }} - {{ ticket.quantity }} tickets</span>
+            </li>
         {% empty %}
             <p class="no-items">No tickets found.</p>
         {% endfor %}
     </ul>
-    
+
     <h3>Your Bookings</h3>
     <ul>
         {% for booking in bookings %}
-            <li>{{ booking.product.name }} - {{ booking.booking_date }}</li>
+            <li>
+                <span>{{ booking.product.name }} - {{ booking.booking_date }}</span>
+                <img src="{{ booking.product.image.url }}" alt="{{ booking.product.name }}" class="product-image">
+            </li>
         {% empty %}
             <p class="no-items">No bookings found.</p>
         {% endfor %}
@@ -147,3 +143,4 @@
 
 </body>
 </html>
+

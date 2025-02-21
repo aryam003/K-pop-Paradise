@@ -358,22 +358,34 @@ def buy_product(request, product_id):
     if request.method == 'POST':
         user = request.user if request.user.is_authenticated else None
         
-        buyer_name = request.POST.get('buyer_name', '')
-        email = request.POST.get('email', '')
+        # Fetch user profile if the user is authenticated
+        if user:
+            user_profile = UserProfile.objects.get(user=user)
+            buyer_name = user_profile.name if user_profile.name else ''
+            email = user.email  # You can use the email from the User model
+        else:
+            # If not authenticated, fetch name and email from POST data
+            buyer_name = request.POST.get('buyer_name', '')
+            email = request.POST.get('email', '')
         
+        # Check if either user is not authenticated or buyer details are missing
         if not user and (not buyer_name or not email):
             messages.error(request, 'You must provide your name and email.')
-            return redirect('buy_product', product_id=product_id)
+            return redirect(buy_product, product_id=product_id)
 
+        # Create a booking with the gathered details
         booking = Booking.objects.create(
             product=product,
             user=user,
             buyer_name=buyer_name,
             email=email
         )
+        
         messages.success(request, f'You have successfully booked the {product.name}!')
-        return redirect('product_detail', product_id=product_id)
+        return redirect(product_detail, product_id=product_id)
+    
     return render(request, 'user/book_product.html', {'product': product})
+
 
 
 def add_to_cart(req, product_id):
@@ -414,41 +426,24 @@ def about(req):
 
 
 def user_profile(request):
-    # Get the logged-in user
     user = request.user
-    # Fetch or create a UserProfile instance
-    profile = UserProfile.objects.get(user=user) if hasattr(user, 'userprofile') else None
-    # Get user's tickets and bookings
+    profile = UserProfile.objects.filter(user=user).first()
     tickets = Ticket.objects.filter(user=user)
     bookings = Booking.objects.filter(user=user)
-    
-    return render(request, 'user/profile.html', {
-        'profile': profile,
-        'tickets': tickets,
-        'bookings': bookings,
-    })
+    return render(request, 'user/profile.html', {'profile': profile,'tickets': tickets,'bookings': bookings,})
 
 
 def add_edit_profile(request):
-    # Get the logged-in user
     user = request.user
-    
-    # Try to get the existing profile or create a new one if it doesn't exist
-    try:
-        profile = UserProfile.objects.get(user=user)
-    except UserProfile.DoesNotExist:
-        profile = UserProfile(user=user)
-    
-    # Handle the form submission
+    profile, created = UserProfile.objects.get_or_create(user=user)
     if request.method == 'POST':
-        # If the user uploads a new profile picture or bio, we update the profile.
+        profile.name = request.POST.get('name', profile.name) 
         profile.bio = request.POST.get('bio', profile.bio)
+
         if 'profile_picture' in request.FILES:
             profile.profile_picture = request.FILES['profile_picture']
-        
-        profile.save()  # Save the updated profile
-        
-        return redirect('user_profile')  # Redirect to the profile page after saving
-    
-    # Render the edit profile page
+        profile.save()  
+        return redirect('user_profile') 
     return render(request, 'user/add_edit_profile.html', {'profile': profile})
+
+
