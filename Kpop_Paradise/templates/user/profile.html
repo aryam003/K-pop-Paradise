@@ -113,11 +113,11 @@
             <p><strong>Bio:</strong> {{ profile.bio }}</p>
         </div>
 
-        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+        
     {% else %}
         <p>User profile not found.</p>
     {% endif %}
-
+    <a href="{% url 'edit_profile' %}">Edit Profile</a>
     <h3>Your Tickets</h3>
     <ul>
         {% for ticket in tickets %}

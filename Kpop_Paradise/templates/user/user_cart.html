@@ -102,7 +102,7 @@
             margin: 5px 0;
         }
 
-        .delete-button {
+        .delete-button, .buy-button {
             background-color: #3c8ce7;
             color: white;
             padding: 8px 16px;
@@ -113,7 +113,7 @@
             text-decoration: none;
         }
 
-        .delete-button:hover {
+        .delete-button:hover, .buy-button:hover {
             background-color: #2b53c0;
         }
 
@@ -162,7 +162,7 @@
                 font-size: 1em;
             }
 
-            .delete-button {
+            .delete-button, .buy-button {
                 padding: 6px 12px;
                 font-size: 0.9em;
             }
@@ -174,40 +174,41 @@
     <h1>Your Cart</h1>
 
     <div class="container">
-        <!-- Loop through cart items and display their details -->
-        <ul>
-            {% for item in cart_items %}
-                <li class="cart-item">
-                    <!-- Display Product Details -->
-                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+        <!-- Wrap all cart items in a single form -->
+            {% csrf_token %}
+            <ul>
+                {% for item in cart_items %}
+                    <li class="cart-item">
+                        <!-- Display Product Details -->
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
 
-                    <div class="item-details">
-                        <h2>{{ item.product.name }}</h2>
-                        <!-- <p><strong>Band:</strong> {{ item.product.band.name }}</p>
-                        <p><strong>Description:</strong> {{ item.product.description }}</p> -->
-                        <p><strong>Price:</strong> {{ item.product.price }}</p>
-                        <!-- <p><strong>Quantity:</strong> {{ item.quantity }}</p> -->
-                    </div>
+                        <div class="item-details">
+                            <h2>{{ item.product.name }}</h2>
+                            <p><strong>Price:</strong> ${{ item.product.price }}</p>
+                            <input type="hidden" name="product_ids" value="{{ item.product.id }}">
+                            <input type="number" name="quantities" value="{{ item.quantity }}" min="1">
+                        </div>
 
-                    <!-- Delete Button -->
-                    <form action="{% url 'delete_cart' item.id %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="delete-button">Delete</button>
-                    </form><br>
-                    <form action="{% url 'buy_product' item.product.id %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="delete-button">view</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
+                        <!-- Delete Button for individual items -->
+                        <form action="{% url 'delete_cart' item.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
 
-        <!-- Display Total Price -->
-        <div class="total-price">
-            <h3>Total Price: ${{ total_price }}</h3>
+            <!-- Display Total Price -->
+            <div class="total-price">
+                <h3>Total Price: ${{ total_price }}</h3>
+            </div>
+
+            <form action="{% url 'checkout_cart' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="buy-button">Buy All</button>
+            </form>
             
-        </div>
-
+        </form>
     </div>
 
 </body>

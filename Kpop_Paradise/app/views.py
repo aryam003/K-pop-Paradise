@@ -44,51 +44,27 @@ def shop_logout(req):
     req.session.flush()
     return redirect(shop_login)
 
-# def register(req):
-#     if req.method=='POST':
-#         name=req.POST['name']
-#         email=req.POST['email']
-#         password=req.POST['password']
-#         try:
-#             data=User.objects.create_user(first_name=name,username=email,email=email,password=password)
-#             data.save()
-#             return redirect(shop_login)
-#         except:
-#             messages.warning(req,"user details already exits.")
-#             return redirect(register)
-#     else:
-#         return render(req,'register.html')
 
 def register(req):
     if req.method == 'POST':
         name = req.POST['name']
         email = req.POST['email']
         password = req.POST['password']
-        # password_confirm = req.POST['password_confirm']  # If you have a confirm password field
-
-        # Validation for empty fields
+        
         if not name or not email or not password:
             messages.warning(req, "All fields are required.")
             return redirect(register)
-
-        # Validate email format
+        
         try:
             EmailValidator()(email)
         except ValidationError:
             messages.warning(req, "Please enter a valid email address.")
             return redirect(register)
-
-        # Validate password length and strength
+        
         if len(password) < 8:
             messages.warning(req, "Password must be at least 8 characters long.")
             return redirect(register)
 
-        # Check if passwords match (if you have a confirmation password field)
-        # if password != password_confirm:
-        #     messages.warning(req, "Passwords do not match.")
-        #     return redirect(register)
-
-        # Check if the email already exists
         if User.objects.filter(email=email).exists():
             messages.warning(req, "User with this email already exists.")
             return redirect(register)
@@ -97,7 +73,18 @@ def register(req):
             # Create the user
             data = User.objects.create_user(first_name=name, username=email, email=email, password=password)
             data.save()
+
+            # Send confirmation email
+            subject = 'Registration Successful'
+            message = f'Hello {name},\n\nThank you for registering on our platform.\n\nBest regards,\nYour Company Name'
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            
+            send_mail(subject, message, from_email, recipient_list)
+
+            messages.success(req, "Registration successful! A confirmation email has been sent.")
             return redirect(shop_login)  # Assuming shop_login is the login view
+
         except Exception as e:
             # Catch unexpected errors
             messages.warning(req, f"Error: {str(e)}")
@@ -350,43 +337,30 @@ def product_detail(req, product_id):
     product_in_cart = Cart.objects.filter(user=req.user, product=product).exists() if req.user.is_authenticated else False
     return render(req, 'user/product_detail.html', {'product': product, 'product_in_cart': product_in_cart})
 
-
-
 def buy_product(request, product_id):
     product = products.objects.get(id=product_id)
     
     if request.method == 'POST':
         user = request.user if request.user.is_authenticated else None
-        
-        # Fetch user profile if the user is authenticated
         if user:
             user_profile = UserProfile.objects.get(user=user)
             buyer_name = user_profile.name if user_profile.name else ''
-            email = user.email  # You can use the email from the User model
+            email = user.email  
         else:
-            # If not authenticated, fetch name and email from POST data
             buyer_name = request.POST.get('buyer_name', '')
             email = request.POST.get('email', '')
-        
-        # Check if either user is not authenticated or buyer details are missing
         if not user and (not buyer_name or not email):
             messages.error(request, 'You must provide your name and email.')
             return redirect(buy_product, product_id=product_id)
-
-        # Create a booking with the gathered details
         booking = Booking.objects.create(
             product=product,
             user=user,
             buyer_name=buyer_name,
-            email=email
-        )
-        
+            email=email)
         messages.success(request, f'You have successfully booked the {product.name}!')
         return redirect(product_detail, product_id=product_id)
     
     return render(request, 'user/book_product.html', {'product': product})
-
-
 
 def add_to_cart(req, product_id):
     product = products.objects.get(id=product_id)  
@@ -401,6 +375,26 @@ def cart_view(request):
     total_price = sum(item.product.price * item.quantity for item in cart_items)
     return render(request, 'user/user_cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
+def checkout_cart(request):
+    if request.method == 'POST':
+        cart_items = Cart.objects.filter(user=request.user)
+        
+        if not cart_items.exists():
+            messages.error(request, 'Your cart is empty.')
+            return redirect(cart_view)
+        
+        for item in cart_items:
+            Booking.objects.create(
+                product=item.product,
+                user=request.user,
+                # buyer_name=request.user.name,
+                email=request.user.email
+            )
+            item.delete()
+        messages.success(request, 'Your order has been placed successfully!')
+        return redirect(user_home) 
+    
+    return redirect(cart_view)
 
 def delete_cart(req, id):
     cart_item=Cart.objects.get(pk=id)
