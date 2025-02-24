@@ -190,6 +190,14 @@
                             <div><strong>Email:</strong> {{ booking.email }}</div>
                             <div><strong>Booking Date:</strong> {{ booking.booking_date }}</div>
                         </div>
+    
+                        <!-- Delete button if booking is within 1 day -->
+                        {% if booking.booking_date > now_minus_one_day %}
+                            <form action="{% url 'delete_booking' booking.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete Booking</button>
+                            </form>
+                        {% endif %}
                     </li>
                     <hr>
                 {% endfor %}
@@ -198,6 +206,7 @@
             <p class="no-bookings">You have no bookings.</p>
         {% endif %}
     </div>
+    
 
 </body>
 </html>

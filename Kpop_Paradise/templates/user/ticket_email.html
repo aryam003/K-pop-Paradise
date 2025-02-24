@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- user/ticket_email.html -->
+<html>
+<body>
+    <h3>Hello {{ buyer_name }},</h3>
+    <p>Thank you for booking a ticket for the concert! Here are your ticket details:</p>
+
+    <h4>Concert Details:</h4>
+    <p><strong>Band:</strong> {{ concert.band.name }}</p>
+    <p><strong>Artist:</strong> {{ concert.artist }}</p>
+    <p><strong>Date:</strong> {{ concert.date }}</p>
+    <p><strong>Location:</strong> {{ concert.location }}</p>
+    <p><strong>Price per Ticket:</strong> ${{ concert.price }}</p>
+    <p><strong>Quantity:</strong> {{ quantity }}</p>
+    <p><strong>Total Price:</strong> ${{ total_price }}</p>
+
+    <p>We look forward to seeing you at the concert!</p>
+    <p>Best regards,<br> The Concert Team</p>
+</body>
+</html>
+
+    
+</body>
+</html>

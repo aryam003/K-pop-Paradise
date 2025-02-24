@@ -1,43 +1,32 @@
+<!-- user/user_tickets.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Tickets</title>
-  
+    <title>Your Booked Tickets</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Your Tickets</h1>
-
-        {% if tickets %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Concert</th>
-                        <th>Buyer Name</th>
-                        <th>Email</th>
-                        <th>Quantity</th>
-                        <th>Total Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for ticket in tickets %}
-                        <tr>
-                            <td>{{ ticket.concert.name }}</td>
-                            <td>{{ ticket.buyer_name }}</td>
-                            <td>{{ ticket.email }}</td>
-                            <td>{{ ticket.quantity }}</td>
-                            <td>${{ ticket.total_price}}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>You do not have any tickets.</p>
-        {% endif %}
-    </div>
+    <h3>Your Booked Tickets</h3>
+    {% if tickets %}
+        <ul>
+            {% for ticket in tickets %}
+                <li>
+                    <h4>Concert: {{ ticket.concert.band.name }} - {{ ticket.concert.artist }}</h4>
+                    <p><strong>Date:</strong> {{ ticket.concert.date }}</p>
+                    <p><strong>Location:</strong> {{ ticket.concert.location }}</p>
+                    <p><strong>Price per Ticket:</strong> ${{ ticket.concert.price }}</p>
+                    <p><strong>Quantity:</strong> {{ ticket.quantity }}</p>
+                    <p><strong>Total Price:</strong> ${{ ticket.total_price }}</p>
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have not booked any tickets yet.</p>
+    {% endif %}
 </body>
 </html>
+
 
 

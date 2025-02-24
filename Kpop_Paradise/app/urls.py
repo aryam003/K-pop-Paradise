@@ -47,6 +47,9 @@ urlpatterns=[
     path('profile/', views.user_profile, name='user_profile'),
     path('profile/edit/',views. add_edit_profile, name='edit_profile'),
     path('checkout/', views.checkout_cart, name='checkout_cart'),
+
+    path('delete-booking/<int:booking_id>/', views.delete_booking, name='delete_booking'),
+
 ]
  
     

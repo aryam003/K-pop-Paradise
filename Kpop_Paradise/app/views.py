@@ -11,7 +11,9 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
-
+from django.template.loader import render_to_string  # For rendering email content
+from django.core.mail import EmailMessage
+from django.utils.html import strip_tags 
 
 # Create your views here.
 
@@ -106,7 +108,7 @@ def shop_home(req):
         return redirect(shop_login) 
     
 def shop_concert_list(req, id):
-    # log_user = User.objects.get(username=req.session['user']) 
+    log_user = User.objects.get(username=req.session['user']) 
     band = Band.objects.get(id=id)  
     concerts = Concert.objects.filter(band=band) 
     product = products.objects.filter(band=band)
@@ -295,26 +297,76 @@ def concert_list(req, id):
     return render(req, 'user/concert_list.html', {'band': band, 'concerts': concerts, 'products': product})
 
 
-
 def book_ticket(request, concert_id):
     concert = Concert.objects.get(id=concert_id)
+    
     if request.method == "POST":
-        buyer_name = request.POST.get("name")
-        email = request.POST.get("email")
-        quantity = int(request.POST.get("quantity")) 
-        total_price = concert.price * quantity
+        # Fetch the user profile if the user is authenticated
+        user = request.user if request.user.is_authenticated else None
+        if user:
+            user_profile = UserProfile.objects.get(user=user)
+            buyer_name = user_profile.name if user_profile.name else ''
+            email = user.email
+        else:
+            # Fallback for guests (if not logged in)
+            buyer_name = request.POST.get("name")
+            email = request.POST.get("email")
+        
+        # Check for valid name and email for guests
+        if not user and (not buyer_name or not email):
+            messages.error(request, 'You must provide your name and email.')
+            return redirect(book_ticket, concert_id=concert_id)
 
-        Ticket.objects.create(
-            concert=concert, 
-            buyer_name=buyer_name, 
-            email=email, 
+        quantity = int(request.POST.get("quantity"))
+        total_price = concert.price * quantity
+        
+        ticket = Ticket.objects.create(
+            concert=concert,
+            user=user,  # Attach the user if authenticated
+            buyer_name=buyer_name,
+            email=email,
             quantity=quantity,
             total_price=total_price
         )
-        messages.success(request, f"Ticket booked successfully! Total price: {total_price:.2f}")
+
+        # Email setup
+        subject = f"Your Ticket for {concert.band.name} Concert"
+        html_message = render_to_string('user/ticket_email.html', {
+            'buyer_name': buyer_name,
+            'concert': concert,
+            'quantity': quantity,
+            'total_price': total_price,
+        })
+
+        concert_image_path = concert.image.path 
+        email_message = EmailMessage(
+            subject=subject,
+            body=strip_tags(html_message),  
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[email],
+        )
+        with open(concert_image_path, 'rb') as img_file:
+            email_message.attach(
+                'concert_image.jpg', 
+                img_file.read(), 
+                'image/jpeg'  
+            )
+        
+        cid = 'concert_image' 
+        html_message_with_image = html_message.replace(
+            'concert_image.jpg', f'cid:{cid}' 
+        )
+        email_message.content_subtype = 'html'
+        email_message.body = html_message_with_image
+
+        email_message.send()
+        messages.success(request, f"Ticket booked successfully! A confirmation email has been sent to {email}. Total price: {total_price:.2f}")
         return redirect(user_home)
 
     return render(request, 'user/book_ticket.html', {'concert': concert})
+
+
+
 
 # def user_view_bookings(req):
 # user=User.objects.get(username=request.session['user'])
@@ -323,9 +375,12 @@ def book_ticket(request, concert_id):
 
 
 def user_tickets(request):
-    user=User.objects.get(username=request.session['user'])
-    tickets = Ticket.objects.filter(user=request.user) [::-1]
-    return render(request, 'user/user_tickets.html', {'tickets': tickets})
+    if 'user'in request.session:
+        # return redirect('login')  
+        user = User.objects.get(username=request.session['user'])
+        tickets = Ticket.objects.filter(user=user).order_by('-id') 
+        return render(request, 'user/user_tickets.html', {'tickets': tickets})
+
 
 
 
@@ -342,13 +397,9 @@ def buy_product(request, product_id):
     
     if request.method == 'POST':
         user = request.user if request.user.is_authenticated else None
-        if user:
-            user_profile = UserProfile.objects.get(user=user)
-            buyer_name = user_profile.name if user_profile.name else ''
-            email = user.email  
-        else:
-            buyer_name = request.POST.get('buyer_name', '')
-            email = request.POST.get('email', '')
+      
+        buyer_name = request.POST.get('buyer_name', '')
+        email = request.POST.get('email', '')
         if not user and (not buyer_name or not email):
             messages.error(request, 'You must provide your name and email.')
             return redirect(buy_product, product_id=product_id)
@@ -401,10 +452,34 @@ def delete_cart(req, id):
     cart_item.delete()  
     return redirect(cart_view)
 
-def view_bookings(request):
-    bookings = Booking.objects.filter(user=request.user)
-    return render(request, 'user/view_pro_booking.html', {'bookings': bookings})
 
+def view_bookings(request):
+    # Get current time and one day ago
+    now = timezone.now()
+    now_minus_one_day = now - timedelta(days=1)
+
+    # Fetch bookings for the user
+    bookings = Booking.objects.filter(user=request.user)
+
+    # Pass the time calculated in the view
+    return render(request, 'user/view_pro_booking.html', {
+        'bookings': bookings,
+        'now_minus_one_day': now_minus_one_day
+    })
+
+from datetime import timedelta
+
+def delete_booking(request, booking_id):
+    # Get the booking by id
+    booking = Booking.objects.get( id=booking_id)
+    # product = products.objects.get(id=product_id)  
+
+    # Check if the booking is made within the last 24 hours
+    if booking.booking_date > timezone.now() - timedelta(days=1):
+        booking.delete()
+    
+    # Redirect the user back to their bookings page
+    return redirect('view_bookings') # Redirect back to the bookings page
 
 def ticket_booking_details(request):
     tickets = Ticket.objects.select_related('concert', 'user').all()

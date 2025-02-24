@@ -4,34 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Profile</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            background-color: #fff;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container label {
+            font-size: 1rem;
+            color: #555;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-container input[type="text"],
+        .form-container textarea,
+        .form-container input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .form-container textarea {
+            resize: vertical;
+            height: 150px;
+        }
+
+        .form-container input[type="text"]:focus,
+        .form-container textarea:focus,
+        .form-container input[type="file"]:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-container button:active {
+            background-color: #00408a;
+        }
+
+        .profile-picture-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture-container img {
+            border-radius: 10px;
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+        }
+
+        .no-picture {
+            color: #ff6f61;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .form-container button {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+
     <h1>Update Profile</h1>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        {% if profile.profile_picture %}
-            <div>
-                <label for="current_picture">Current Profile Picture:</label>
-                <img src="{{ profile.profile_picture.url }}" alt="Current Profile Picture" width="150">
-            </div><br>
-        {% else %}
-            <p>No profile picture uploaded yet.</p>
-        {% endif %}
+    <div class="form-container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        <!-- Name field -->
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" value="{{ profile.name }}"><br><br>
+            <!-- Profile Picture Section -->
+            <div class="profile-picture-container">
+                {% if profile.profile_picture %}
+                    <div>
+                        <label for="current_picture">Current Profile Picture:</label>
+                        <img src="{{ profile.profile_picture.url }}" alt="Current Profile Picture">
+                    </div><br>
+                {% else %}
+                    <p class="no-picture">No profile picture uploaded yet.</p>
+                {% endif %}
+            </div>
 
-        <label for="bio">Address:</label>
-        <textarea name="bio" id="bio">{{ profile.bio }}</textarea><br><br>
+            <!-- Name Field -->
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" value="{{ profile.name }}" required><br><br>
 
-        <label for="profile_picture">Change Profile Picture:</label>
-        <input type="file" name="profile_picture" id="profile_picture"><br><br>
+            <!-- Bio (Address) Field -->
+            <label for="bio">Address:</label>
+            <textarea name="bio" id="bio" required>{{ profile.bio }}</textarea><br><br>
 
-        <button type="submit">Save</button>
-    </form>
+            <!-- Change Profile Picture -->
+            <label for="profile_picture">Change Profile Picture:</label>
+            <input type="file" name="profile_picture" id="profile_picture"><br><br>
+
+            <!-- Save Button -->
+            <button type="submit">Save</button>
+        </form>
+    </div>
 
 </body>
 </html>
+

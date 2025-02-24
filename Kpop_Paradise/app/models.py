@@ -22,16 +22,16 @@ class Concert(models.Model):
     
     def _str_(self):
         return f"{self.band.name} - {self.location} on {self.date}"
-
+   
 
 class Ticket(models.Model):
     concert = models.ForeignKey(Concert, on_delete=models.CASCADE, related_name="tickets")
-    user = models.ForeignKey(User, on_delete=models.CASCADE ,null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     buyer_name = models.CharField(max_length=100)
     email = models.EmailField()
     quantity = models.PositiveIntegerField()
-    total_price = models.DecimalField(max_digits=10, decimal_places=2 ,null=True, blank=True)  
-   
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    # created_at = models.DateTimeField(auto_now_add=True)  # Automatically set the date when the ticket is created
 
 
     def _str_(self):
