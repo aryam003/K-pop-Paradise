@@ -31,6 +31,7 @@ class Ticket(models.Model):
     email = models.EmailField()
     quantity = models.PositiveIntegerField()
     total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    
     # created_at = models.DateTimeField(auto_now_add=True)  # Automatically set the date when the ticket is created
 
 
@@ -66,7 +67,11 @@ class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Assuming the user is logged in
     booking_date = models.DateTimeField(auto_now_add=True)
     buyer_name = models.CharField(max_length=100)
+    address = models.TextField(null=True, blank=True)
     email = models.EmailField()
+    price = models.DecimalField(max_digits=10, decimal_places=2 ,default=0.00) 
+    payment_status = models.CharField(max_length=20, default='pending')  # New field
+    transaction_id = models.CharField(max_length=255, null=True, blank=True) 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

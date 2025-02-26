@@ -67,60 +67,89 @@
 </head>
 <body>
 
-<div class="container">
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+    <div class="container">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+    
+        <h1 class="mt-4">Buy {{ product.name }}</h1>
+        <p><strong>Description:</strong> {{ product.description }}</p>
+        <p><strong>Price:</strong> {{ product.price }}</p>
+    
+        <hr>
+    
+        <h3>Enter Your Details to Complete the Purchase</h3>
+    
+        <form method="POST">
+            {% csrf_token %}
+    
+            {% if user.is_authenticated %}
+                <!-- Displaying authenticated user info -->
+                <input type="hidden" name="buyer_name" value="{{ user.userprofile.name }}">
+                <input type="hidden" name="email" value="{{ user.email }}">
+                <input type="hidden" name="price" value="{{ product.price }}">
+    
+                <p><strong>Your details:</strong></p>
+                <p>Name: {{ user.userprofile.name }}</p>
+                <p>Email: {{ user.email }}</p>
+    
+                <!-- Display user's bio as the address for the booking -->
+                <div class="form-group">
+                    <label for="address">Address (Bio as Address)</label>
+                    <textarea id="address" name="address" class="form-control" placeholder="Enter your address" required>{{ user.userprofile.bio }}</textarea>
+                </div>
+    
+                <!-- Display the product price on the confirmation form -->
+                <div class="form-group">
+                    <label for="price">Price $</label>
+                    <input type="text" id="price" name="price" class="form-control" value="{{ product.price }}" readonly>
+                </div>
+    
+                <!-- Button to save profile details -->
+                <button type="submit" class="btn btn-success mt-3">Complete Purchase</button>
+                
+            {% else %}
+                <!-- Prompting non-authenticated users to fill in details -->
+                <div class="form-group">
+                    <label for="buyer_name">Full Name</label>
+                    <input type="text" id="buyer_name" name="buyer_name" class="form-control" placeholder="Enter your full name" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+    
+                <!-- Address field for non-authenticated users -->
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" class="form-control" placeholder="Enter your address" required></textarea>
+                </div>
+    
+                <!-- Display the product price for non-authenticated users -->
+                                    <!-- Display the product price -->
+                               
+                                    
 
-    <h1 class="mt-4">Buy {{ product.name }}</h1>
-    <p><strong>Description:</strong> {{ product.description }}</p>
-    <p><strong>Price:</strong> ${{ product.price }}</p>
-
-    <hr>
-
-    <h3>Enter Your Details to Complete the Purchase</h3>
-
-    <form method="POST">
-        {% csrf_token %}
-
-        {% if user.is_authenticated %}
-            <!-- Displaying authenticated user info -->
-            <input type="hidden" name="buyer_name" value="{{ user.userprofile.name }}">
-            <input type="hidden" name="email" value="{{ user.email }}">
-
-            <p><strong>Your details:</strong></p>
-            <p>Name: {{ user.userprofile.name }}</p>
-            <p>Email: {{ user.email }}</p>
-
-            <button type="submit" class="btn btn-success mt-3">Complete Purchase</button>
-        {% else %}
-            <!-- Prompting non-authenticated users to fill in details -->
-            <div class="form-group">
-                <label for="buyer_name">Full Name</label>
-                <input type="text" id="buyer_name" name="buyer_name" class="form-control" placeholder="Enter your full name" required>
+    
+                <!-- Submit button for non-authenticated users -->
+                <button type="submit" class="btn btn-success mt-3">Complete Purchase</button>
+            {% endif %}
+        </form>
+    
+        {% if messages %}
+            <div class="alert alert-info mt-4">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
             </div>
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
-            </div>
-
-            <!-- Submit button for non-authenticated users -->
-            <button type="submit" class="btn btn-success mt-3">Complete Purchase</button>
         {% endif %}
-    </form>
+    </div>
+    
+    <footer class="footer">
+        <p>&copy; 2025 K-pop Paradise. All rights reserved.</p>
+    </footer>
+    
 
-    {% if messages %}
-        <div class="alert alert-info mt-4">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-</div>
-
-<footer class="footer">
-    <p>&copy; 2025 K-pop Paradise. All rights reserved.</p>
-</footer>
-
+    
 </body>
 </html>
 

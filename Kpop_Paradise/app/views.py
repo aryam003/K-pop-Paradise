@@ -400,6 +400,8 @@ def buy_product(request, product_id):
       
         buyer_name = request.POST.get('buyer_name', '')
         email = request.POST.get('email', '')
+        address = request.POST.get('address', '')
+        price = request.POST.get('price', '') 
         if not user and (not buyer_name or not email):
             messages.error(request, 'You must provide your name and email.')
             return redirect(buy_product, product_id=product_id)
@@ -407,7 +409,9 @@ def buy_product(request, product_id):
             product=product,
             user=user,
             buyer_name=buyer_name,
-            email=email)
+            email=email,
+            address=address,
+            price=price)
         messages.success(request, f'You have successfully booked the {product.name}!')
         return redirect(product_detail, product_id=product_id)
     

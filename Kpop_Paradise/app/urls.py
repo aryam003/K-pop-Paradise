@@ -43,6 +43,7 @@ urlpatterns=[
     path('view-bookings/', views.view_bookings, name='view_bookings'),
     # path('cancel-booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
     # path('checkout/', views.checkout, name='checkout'),
+    # path('payment/callback/<int:booking_id>/', views.payment_callback, name='payment_callback'),
 
     path('profile/', views.user_profile, name='user_profile'),
     path('profile/edit/',views. add_edit_profile, name='edit_profile'),
