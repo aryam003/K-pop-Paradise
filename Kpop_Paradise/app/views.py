@@ -743,6 +743,35 @@ def order_payment2(req):
     return redirect(login)  
 
 
+# @login_required
+# def pay2(req):
+#     user = User.objects.get(username=req.session['user'])  
+#     product = products.objects.get(pk=req.session['product'])
+
+#     if not product:
+#         messages.error(req, "Your cart is empty. Please add a product first.")
+#         return redirect(cart_view)
+
+#     order_id = req.session.get('order_id')
+#     order = get_object_or_404(Order2, pk=order_id) if order_id else None
+
+#     if req.method == 'GET':
+#         user_address = Booking.objects.filter(user=user).order_by('-id').first()
+#         # booking = Booking.objects.get(id=26)
+#         # buy2 = Buy2.objects.create(address=booking)
+#         data = Buy2.objects.create(
+#             user=user,
+#             product=product,
+#             price=product.price,
+#             address=user_address,
+#             email = user.email,
+#             order=order
+#         )
+#         data.save()
+
+#         return redirect(view_bookings)
+
+#     return render(req, 'user/view_pro_booking.html')
 @login_required
 def pay2(req):
     user = User.objects.get(username=req.session['user'])  
@@ -757,14 +786,18 @@ def pay2(req):
 
     if req.method == 'GET':
         user_address = Booking.objects.filter(user=user).order_by('-id').first()
+        if user_address:
+            address_text = user_address.address  # Extract address as text
+        else:
+            address_text = ""  # Provide a fallback if no address is found
 
         data = Buy2.objects.create(
             user=user,
             product=product,
             price=product.price,
-            address=user_address,
-            email = user.email,
-            order2=order
+            address=address_text,  # Assign the address as text
+            email=user.email,
+            order=order
         )
         data.save()
 
