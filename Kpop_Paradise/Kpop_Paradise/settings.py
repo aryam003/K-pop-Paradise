@@ -138,4 +138,4 @@ EMAIL_HOST_USER = 'aryaaryam0320@gmail.com'  # Replace with your email
 EMAIL_HOST_PASSWORD = 'vlzq nmhw bkkq xwnb'  # Replace with your email password
 
 RAZORPAY_KEY_ID = 'rzp_test_iQCgzTTcAqZIFb' 
-REZO_PAY_SECRET_KEY = 'FhHXvu1iivXK0Q9JEjGvL5Hd'
+RAZORPAY_KEY_SECRET = 'FhHXvu1iivXK0Q9JEjGvL5Hd'

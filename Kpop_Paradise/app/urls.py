@@ -36,7 +36,6 @@ urlpatterns=[
 #---product
     
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),
-    path('buy/<int:product_id>/', views.buy_product, name='buy_product'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('cart/', views.cart_view, name='cart_view'),
     path('delete_cart/<int:id>/', views.delete_cart, name='delete_cart'),  # Delete cart item
@@ -50,6 +49,28 @@ urlpatterns=[
     path('checkout/', views.checkout_cart, name='checkout_cart'),
 
     path('delete-booking/<int:booking_id>/', views.delete_booking, name='delete_booking'),
+    # path('buy_pro/<id>',views.buy_pro,name='buy_pro'),
+
+
+
+
+
+
+
+    path('buy_pro/<int:id>/', views.buy_pro, name='buy_pro'),
+    path('book_ticket/<int:concert_id>/', views.book_ticket, name='book_ticket'),
+    path('order_payment/', views.order_payment, name='order_payment'),
+    path('pay/', views.pay, name='pay'),
+    path('callback/', views.callback, name='callback'),
+
+
+
+    path('buy/<int:product_id>/', views.buy_product, name='buy_product'),
+    path('buy_pro2/<int:id>/', views.buy_pro2, name='buy_pro2'),
+    path('order_payment2/', views.order_payment2, name='order_payment2'),
+    path('pay2/', views.pay2, name='pay2'),
+    path('callback2/', views.callback2, name='callback2'),
+    path('place_order/<id>/', views.place_order2, name='place_order2'),
 
 ]
  

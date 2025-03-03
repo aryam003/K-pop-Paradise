@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +26,12 @@
             color: #4CAF50;
         }
 
+        h2 {
+            margin-top: 40px;
+            font-size: 1.5rem;
+            color: #4CAF50;
+        }
+
         .table-container {
             display: flex;
             flex-direction: column;
@@ -42,6 +47,7 @@
             margin-top: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
         }
 
         th, td {
@@ -61,30 +67,6 @@
             border-radius: 5px;
         }
 
-        .product-details {
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f4f4f4;
-            border-radius: 8px;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-details div {
-            margin-bottom: 10px;
-        }
-
-        .product-details strong {
-            font-weight: bold;
-            color: #4CAF50;
-        }
-
-        /* Add some spacing between product details */
-        .product-image {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             table {
@@ -102,11 +84,19 @@
             .product-image img {
                 max-width: 80px;
             }
+
+            .table-container {
+                padding: 10px;
+            }
         }
 
         @media (max-width: 480px) {
             h1 {
                 font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
             }
 
             .table-container {
@@ -124,51 +114,136 @@
             .product-details div {
                 font-size: 14px;
             }
+
+            td, th {
+                white-space: nowrap;
+            }
+
+            /* Stacking for mobile screens */
+            table, .product-details {
+                display: block;
+                overflow-x: auto;
+                white-space: normal;
+            }
+
+            .table-container {
+                padding-left: 0;
+                padding-right: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Booking List</h1>
-
+    <h1>Admin Concert Booking Details</h1>
+  
+    <h2>Concerts</h2>
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th>Product</th>
-                    <th>User</th>
-                    <th>Booking Date</th>
-                    <th>Buyer Name</th>
-                    <th>Email</th>
+                    <th>Band</th>
+                    <th>Artist</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Price</th>
+                    <th>Total Tickets</th>
                 </tr>
             </thead>
             <tbody>
-                {% for booking in bookings %}
+                {% for concert in concerts %}
                 <tr>
-                    <td>
-                        <div class="product-details">
-                            <h3>Product Details:</h3>
-                            <div><strong>Product Name:</strong> {{ booking.product.name }}</div>
-                            <div><strong>Description:</strong> {{ booking.product.description }}</div>
-                            <div><strong>Price:</strong> ${{ booking.product.price }}</div>
-
-                            <div class="product-image">
-                                <strong>Product Image:</strong>
-                                <img src="{{ booking.product.image.url }}" alt="{{ booking.product.name }}">
-                            </div>
-                        </div>
-                    </td>
-                    <td>{{ booking.user.username }}</td>
-                    <td>{{ booking.booking_date }}</td>
-                    <td>{{ booking.buyer_name }}</td>
-                    <td>{{ booking.email }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" style="text-align: center;">No bookings found</td>
+                    <td>{{ concert.band.name }}</td>
+                    <td>{{ concert.artist }}</td>
+                    <td>{{ concert.date }}</td>
+                    <td>{{ concert.location }}</td>
+                    <td>${{ concert.price }}</td>
+                    <td>{{ concert.total_ticket }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <h2>Tickets</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Concert</th>
+                    <th>User</th>
+                    <th>Buyer Name</th>
+                    <th>Email</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.concert.band.name }} - {{ ticket.concert.location }}</td>
+                    <td>{{ ticket.user.username }}</td>
+                    <td>{{ ticket.buyer_name }}</td>
+                    <td>{{ ticket.email }}</td>
+                    <td>{{ ticket.quantity }}</td>
+                    <td>${{ ticket.total_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Orders</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Concert</th>
+                    <th>User</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Order ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.concert.band.name }} - {{ order.concert.location }}</td>
+                    <td>{{ order.user.username }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>${{ order.price }}</td>
+                    <td>{{ order.provider_order_id }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Purchases</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Concert</th>
+                    <th>User</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Confirmed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for buy in buys %}
+                <tr>
+                    <td>{{ buy.concert.band.name }} - {{ buy.concert.location }}</td>
+                    <td>{{ buy.user.username }}</td>
+                    <td>{{ buy.quantity }}</td>
+                    <td>${{ buy.total_price }}</td>
+                    <td>{% if buy.is_confirmed %}Yes{% else %}No{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </body>
 </html>
+

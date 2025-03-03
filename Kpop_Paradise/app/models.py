@@ -13,6 +13,7 @@ class Band(models.Model):
     def __str__(self):
         return self.name
 
+
 class Concert(models.Model):
     band = models.ForeignKey(Band, on_delete=models.CASCADE, related_name="concerts")
     artist = models.CharField(max_length=100)
@@ -22,9 +23,8 @@ class Concert(models.Model):
     image = models.ImageField(upload_to='bands/', null=True, blank=True)
     total_ticket = models.PositiveIntegerField(default=100)
     
-    def _str_(self):
+    def __str__(self):
         return f"{self.band.name} - {self.location} on {self.date}"
-   
 
 class Ticket(models.Model):
     concert = models.ForeignKey(Concert, on_delete=models.CASCADE, related_name="tickets")
@@ -33,14 +33,47 @@ class Ticket(models.Model):
     email = models.EmailField()
     quantity = models.PositiveIntegerField()
     total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    
-    # created_at = models.DateTimeField(auto_now_add=True)  # Automatically set the date when the ticket is created
+    # order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)  # New field
 
 
-    def _str_(self):
-        return f"{self.buyer_name} - {self.concert.band.name}"
-    
-    
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # In your Order model, temporarily allow nulls for the concert field
+    concert = models.ForeignKey(Concert, on_delete=models.CASCADE, related_name="orders", null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Changed to DecimalField
+    status = models.CharField(
+        _("Payment Status"),
+        default=PaymentStatus.PENDING,
+        max_length=254,
+        blank=False,
+        null=False
+    )
+    provider_order_id = models.CharField(_("Order ID"), max_length=40, null=False, blank=False)
+    payment_id = models.CharField(_("Payment ID"), max_length=36, null=False, blank=False)
+    signature_id = models.CharField(_("Signature ID"), max_length=128, null=False, blank=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.provider_order_id}"
+
+class Buy(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    concert = models.ForeignKey(Concert, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    quantity = models.PositiveIntegerField(default=1)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    is_confirmed = models.BooleanField(default=False)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
+
+ 
+
+
+
+
+
+
+
+
 #-------PRODUCTS-----------------------------------------------------------------------------------------------------------
 
 class products(models.Model):
@@ -74,6 +107,42 @@ class Booking(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2 ,default=0.00) 
 
 
+class Order2(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+   
+    product = models.ForeignKey(products, on_delete=models.CASCADE, related_name="orders", null=False)
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Changed to DecimalField
+    status = models.CharField(
+        _("Payment Status"),
+        default=PaymentStatus.PENDING,
+        max_length=254,
+        blank=False,
+        null=False
+    )
+    provider_order_id = models.CharField(_("Order ID"), max_length=40, null=False, blank=False)
+    payment_id = models.CharField(_("Payment ID"), max_length=36, null=False, blank=False)
+    signature_id = models.CharField(_("Signature ID"), max_length=128, null=False, blank=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.provider_order_id}"
+
+class Buy2(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(products, on_delete=models.CASCADE)
+    buyer_name = models.CharField(max_length=100)
+    address = models.TextField(Booking,null=True, blank=True)
+    email = models.EmailField()
+    price = models.DecimalField(max_digits=10, decimal_places=2 ,default=0.00)   
+    is_confirmed = models.BooleanField(default=False)
+    order = models.ForeignKey(Order2, on_delete=models.CASCADE, null=True)
+
+
+
+
+
+
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
@@ -84,33 +153,4 @@ class UserProfile(models.Model):
         return self.user.username 
     
 
-class Order(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
-    price=models.IntegerField()
-    status=CharField(
-        _("Payment Status"),
-        default=PaymentStatus.PENDING,
-        max_length=254,
-        blank=False,
-        null=False
-    )
-    provider_order_id = models.CharField(
-        _("Order ID"), max_length=40, null=False,blank=False
-    )
-    payment_id = models.CharField(
-        _("Payment ID"),max_length=36, null=False, blank=False
-    )
-    signature_id = models.CharField(
-        _("Signature ID"), max_length=128, null=False, blank=False
-    )
-
-class Buy(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
-    product=models.ForeignKey(products,on_delete=models.CASCADE)
-    price=models.IntegerField()
-    date=models.DateField(auto_now_add=True)   
-    quantity = models.PositiveIntegerField(default=1) 
-    address = models.ForeignKey(Booking, on_delete=models.CASCADE, null=True)  # Make it nullable
-    # address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    is_confirmed = models.BooleanField(default=False)
-    order=models.ForeignKey(Order,on_delete=models.CASCADE,null=True)        
+      

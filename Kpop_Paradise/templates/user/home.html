@@ -22,7 +22,7 @@
             margin-top: 50px;
         }
         .container {
-          max-width: 1200px;
+          max-width: 100%;
       }
     
       .card {
@@ -294,34 +294,60 @@
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
   
 <div class="container-1 mt-3">
-  <h2 class="text-center" style="background: radial-gradient(circle, lightblue, pink); width: 100%; padding: 10px; border-radius: 10px;">Recommended Artists</h2>
+  <h2 class="text-center" style="background: radial-gradient(circle, lightblue, pink); padding: 10px; border-radius: 10px; width: 100%; box-sizing: border-box;">
+    Recommended Artists
+  </h2>
+</div>
 
-  <div class="row justify-content-center mt-2" style="border: none;">
+  <div class="row justify-content-center mt-2" style="width: 100%;">
     {% for band in bands|slice:":6" %}
-      <div class="col-2 col-sm-4 col-md-3 col-lg-1 artist-card text-center mb-4">
+      <div class="col-4 col-sm-2 col-md-1 col-lg-1 artist-card text-center mb-4" >
         {% if band.image %}
-          <a href="../user_band/{{ band.id }}/"> 
+          <a href="../user_band/{{ band.id }}/">
             <img src="{{ band.image.url }}" alt="{{ band.name }}" class="img-fluid rounded-circle" style="height: 90px; width: 90px;">
           </a>
         {% endif %}
       </div>
     {% endfor %}
   </div>
-</div>
 
-<div class="row justify-content-center mt-4">
-  <div class="col-6 col-sm-6 col-md-4 col-lg-12">
-    <div class="input-group">
-      <input type="text" class="form-control" id="artistSearch" placeholder="Search Artist">
-      <button class="btn btn-primary" onclick="searchArtist()">Search</button>
+
+  <div class="container mt-5">
+    <h1 class="text-center" style="background: radial-gradient(circle, lightblue, pink); width: 100%;padding: 10px; border-radius: 10px;">K-Pop Bands</h1>
+
+    <!-- Search Input with Datalist -->
+    <div class="row mb-4">
+        <div class="col-md-6 offset-md-3">
+            <input type="text" id="searchBar" class="form-control" placeholder="Search K-Pop Bands" list="bandNames" oninput="filterBands()" />
+            <!-- Datalist for Band Names -->
+            <datalist id="bandNames">
+                {% for band in bands %}
+                    <option value="{{ band.name }}">
+                {% endfor %}
+            </datalist>
+        </div>
     </div>
-  </div>
+
+    <!-- Band Cards -->
+    <div class="row" style="padding: 10px;" id="bandList">
+        {% for band in bands %}
+            <div class="col-md-4 text-center band-card" data-name="{{ band.name }}">
+                <div class="card" style="padding: 10px;border:none;">
+                    {% if band.image %}
+                    <a href="../user_band/{{ band.id }}/" class="btn ">
+                        <img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}" style="height: 330px; border-radius: 20px;">
+                    </a>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ band.name }}</h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 
 
-
-
-    
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
   <div class="container mt-5">
@@ -385,6 +411,28 @@ function searchArtist() {
   let searchQuery = document.getElementById("artistSearch").value;
   alert("Searching for: " + searchQuery);
 }
+</script>
+<!-- JavaScript for Filtering Bands Based on Input -->
+<script>
+  function filterBands() {
+      var input, filter, bandList, cards, card, title, i, txtValue;
+      input = document.getElementById('searchBar');
+      filter = input.value.toLowerCase();
+      bandList = document.getElementById('bandList');
+      cards = bandList.getElementsByClassName('band-card');
+
+      for (i = 0; i < cards.length; i++) {
+          card = cards[i];
+          title = card.getElementsByClassName("card-title")[0];
+          txtValue = title.textContent || title.innerText;
+
+          if (txtValue.toLowerCase().indexOf(filter) > -1) {
+              card.style.display = "";
+          } else {
+              card.style.display = "none";
+          }
+      }
+  }
 </script>
     
        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

@@ -1,4 +1,3 @@
-<!-- booking_details.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +17,11 @@
             margin-top: 30px;
             color: #4CAF50;
         }
+        h2 {
+            margin-top: 40px;
+            font-size: 1.5rem;
+            color: #4CAF50;
+        }
         .container {
             width: 80%;
             margin: 30px auto;
@@ -30,6 +34,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            overflow-x: auto;
         }
         th, td {
             padding: 12px;
@@ -61,48 +66,156 @@
         .pagination .current {
             font-weight: bold;
         }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .pagination {
+                font-size: 12px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1rem;
+            }
+
+            .pagination a {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            /* Stack tables vertically with horizontal scroll on small screens */
+            table, .pagination {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Booking Details</h1>
+        <h1>Admin Booking Details</h1>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Concert</th>
-                    <th>Band</th>
-                    <th>Location</th>
-                    <th>Date</th>
-                    <th>Buyer Name</th>
-                    <th>Email</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th>User (If Logged In)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for ticket in tickets %}
-                <tr>
-                    <td>{{ ticket.concert.band.name }} - {{ ticket.concert.location }}</td>
-                    <td>{{ ticket.concert.band.name }}</td>
-                    <td>{{ ticket.concert.location }}</td>
-                    <td>{{ ticket.concert.date }}</td>
-                    <td>{{ ticket.buyer_name }}</td>
-                    <td>{{ ticket.email }}</td>
-                    <td>{{ ticket.quantity }}</td>
-                    <td>{{ ticket.total_price }}</td>
-                    <td>
-                        {% if ticket.user %}
-                            {{ ticket.user.username }} ({{ ticket.user.email }})
-                        {% else %}
-                            Guest
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <h2>Bookings</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Buyer Name</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Price</th>
+                        <th>Booking Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.product.name }}</td>
+                        <td>{{ booking.buyer_name }}</td>
+                        <td>{{ booking.user.username }}</td>
+                        <td>{{ booking.email }}</td>
+                        <td>${{ booking.price }}</td>
+                        <td>{{ booking.booking_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Orders</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>User</th>
+                        <th>Status</th>
+                        <th>Price</th>
+                        <th>Order ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.product.name }}</td>
+                        <td>{{ order.user.username }}</td>
+                        <td>{{ order.status }}</td>
+                        <td>${{ order.price }}</td>
+                        <td>{{ order.provider_order_id }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Purchases</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>User</th>
+                        <th>Buyer Name</th>
+                        <th>Email</th>
+                        <th>Price</th>
+                        <th>Confirmed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for buy in buys %}
+                    <tr>
+                        <td>{{ buy.product.name }}</td>
+                        <td>{{ buy.user.username }}</td>
+                        <td>{{ buy.buyer_name }}</td>
+                        <td>{{ buy.email }}</td>
+                        <td>${{ buy.price }}</td>
+                        <td>{% if buy.is_confirmed %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         <!-- Pagination (Optional) -->
         <div class="pagination">
@@ -125,4 +238,5 @@
     </div>
 </body>
 </html>
+
 

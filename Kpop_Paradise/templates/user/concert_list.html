@@ -226,6 +226,31 @@
                 font-size: 1rem;
             }
         }
+
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+    
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e44d26;
+        }
+    
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #555;
+        }
+    
+        .card-body {
+            padding: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -284,27 +309,34 @@
         </div>
     </div>
 
-    <h2 class="text-center my-5">Products for {{ band.name }}</h2>
+    <h2 class="text-center my-5" style="background: radial-gradient(circle, lightblue, pink); padding: 10px; border-radius: 10px; width: 100%; box-sizing: border-box; font-size: 2.5rem; color: #333;">
+        Products for {{ band.name }}
+    </h2>
+    
     <div class="container">
         <div class="row">
             {% for product in products %}
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm border-light" style="border-radius: 15px;">
                         <a href="{% url 'product_detail' product.id %}">
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top" style="border-top-left-radius: 15px; border-top-right-radius: 15px; object-fit: cover; height: 250px;">
                         </a>
                         <div class="card-body">
-                            <p class="price">Price: ${{ product.price }}</p>
+                            <p class="price" style="font-size: 1.1rem; font-weight: bold; color: #007bff;">Price: ${{ product.price }}</p>
+                            <p class="product-name" style="font-size: 1.2rem; font-weight: bold; color: #333;">{{ product.name }}</p>
                         </div>
                     </div>
                 </div>
             {% empty %}
                 <div class="col-12">
-                    <p class="text-center">No products available.</p>
+                    <p class="text-center" style="font-size: 1.2rem; color: #888;">No products available.</p>
                 </div>
             {% endfor %}
         </div>
     </div>
+    
+ 
+    
 
     <footer class="footer">
         <h2>Welcome to K-pop World</h2>
