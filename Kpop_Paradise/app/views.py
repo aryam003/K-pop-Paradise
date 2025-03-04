@@ -320,6 +320,8 @@ def concert_list(req, id):
 def buy_pro(req, id):
     concert = Concert.objects.get(pk=id)
     return redirect(book_ticket, concert_id=id)
+
+
 def book_ticket(req, concert_id):
     # Fetch the concert and user from the database
     concert = Concert.objects.get(id=concert_id)
