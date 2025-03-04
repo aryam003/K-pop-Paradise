@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Tickets</title>
     <style>
-        /* General Styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -14,7 +13,6 @@
             margin: 0;
             padding: 0;
         }
-
         .container {
             width: 90%;
             max-width: 800px;
@@ -24,74 +22,42 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
-
         h1 {
             text-align: center;
             font-size: 2rem;
             color: #333;
-            margin-bottom: 20px;
         }
-
         .concert-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            text-align: center;
             margin-bottom: 20px;
         }
-
         .concert-details img {
             width: 100%;
             max-width: 300px;
             border-radius: 8px;
             margin-bottom: 10px;
         }
-
-        .concert-details h2 {
+        .sold-out {
+            text-align: center;
             font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 10px;
+            color: #d9534f;
         }
-
-        .concert-details p {
-            font-size: 1rem;
-            color: #555;
-        }
-
-        /* Form Styling */
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
         .form-group {
             display: flex;
             flex-direction: column;
+            margin-bottom: 15px;
         }
-
         label {
             font-size: 1rem;
             color: #333;
             margin-bottom: 5px;
         }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="number"] {
+        input {
             padding: 10px;
             font-size: 1rem;
             border: 1px solid #ddd;
             border-radius: 4px;
-            outline: none;
-            transition: border 0.3s;
         }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="number"]:focus {
-            border-color: #007bff;
-        }
-
         button {
             padding: 10px;
             background-color: #007bff;
@@ -100,189 +66,55 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
-
         button:hover {
             background-color: #0056b3;
         }
-
-        .total-price {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #333;
-            margin-top: 10px;
-        }
-
-        .alert {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .sold-out {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #d9534f;
-            margin-top: 20px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            .container {
-                width: 100%;
-                padding: 10px;
-            }
-
-            .concert-details img {
-                max-width: 100%;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .form-group input[type="text"],
-            .form-group input[type="email"],
-            .form-group input[type="number"] {
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-
-            button {
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-        }
-        .sold-out-message {
-    color: red;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
     </style>
 </head>
 <body>
-
-    
-
-        <div class="container">
-            <h1>Book Tickets for {{ concert.band.name }} Concert</h1>
-            
-            <!-- Display concert details -->
-            <div class="concert-details">
-                <img src="{{ concert.image.url }}" alt="Concert Image" class="concert-image">
-                <h2>{{ concert.band.name }} - {{ concert.artist }}</h2>
-                <p>Date: {{ concert.date }}</p>
-                <p>Location: {{ concert.location }}</p>
-                <p>Price per Ticket: ${{ concert.price }}</p>
-            </div>
-        
-            <!-- Display success or error message if any -->
-            {% if messages %}
-                <div class="alert">
-                    {% for message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        
-            <!-- Display Sold Out message if tickets are sold out -->
-            {% if concert.total_ticket <= 0 %}
-                <div class="sold-out">
-                    <p>Sorry, this concert is sold out.</p>
-                </div>
-            {% elif concert.total_ticket < 10 %}
-                <div class="sold-out">
-                    <p>Hurry, only {{ concert.total_ticket }} tickets left!</p>
-                </div>
-            {% else %}
-                <!-- Ticket booking form -->
-                <form method="POST" id="ticketForm">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="name">Your Name:</label>
-                        <input type="text" id="name" name="name" value="{{ user.profile.name }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Your Email:</label>
-                        <input type="email" id="email" name="email" value="{{ user.email }}" required>
-                    </div>
-                
-                    <div class="form-group">
-                        <label for="quantity">Number of Tickets:</label>
-                        {% if concert.total_ticket <= 0 %}
-                            <!-- Disable the input field and show sold out message -->
-                            <input type="number" id="quantity" name="quantity" min="1" max="0" disabled>
-                            <p class="sold-out-message">Sold Out</p>
-                        {% else %}
-                            <!-- Enable input field for quantity booking -->
-                            <input type="number" id="quantity" name="quantity" min="1" max="{{ concert.total_ticket }}" required>
-                            <p id="available-tickets" style="color: green;">{{ concert.total_ticket }} tickets available</p> <!-- Display available tickets -->
-                        {% endif %}
-                    </div>
-        
-                    <!-- Display calculated total price -->
-                    <div class="total-price">
-                        <p>Total Price: $<span id="totalPrice">0.00</span></p>
-                    </div>
-        
-                    <button type="submit">Book Tickets</button>
-    
-                    <p id="error-message" style="color: red; display: none;">Sold Out</p>
-                </form>
-            {% endif %}
+    <div class="container">
+        <h1>Book Tickets for {{ concert.band.name }} Concert</h1>
+        <div class="concert-details">
+            <img src="{{ concert.image.url }}" alt="Concert Image">
+            <h2>{{ concert.band.name }} - {{ concert.artist }}</h2>
+            <p>Date: {{ concert.date }}</p>
+            <p>Location: {{ concert.location }}</p>
+            <p>Price per Ticket: ${{ concert.price }}</p>
         </div>
         
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                // When the quantity input changes
-                $("#quantity").on("input", function() {
-                    var quantity = parseInt($(this).val()); // Get the quantity value as an integer
-                    if (isNaN(quantity) || quantity < 1) {
-                        quantity = 0; // Ensure quantity is a positive number
-                    }
-                    
-                    var pricePerTicket = parseFloat("{{ concert.price }}"); // Convert price to float
-                    var totalPrice = (quantity * pricePerTicket).toFixed(2); // Calculate total price and format to 2 decimal places
-                    
-                    // Update the total price display
-                    $("#totalPrice").text(totalPrice);
-    
-                    // Check if quantity is more than available tickets
-                    var maxTickets = {{ concert.total_ticket }};
-                    if (quantity > maxTickets) {
-                        // Show "Sold Out" message if quantity is more than available tickets
-                        $("#error-message").show();
-                    } else {
-                        // Hide error message if quantity is valid
-                        $("#error-message").hide();
-                    }
-                });
-    
-                // Prevent form submission if quantity is greater than available tickets
-                $("#ticketForm").on("submit", function(e) {
-                    var quantity = parseInt($("#quantity").val());
-                    var maxTickets = {{ concert.total_ticket }};
-                    if (quantity > maxTickets) {
-                        e.preventDefault(); // Prevent form submission
-                        alert("Sold Out");
-                    }
-                });
-            });
-        </script>
-    
- 
-    
-
-
-    
-    
+        {% if concert.total_ticket <= 0 %}
+            <div class="sold-out">Sorry, this concert is sold out.</div>
+        {% else %}
+            <form method="POST" id="ticketForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Your Name:</label>
+                    <input type="text" id="name" name="name" value="{{ user.profile.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email:</label>
+                    <input type="email" id="email" name="email" value="{{ user.email }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Number of Tickets:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="{{ concert.total_ticket }}" required>
+                    <p style="color: green;">{{ concert.total_ticket }} tickets available</p>
+                </div>
+                <div class="total-price">
+                    <p>Total Price: $<span id="totalPrice">0.00</span></p>
+                </div>
+                <button type="submit">Book Tickets</button>
+            </form>
+        {% endif %}
+    </div>
+    <script>
+        document.getElementById("quantity").addEventListener("input", function() {
+            let quantity = parseInt(this.value) || 0;
+            let price = parseFloat("{{ concert.price }}");
+            document.getElementById("totalPrice").innerText = (quantity * price).toFixed(2);
+        });
+    </script>
 </body>
 </html>
 

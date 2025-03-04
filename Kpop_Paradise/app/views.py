@@ -322,39 +322,46 @@ def buy_pro(req, id):
     return redirect(book_ticket, concert_id=id)
 
 
-def book_ticket(req, concert_id):
-    # Fetch the concert and user from the database
-    concert = Concert.objects.get(id=concert_id)
-    user = User.objects.get(username=req.session['user'])
 
-    # Fetch the latest user address or None if no address exists
+def book_ticket(req, concert_id):
+    concert = get_object_or_404(Concert, id=concert_id)
+    user = get_object_or_404(User, username=req.session.get('user'))
+
     user_address = Ticket.objects.filter(user=user).order_by('-id').first()
 
     if req.method == 'POST':
-        # Get form data
         name = req.POST.get('name')
         email = req.POST.get('email')
         quantity = int(req.POST.get("quantity"))
+
+        # Ensure enough tickets are available
+        if quantity > concert.total_ticket:
+            messages.error(req, "Not enough tickets available.")
+            return redirect('book_ticket', concert_id=concert.id)
+
         total_price = concert.price * quantity
 
-        # If user already has a ticket, update the ticket details
+        # Update existing ticket or create a new one
         if user_address:
             user_address.buyer_name = name
             user_address.email = email
             user_address.quantity = quantity
             user_address.total_price = total_price
-            user_address.concert = concert  # Ensure the concert_id is set
+            user_address.concert = concert
             user_address.save()
         else:
-            # Create a new ticket
             Ticket.objects.create(
                 user=user,
-                concert=concert,  # Assign the concert to the ticket
+                concert=concert,
                 buyer_name=name,
                 email=email,
                 quantity=quantity,
                 total_price=total_price
             )
+
+        # **Reduce the available tickets**
+        concert.total_ticket -= quantity
+        concert.save()
 
         # Email setup
         subject = f"Your Ticket for {concert.band.name} Concert"
@@ -365,39 +372,30 @@ def book_ticket(req, concert_id):
             'total_price': total_price,
         })
 
-        concert_image_path = concert.image.path 
         email_message = EmailMessage(
             subject=subject,
-            body=strip_tags(html_message),  
+            body=strip_tags(html_message),
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[email],
         )
-        with open(concert_image_path, 'rb') as img_file:
-            email_message.attach(
-                'concert_image.jpg', 
-                img_file.read(), 
-                'image/jpeg'  
-            )
-        
-        cid = 'concert_image' 
-        html_message_with_image = html_message.replace(
-            'concert_image.jpg', f'cid:{cid}' 
-        )
-        email_message.content_subtype = 'html'
-        email_message.body = html_message_with_image
+
+        # Attach concert image if available
+        if concert.image:
+            concert_image_path = concert.image.path
+            with open(concert_image_path, 'rb') as img_file:
+                email_message.attach('concert_image.jpg', img_file.read(), 'image/jpeg')
 
         email_message.send()
 
-        # Save the concert and quantity in the session for further use (like payment)
+        # Save session data for payment processing
         req.session['concert'] = concert_id
         req.session['quantity'] = quantity
 
-        # Success message and redirection
-        messages.success(req, f"Ticket booked successfully! A confirmation email has been sent to {email}. Total price: {total_price:.2f}")
+        messages.success(req, f"Ticket booked successfully! A confirmation email has been sent to {email}. Total price: ${total_price:.2f}")
         return redirect(order_payment)
 
-    # If not POST, just render the page with concert and user address details
     return render(req, 'user/book_ticket.html', {'concert': concert, 'user_address': user_address})
+
 
 # def book_ticket(req, concert_id):
 #     # Fetch the concert and user from the database
