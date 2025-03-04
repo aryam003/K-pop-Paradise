@@ -67,6 +67,44 @@
             font-weight: bold;
         }
 
+        /* Button Styles */
+        .btn {
+            padding: 6px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin: 5px;
+        }
+        .btn-danger {
+            background-color: #f44336;
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #e53935;
+        }
+        .btn-success {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #45a049;
+        }
+        .btn-warning {
+            background-color: #ff9800;
+            color: white;
+        }
+        .btn-warning:hover {
+            background-color: #fb8c00;
+        }
+        .btn:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             table {
@@ -200,6 +238,7 @@
                         <th>Email</th>
                         <th>Price</th>
                         <th>Confirmed</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -211,24 +250,39 @@
                         <td>{{ buy.email }}</td>
                         <td>${{ buy.price }}</td>
                         <td>{% if buy.is_confirmed %}Yes{% else %}No{% endif %}</td>
+                        <td>
+                            <a href="../cancel_order/{{ buy.id }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this order?')">
+                                <i class="fa-solid fa-trash"></i> Cancel
+                            </a>
+                            <form action="../confirm_order/{{ buy.pk }}" method="post" style="display:inline;">
+                                <!-- {% csrf_token %}
+                                {% if buy.is_confirmed %}
+                                    <button type="submit" class="btn btn-success" disabled>
+                                        <i class="fa-solid fa-check"></i> Confirmed
+                                    </button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to confirm this order?')">
+                                        <i class="fa-solid fa-clock"></i> Pending
+                                    </button>
+                                {% endif %}
+                            </form> -->
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <!-- Pagination (Optional) -->
+        <!-- Pagination -->
         <div class="pagination">
             <span class="step-links">
                 {% if tickets.has_previous %}
                     <a href="?page=1">&laquo; First</a>
                     <a href="?page={{ tickets.previous_page_number }}">Previous</a>
                 {% endif %}
-
                 <span class="current">
                     Page {{ tickets.number }} of {{ tickets.paginator.num_pages }}.
                 </span>
-
                 {% if tickets.has_next %}
                     <a href="?page={{ tickets.next_page_number }}">Next</a>
                     <a href="?page={{ tickets.paginator.num_pages }}">Last &raquo;</a>
@@ -238,5 +292,6 @@
     </div>
 </body>
 </html>
+
 
 

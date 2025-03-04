@@ -231,17 +231,22 @@
                     </li>
                 {% endfor %}
             </ul>
-
             <!-- Display Total Price -->
             <div class="total-price">
                 <h3>Total Price: ${{ total_price }}</h3>
             </div>
 
+            <!-- Place Order Button -->
             <form action="{% url 'checkout_cart' %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="buy-button">Buy All</button>
+                <button type="submit" class="buy-button w-100 mt-4">Place Order</button>
             </form>
-            
+        <!-- Button to navigate to the address page -->
+        <div class="text-center mt-4">
+            <a href="{% url 'cart_address_page' %}" class="btn btn-primary">
+                Go to Address Page
+            </a>
+        </div>
         </form>
     </div>
 

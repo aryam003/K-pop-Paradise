@@ -72,6 +72,24 @@ urlpatterns=[
     path('callback2/', views.callback2, name='callback2'),
     path('place_order/<id>/', views.place_order2, name='place_order2'),
 
+    path('cart/address/', views.cart_address_page, name='cart_address_page'),
+    
+    # Route to the order payment page (step 2)
+    path('order/payment3/', views.order_payment3, name='order_payment2'),
+    
+    # Route to handle the payment confirmation callback
+    path('callback3/', views.callback3, name='callback2'),
+    
+    # Route to process the payment and finalize the order (final step after payment)
+    path('pay3/', views.pay3, name='pay2'),
+    
+    path('cancel_order/<id>',views.cancel_order),
+    path('confirm_order/<order_id>', views.confirm_order, name='confirm_order'),
+     path('confirm_order/<int:order_id>/',views. confirm_order, name='confirm_order')
+
+    
+
+
 ]
  
     

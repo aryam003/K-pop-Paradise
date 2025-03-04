@@ -99,7 +99,9 @@ class Cart(models.Model):
 
 class Booking(models.Model):
     product = models.ForeignKey(products, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Assuming the user is logged in
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE)  # product_id field
+ # Assuming the user is logged in
     booking_date = models.DateTimeField(auto_now_add=True)
     buyer_name = models.CharField(max_length=100)
     address = models.TextField(null=True, blank=True)

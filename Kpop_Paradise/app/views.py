@@ -693,15 +693,15 @@ def buy_product(req, product_id):
         buyer_name = req.POST.get('buyer_name', '')
         email = req.POST.get('email', '')
         address = req.POST.get('address', '') 
-
+     
         if user_address:
             user_address.buyer_name = buyer_name
             user_address.address = address
             user_address.email = email
             user_address.save()
         else:
-            Booking.objects.create(user=user, buyer_name=buyer_name, address=address, email=email)
-
+           data= Booking.objects.create(user=user, buyer_name=buyer_name, address=address, email=email)
+        # data.save()
         req.session['product'] = product_id
         return redirect(order_payment2)  
 
@@ -985,3 +985,199 @@ def add_edit_profile(request):
     return render(request, 'user/add_edit_profile.html', {'profile': profile})
 
 
+
+
+
+
+def cart_address_page(req):
+    user = User.objects.get(username=req.session['user'])  # Get the logged-in user
+    
+    # Retrieve the first booking address of the user (Booking is now assumed to be the address table)
+    user_address = Booking.objects.filter(user=user).first()
+
+    if req.method == 'POST':
+        # Retrieve data from POST request
+        name = req.POST.get('name')
+        address = req.POST.get('address')
+        phone_number = req.POST.get('phone_number')
+
+        if user_address:
+            # Update the user's saved address
+            user_address.buyer_name = name
+            user_address.address = address
+            user_address.email = req.user.email  # Assuming email is the logged-in user's email
+            user_address.price = 0.00  # Adjust according to the logic, here we're just setting a placeholder value
+            user_address.save()
+        else:
+            # If no address exists, create a new one
+            Booking.objects.create(user=user, buyer_name=name, address=address, phone_number=phone_number, email=req.user.email)
+
+        # Get the user's cart items
+        cart_items = Cart.objects.filter(user=user)
+
+        # Iterate over the cart items to calculate the total price for each item
+        for cart_item in cart_items:
+            cart_item.total_price = cart_item.product.price * cart_item.quantity
+        
+        # Optionally, update session with cart items
+        req.session['cart_items'] = list(cart_items.values_list('id', flat=True))
+
+        # Redirect to the next step (for example: order_payment2)
+        return redirect(order_payment3)
+
+    return render(req, 'user/cart_order.html', {'user_address': user_address, 'cart_items': Cart.objects.filter(user=user)})
+
+
+@login_required
+def order_payment3(req):
+    if 'user' in req.session:
+        user = get_object_or_404(User, username=req.session['user'])
+        cart_items = Cart.objects.filter(id__in=req.session.get('cart_items', []))
+
+        if not cart_items.exists():
+            return redirect('cart_display')
+
+        # Calculate total amount
+        total_amount = sum(cart.product.price * cart.quantity for cart in cart_items)
+
+        # Razorpay API integration to create an order
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        razorpay_order = client.order.create({
+            "amount": int(total_amount * 100),  # Razorpay expects the amount in paise (1 INR = 100 paise)
+            "currency": "INR",
+            "payment_capture": "1"
+        })
+
+        # For simplicity, assume we take the first product from the cart
+        product = cart_items.first().product
+
+        # Create an Order2 object
+        order = Order2.objects.create(
+            user=user,
+            price=total_amount,
+            provider_order_id=razorpay_order['id'],
+            payment_id='',
+            signature_id='',
+            product=product  # Associate the product from the cart
+        )
+
+        # Store the order id in the session
+        req.session['order_id'] = order.pk
+
+        # Return the response with the Razorpay integration details
+        return render(req, "user/payment.html", {
+            "callback_url": "http://127.0.0.1:8000/callback2/",
+            "razorpay_key": settings.RAZORPAY_KEY_ID,
+            "order": order,
+        })
+
+    return redirect(login)
+
+
+@login_required
+def pay3(req):
+    user = get_object_or_404(User, username=req.session['user'])
+    cart_items = Cart.objects.filter(id__in=req.session.get('cart_items', []))
+
+    if not cart_items.exists():
+        messages.error(req, "Your cart is empty. Please add items first.")
+        return redirect(cart_view)
+
+    order_id = req.session.get('order_id')
+    order = get_object_or_404(Order2, pk=order_id) if order_id else None
+
+    user_address = Booking.objects.filter(user=user).order_by('-id').first()
+
+    for cart in cart_items:
+        Buy2.objects.create(
+            user=user,
+            product=cart.product,
+            price=cart.product.price * cart.quantity,
+            quantity=cart.quantity,
+            address=user_address,
+            order=order
+        )
+
+    cart_items.delete()
+
+    return redirect(view_bookings)
+
+
+@csrf_exempt
+def callback3(request):
+    def verify_signature(response_data):
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        return client.utility.verify_payment_signature(response_data)
+
+    if "razorpay_signature" in request.POST:
+        payment_id = request.POST.get("razorpay_payment_id", "")
+        provider_order_id = request.POST.get("razorpay_order_id", "")
+        signature_id = request.POST.get("razorpay_signature", "")
+
+        order = Order2.objects.get(provider_order_id=provider_order_id)
+        order.payment_id = payment_id
+        order.signature_id = signature_id
+
+        if verify_signature(request.POST):
+            order.status = PaymentStatus.SUCCESS
+        else:
+            order.status = PaymentStatus.FAILURE
+
+        order.save()
+        
+        # Create Buy2 objects for the order
+        cart_items = Cart.objects.filter(id__in=request.session.get('cart_items', []))
+        for cart in cart_items:
+            Buy2.objects.create(
+                user=order.user,
+                product=cart.product,
+                price=cart.product.price * cart.quantity,
+                quantity=cart.quantity,
+                address=order.user.address,
+                order=order
+            )
+
+        # Clear the cart
+        cart_items.delete()
+
+        return redirect(pay3)
+
+    else:
+        payment_data = json.loads(request.POST.get("error[metadata]", "{}"))
+        provider_order_id = payment_data.get("order_id", "")
+        order = Order2.objects.get(provider_order_id=provider_order_id)
+        order.status = PaymentStatus.FAILURE
+        order.save()
+
+        return redirect(pay3)
+
+
+
+def cancel_order(req,id):
+    data=Buy.objects.get(pk=id)
+    data.delete()
+    return redirect(shop_home)
+
+def confirm_order(request, order_id):
+    order = get_object_or_404(Buy, pk=order_id)
+
+    # Check if the order is already confirmed to avoid unnecessary updates
+    if not order.is_confirmed:
+        order.is_confirmed = True
+        order.save()
+
+        # Send confirmation email
+        subject = "Order Confirmation"
+        message = f"Dear {order.user.first_name},\n\nYour order for {order.product} has been confirmed. Thank you for shopping with us!\n\nBest regards,\nYour Store Team"
+        recipient_email = order.user.email  
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,  # This will be your email settings
+            [recipient_email],
+            fail_silently=False,
+        )
+    
+    # After confirming the order, redirect to the order details or shop home page
+    return redirect(shop_home)  # Replace with the actual URL name if it's different
