@@ -135,9 +135,10 @@
 <body>
     <!-- <div class="main" style="background-color: #8a2be2; width: 100%; height: 50px;" ></div> -->
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light " style="background: radial-gradient(Circle, Violet, Lavender);">
+        <nav class="navbar navbar-expand-lg navbar-light " style="background: radial-gradient(Circle, rgb(255, 255, 255), rgb(255, 255, 255)); height: 80px;">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#" style="font-size: 30px; "><span class="deep-violet">K-pop</span><span class="deep-violet"></span> <span class="black">Paradise</span></a>
+                <a class="navbar-brand" href="#" style="font-size: 30px; "><strong><img src="{% static 'image/kpop.png' %}" alt="Login Icon" class="img-fluid" style="max-width: 50px; "></strong></a>
+                <!-- <h6> KPOP PARADISE</h6> -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -147,13 +148,13 @@
                             <!-- <a class="nav-link" href="user_tickets/">Ticket</a> -->
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="../view-bookings/">Bookings</a>
+                          <a class="nav-link" href="../view-bookings/">BOOKINGS</a>
                       </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="about/">About</a>
+                            <a class="nav-link" href="about/">ABOUT</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="logout">Logout</a>
+                          <a class="nav-link" href="logout">LOGOUT</a>
                         </li>
                         <li class="nav-item">
                           <a class="nav-link active" aria-current="page" href="cart/"><i class="bi bi-cart"></i></a>
@@ -168,7 +169,7 @@
         </nav>
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
-      <h1 style="width: 100%; height: 30px; background-color: white;"></h1>
+      <!-- <h1 style="width: 100%; height: 30px; background-color: white;"></h1> -->
         <!-- Carousel -->
 <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
@@ -294,12 +295,11 @@
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
   
 <div class="container-1 mt-3">
-  <h2 class="text-center" style="background: radial-gradient(circle, lightblue, pink); padding: 10px; border-radius: 10px; width: 100%; box-sizing: border-box;">
-    Recommended Artists
+  <h2 class="text-center" style="background: radial-gradient(circle, rgb(255, 255, 255), rgb(255, 255, 255)); padding: 10px; border-radius: 10px; width: 100%; box-sizing: border-box; ">
+    <!-- Recommended Artists -->
   </h2>
 </div>
-
-  <div class="row justify-content-center mt-2" style="width: 100%;">
+  <!-- <div class="row justify-content-center mt-2" style="width: 100%;">
     {% for band in bands|slice:":6" %}
       <div class="col-4 col-sm-2 col-md-1 col-lg-1 artist-card text-center mb-4" >
         {% if band.image %}
@@ -309,17 +309,11 @@
         {% endif %}
       </div>
     {% endfor %}
-  </div>
-
-
+  </div> -->
   <div class="container mt-5">
-    <h1 class="text-center" style="background: radial-gradient(circle, lightblue, pink); width: 100%;padding: 10px; border-radius: 10px;">K-Pop Bands</h1>
-
-    <!-- Search Input with Datalist -->
     <div class="row mb-4">
-        <div class="col-md-6 offset-md-3">
-            <input type="text" id="searchBar" class="form-control" placeholder="Search K-Pop Bands" list="bandNames" oninput="filterBands()" />
-            <!-- Datalist for Band Names -->
+        <div class="col-md-12 offset-md-0">
+            <input type="text" id="searchBar" class="form-control" placeholder="Search..." list="bandNames" oninput="filterBands()" />
             <datalist id="bandNames">
                 {% for band in bands %}
                     <option value="{{ band.name }}">
@@ -327,15 +321,14 @@
             </datalist>
         </div>
     </div>
-
-    <!-- Band Cards -->
-    <div class="row" style="padding: 10px;" id="bandList">
+  </h1>
+    <div class="row" id="bandList">
         {% for band in bands %}
-            <div class="col-md-4 text-center band-card" data-name="{{ band.name }}">
+            <div class="col-md-2 text-center band-card" data-name="{{ band.name }}">
                 <div class="card" style="padding: 10px;border:none;">
                     {% if band.image %}
                     <a href="../user_band/{{ band.id }}/" class="btn ">
-                        <img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}" style="height: 330px; border-radius: 20px;">
+                        <img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}" style="height: 130px; width: 130px; border-radius: 20px;">
                     </a>
                     {% endif %}
                     <div class="card-body">
@@ -346,12 +339,10 @@
         {% endfor %}
     </div>
 </div>
-
-
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
   <div class="container mt-5">
-    <h1 class="text-center" style="background: radial-gradient(circle, lightblue, pink); width: 100%;padding: 10px; border-radius: 10px;">K-Pop Bands</h1>
+    <h1 class="text-center" style=" border: 4px solid rgba(222, 184, 135, 0.266); width: 100%;padding: 10px; border-radius: 10px;">K-Pop Bands</h1>
     <div class="row" style="padding: 10px;">
         {% for band in bands %}
             <div class="col-md-4 text-center">

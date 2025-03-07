@@ -304,7 +304,8 @@ def booking_list(request):
 def user_home(req):
     if 'user' in req.session:
         bands=Band.objects.all()
-        return render(req,'user/home.html',{'bands':bands})
+        product=products.objects.all()
+        return render(req,'user/home.html',{'bands':bands,'product':product})
     else:
         return redirect(shop_login) 
     
