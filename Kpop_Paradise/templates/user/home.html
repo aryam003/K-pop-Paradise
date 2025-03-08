@@ -111,6 +111,91 @@
           height: 80px;
          
       }
+      .crosl {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.text-overlay {
+  position: absolute;
+  top: 50%;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+  right: 60%; /* This keeps the text on the right side */
+  transform: translateY(-50%); /* Center the text vertically */
+  color: white; /* Text color */
+  text-align: left; /* Align text to the right */
+  z-index: 10;
+  font-size: 20px; /* You can adjust the size */
+}
+
+.text-overlay h2 {
+  font-size: 30px; /* Adjust header size */
+  margin: 0;
+}
+
+.text-overlay p {
+  font-size: 16px; /* Adjust paragraph size */
+  margin: 5px 0 0;
+}
+
+
+/* Text styling */
+.text-overlay {
+  position: absolute;
+  top: 50%;
+  right: 80px; /* Keep text on the right */
+  transform: translateY(-50%); /* Center the text vertically */
+  color: rgb(231, 230, 233);
+  text-align: left;
+  z-index: 10;
+  font-size: 20px; /* Adjust the font size */
+  max-width: 50%; /* Ensure the text doesn't overflow */
+}
+
+
+
+.text-overlay p {
+  font-size: 16px;
+  margin: 5px 0 0;
+  
+}
+
+/* Make the text smaller and more readable on small screens */
+@media (max-width: 768px) {
+  .text-overlay {
+    right: 20px; /* Provide some spacing on smaller screens */
+    font-size: 16px; /* Smaller font size */
+    max-width: 80%; /* Allow more space for text on smaller screens */
+  }
+
+  .text-overlay h2 {
+    font-size: 24px; /* Adjust the heading size */
+  }
+
+  .text-overlay p {
+    font-size: 14px; /* Adjust paragraph size */
+    left: 20%;
+  }
+}
+
+@media (max-width: 576px) {
+  .text-overlay {
+    font-size: 14px; /* Further reduce font size */
+    max-width: 90%; /* Allow even more space for text on very small screens */
+  }
+
+  .text-overlay h2 {
+    font-size: 22px; /* Smaller heading size */
+  }
+
+  .text-overlay p {
+    font-size: 12px; /* Smaller paragraph size */
+    left: 20%;
+  }
+}
 
         /* Responsiveness */
         @media (max-width: 768px) {
@@ -135,7 +220,7 @@
 <body>
     <!-- <div class="main" style="background-color: #8a2be2; width: 100%; height: 50px;" ></div> -->
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light " style="background: radial-gradient(Circle, rgb(255, 255, 255), rgb(255, 255, 255)); height: 80px;">
+        <nav class="navbar navbar-expand-lg navbar-light " style="background-color: white ; height: 50px;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#" style="font-size: 30px; "><strong><img src="{% static 'image/kpop.png' %}" alt="Login Icon" class="img-fluid" style="max-width: 50px; "></strong></a>
                 <!-- <h6> KPOP PARADISE</h6> -->
@@ -169,11 +254,8 @@
         </nav>
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
-      <!-- <h1 style="width: 100%; height: 30px; background-color: white;"></h1> -->
-        <!-- Carousel -->
+      <!-- <h1 style="width: 100%; height: 50px; background-color: whitesmoke;"></h1> -->
 <div id="demo" class="carousel slide" data-bs-ride="carousel">
-
-    <!-- Indicators/dots -->
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
       <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
@@ -191,96 +273,97 @@
 <!-- The slideshow/carousel -->
 <div class="carousel-inner">
   <div class="carousel-item active">
-          <div class="crosl" style=" background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
-            <img src="{% static 'image/carousel9.png' %}" alt="">
+    <div class="crosl" style="background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
+      <img src="{% static 'image/carousel9.png' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>BTS</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(175, 76, 5) ,rgb(216, 131, 67), rgb(180, 61, 10));">
-      <img src="{% static 'image/carousel10.png' %}" alt="" >
+    <div class="crosl" style="background: linear-gradient(to right,rgb(175, 76, 5) ,rgb(216, 131, 67), rgb(180, 61, 10));">
+      <img src="{% static 'image/carousel10.png' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>BTS</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(86, 166, 190) ,rgb(69, 118, 175), rgb(23, 192, 204));">
+    <div class="crosl" style="background: linear-gradient(to right,rgb(86, 166, 190) ,rgb(69, 118, 175), rgb(23, 192, 204));">
       <img src="{% static 'image/carousel8.jpg' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>hi</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
+    <div class="crosl" style="background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
       <img src="{% static 'image/carousel7.png' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>BTS</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(11, 47, 126) ,rgb(57, 114, 219), rgb(9, 50, 126));">
+    <div class="crosl" style="background: linear-gradient(to right,rgb(11, 47, 126) ,rgb(57, 114, 219), rgb(9, 50, 126));">
       <img src="{% static 'image/carousel6.png' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>BTS</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(1, 2, 3) ,rgb(9, 25, 54), rgb(3, 12, 27));">
+    <div class="crosl" style="background: linear-gradient(to right,rgb(1, 2, 3) ,rgb(9, 25, 54), rgb(3, 12, 27));">
       <img src="{% static 'image/carousel5.png' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>BTS</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(221, 183, 15) ,rgb(226, 203, 99), rgb(226, 178, 18));">
+    <div class="crosl" style="background: linear-gradient(to right,rgb(221, 183, 15) ,rgb(226, 203, 99), rgb(226, 178, 18));">
       <img src="{% static 'image/carousel4.png' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>BTS</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
+    <div class="crosl" style="background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
       <img src="{% static 'image/carousel1.png' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>BTS</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(80, 3, 32) ,rgb(151, 32, 62), rgb(94, 6, 43));">
+    <div class="crosl" style="background: linear-gradient(to right,rgb(80, 3, 32) ,rgb(151, 32, 62), rgb(94, 6, 43));">
       <img src="{% static 'image/carousel3.png' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>BTS</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
   <div class="carousel-item">
-    <div class="crosl" style=" background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
+    <div class="crosl" style="background: linear-gradient(to right,rgb(63, 180, 216) ,rgb(114, 188, 218), rgb(16, 150, 212));">
       <img src="{% static 'image/carousel2.png' %}" alt="">
       <div class="text-overlay">
-        <!-- <h2>BTS</h2>
-        <p>bts</p> -->
+        <!-- <h2>K-pop</h2> -->
+        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
       </div>
     </div>
   </div>
 </div>
+
 
     <!-- <img src="{% static 'image/OIP (4).jpg' %}" alt="New York" class="d-block" style="width:30%; height: auto; padding: 5px;" > -->
     <!-- Left and right controls/icons -->
@@ -295,53 +378,44 @@
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
   
 <div class="container-1 mt-3">
-  <h2 class="text-center" style="background: radial-gradient(circle, rgb(255, 255, 255), rgb(255, 255, 255)); padding: 10px; border-radius: 10px; width: 100%; box-sizing: border-box; ">
+  <h2 class="text-center" style="background: radial-gradient(circle, rgb(255, 255, 255), rgb(255, 255, 255)); padding: 10px; border-radius: 10px; width: 100%; box-sizing: border-box;">
     <!-- Recommended Artists -->
   </h2>
 </div>
-  <!-- <div class="row justify-content-center mt-2" style="width: 100%;">
-    {% for band in bands|slice:":6" %}
-      <div class="col-4 col-sm-2 col-md-1 col-lg-1 artist-card text-center mb-4" >
-        {% if band.image %}
-          <a href="../user_band/{{ band.id }}/">
-            <img src="{{ band.image.url }}" alt="{{ band.name }}" class="img-fluid rounded-circle" style="height: 90px; width: 90px;">
-          </a>
-        {% endif %}
+
+<div class="container mt-5">
+  <div class="row mb-4">
+    <div class="col-12">
+      <input type="text" id="searchBar" class="form-control" placeholder="Search..." list="bandNames" oninput="filterBands()" />
+      <datalist id="bandNames">
+        {% for band in bands %}
+          <option value="{{ band.name }}">
+        {% endfor %}
+      </datalist>
+    </div>
+  </div>
+
+  <div class="row" id="bandList">
+    {% for band in bands %}
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center band-card" data-name="{{ band.name }}">
+        <div class="card" style="padding: 10px; border:none;">
+          {% if band.image %}
+            <a href="../user_band/{{ band.id }}/" class="btn ">
+              <img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}" style="height: 130px; width: 130px; border-radius: 20px;">
+            </a>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ band.name }}</h5>
+          </div>
+        </div>
       </div>
     {% endfor %}
-  </div> -->
-  <div class="container mt-5">
-    <div class="row mb-4">
-        <div class="col-md-12 offset-md-0">
-            <input type="text" id="searchBar" class="form-control" placeholder="Search..." list="bandNames" oninput="filterBands()" />
-            <datalist id="bandNames">
-                {% for band in bands %}
-                    <option value="{{ band.name }}">
-                {% endfor %}
-            </datalist>
-        </div>
-    </div>
-  </h1>
-    <div class="row" id="bandList">
-        {% for band in bands %}
-            <div class="col-md-2 text-center band-card" data-name="{{ band.name }}">
-                <div class="card" style="padding: 10px;border:none;">
-                    {% if band.image %}
-                    <a href="../user_band/{{ band.id }}/" class="btn ">
-                        <img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}" style="height: 130px; width: 130px; border-radius: 20px;">
-                    </a>
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ band.name }}</h5>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+  </div>
 </div>
+
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
-  <div class="container mt-5">
+  <!-- <div class="container mt-5">
     <h1 class="text-center" style=" border: 4px solid rgba(222, 184, 135, 0.266); width: 100%;padding: 10px; border-radius: 10px;">K-Pop Bands</h1>
     <div class="row" style="padding: 10px;">
         {% for band in bands %}
@@ -357,7 +431,49 @@
             </div>
         {% endfor %}
     </div>
-</div>
+</div> -->
+
+<!-- {% for band in bands %}
+    <h3>{{ band.name }}</h3>
+    <ul>
+        {% for product in band.products %}
+            <li>
+                {{ product.name }}
+                Display product image
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100px; height: auto;">
+                {% else %}
+                    <p>No image available for this product.</p>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endfor %} -->
+{% for band in bands %}
+    <div style="border: 1px solid #ddd; padding: 20px; margin: 15px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <h3 style="font-size: 1.8em; color: #333; text-align: center; margin-bottom: 20px;">{{ band.name }}</h3>
+        
+        <div style="margin-top: 30px;">
+            <!-- <h4 style="font-size: 1.5em; color: #444; text-align: center;">Products:</h4> -->
+            <ul style="display: flex; flex-wrap: wrap; justify-content: center; list-style-type: none; padding-left: 0; margin: 0;">
+                {% for product in band.products %}
+                    <li style="display: inline-block; width: 200px; text-align: center; margin: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div>
+                            <strong style="display: block; font-size: 1.2em; color: #333;">{{ product.name }}</strong>
+                        </div>
+                        <!-- Display product image -->
+                        {% if product.image %}
+                           <a href="{% url 'product_detail' product.id %}"><img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto; max-width: 100px; margin: 10px 0; border-radius: 10px;"></a>
+                        {% else %}
+                            <p>No image available for this product.</p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endfor %}
+
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 <footer class="footer" style="color: white; background-color: #0d527e;" >

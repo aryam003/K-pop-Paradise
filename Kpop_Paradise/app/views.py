@@ -301,13 +301,26 @@ def booking_list(request):
 #-----USER---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
 
 
+# def user_home(req):
+#     if 'user' in req.session:
+#         bands=Band.objects.all()
+#         product=products.objects.all()
+#         return render(req,'user/home.html',{'bands':bands,'product':product})
+#     else:
+#         return redirect(shop_login) 
 def user_home(req):
     if 'user' in req.session:
-        bands=Band.objects.all()
-        product=products.objects.all()
-        return render(req,'user/home.html',{'bands':bands,'product':product})
+        # Fetch all bands
+        bands = Band.objects.all()
+
+        # Fetch products for each band and add it as a list
+        for band in bands:
+            band.products = products.objects.filter(band=band)
+
+        # Pass the bands with their associated products to the template
+        return render(req, 'user/home.html', {'bands': bands})
     else:
-        return redirect(shop_login) 
+        return redirect(shop_login)
     
 
 def concert_list(req, id):
@@ -397,50 +410,6 @@ def book_ticket(req, concert_id):
 
     return render(req, 'user/book_ticket.html', {'concert': concert, 'user_address': user_address})
 
-
-# def book_ticket(req, concert_id):
-#     # Fetch the concert and user from the database
-#     concert = Concert.objects.get(id=concert_id)
-#     user = User.objects.get(username=req.session['user'])
-
-#     # Fetch the latest user address or None if no address exists
-#     user_address = Ticket.objects.filter(user=user).order_by('-id').first()
-
-#     if req.method == 'POST':
-#         # Get form data
-#         name = req.POST.get('name')
-#         email = req.POST.get('email')
-#         quantity = int(req.POST.get("quantity"))
-#         total_price = concert.price * quantity
-
-#         # If user already has a ticket, update the ticket details
-#         if user_address:
-#             user_address.buyer_name = name
-#             user_address.email = email
-#             user_address.quantity = quantity
-#             user_address.total_price = total_price
-#             user_address.concert = concert  # Ensure the concert_id is set
-#             user_address.save()
-#         else:
-#             # Create a new ticket
-#             Ticket.objects.create(
-#                 user=user,
-#                 concert=concert,  # Assign the concert to the ticket
-#                 buyer_name=name,
-#                 email=email,
-#                 quantity=quantity,
-#                 total_price=total_price
-#             )
-
-#         # Save the concert and quantity in the session for further use (like payment)
-#         req.session['concert'] = concert_id
-#         req.session['quantity'] = quantity
-
-#         # Redirect to the payment page
-#         return redirect('order_payment')
-
-#     # If not POST, just render the page with concert and user address details
-#     return render(req, 'user/book_ticket.html', {'concert': concert, 'user_address': user_address})
 
 
 
@@ -544,96 +513,6 @@ def callback(request):
         return redirect(pay)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def book_ticket(request, concert_id):
-#     concert = Concert.objects.get(id=concert_id)
-    
-#     if request.method == "POST":
-#         # Fetch the user profile if the user is authenticated
-#         user = request.user if request.user.is_authenticated else None
-#         if user:
-#             user_profile = UserProfile.objects.get(user=user)
-#             buyer_name = user_profile.name if user_profile.name else ''
-#             email = user.email
-#         else:
-#             # Fallback for guests (if not logged in)
-#             buyer_name = request.POST.get("name")
-#             email = request.POST.get("email")
-        
-#         # Check for valid name and email for guests
-#         if not user and (not buyer_name or not email):
-#             messages.error(request, 'You must provide your name and email.')
-#             return redirect(book_ticket, concert_id=concert_id)
-
-#         quantity = int(request.POST.get("quantity"))
-#         total_price = concert.price * quantity
-        
-#         ticket = Ticket.objects.create(
-#             concert=concert,
-#             user=user,  # Attach the user if authenticated
-#             buyer_name=buyer_name,
-#             email=email,
-#             quantity=quantity,
-#             total_price=total_price
-#         )
-
-#         # Email setup
-#         subject = f"Your Ticket for {concert.band.name} Concert"
-#         html_message = render_to_string('user/ticket_email.html', {
-#             'buyer_name': buyer_name,
-#             'concert': concert,
-#             'quantity': quantity,
-#             'total_price': total_price,
-#         })
-
-#         concert_image_path = concert.image.path 
-#         email_message = EmailMessage(
-#             subject=subject,
-#             body=strip_tags(html_message),  
-#             from_email=settings.DEFAULT_FROM_EMAIL,
-#             to=[email],
-#         )
-#         with open(concert_image_path, 'rb') as img_file:
-#             email_message.attach(
-#                 'concert_image.jpg', 
-#                 img_file.read(), 
-#                 'image/jpeg'  
-#             )
-        
-#         cid = 'concert_image' 
-#         html_message_with_image = html_message.replace(
-#             'concert_image.jpg', f'cid:{cid}' 
-#         )
-#         email_message.content_subtype = 'html'
-#         email_message.body = html_message_with_image
-
-#         email_message.send()
-#         messages.success(request, f"Ticket booked successfully! A confirmation email has been sent to {email}. Total price: {total_price:.2f}")
-#         return redirect(user_home)
-
-#     return render(request, 'user/book_ticket.html', {'concert': concert})
-
-
-
-
-# def user_view_bookings(req):
-# user=User.objects.get(username=request.session['user'])
-#     data=Ticket.objects.filter(user=user)
-#     return render(req,'user/view_booking.html',{'data':data})
-
-
 def user_tickets(request):
     if 'user'in request.session:
         # return redirect('login')  
@@ -652,30 +531,7 @@ def product_detail(req, product_id):
     product_in_cart = Cart.objects.filter(user=req.user, product=product).exists() if req.user.is_authenticated else False
     return render(req, 'user/product_detail.html', {'product': product, 'product_in_cart': product_in_cart})
 
-# def buy_product(request, product_id):
-#     product = products.objects.get(id=product_id)
-    
-#     if request.method == 'POST':
-#         user = request.user if request.user.is_authenticated else None
-      
-#         buyer_name = request.POST.get('buyer_name', '')
-#         email = request.POST.get('email', '')
-#         address = request.POST.get('address', '')
-#         price = request.POST.get('price', '') 
-#         if not user and (not buyer_name or not email):
-#             messages.error(request, 'You must provide your name and email.')
-#             return redirect(buy_product, product_id=product_id)
-#         booking = Booking.objects.create(
-#             product=product,
-#             user=user,
-#             buyer_name=buyer_name,
-#             email=email,
-#             address=address,
-#             price=price)
-#         messages.success(request, f'You have successfully booked the {product.name}!')
-#         return redirect(product_detail, product_id=product_id)
-    
-#     return render(request, 'user/book_product.html', {'product': product})
+
 
 
 def buy_pro2(req, id):
@@ -744,35 +600,7 @@ def order_payment2(req):
     return redirect(login)  
 
 
-# @login_required
-# def pay2(req):
-#     user = User.objects.get(username=req.session['user'])  
-#     product = products.objects.get(pk=req.session['product'])
 
-#     if not product:
-#         messages.error(req, "Your cart is empty. Please add a product first.")
-#         return redirect(cart_view)
-
-#     order_id = req.session.get('order_id')
-#     order = get_object_or_404(Order2, pk=order_id) if order_id else None
-
-#     if req.method == 'GET':
-#         user_address = Booking.objects.filter(user=user).order_by('-id').first()
-#         # booking = Booking.objects.get(id=26)
-#         # buy2 = Buy2.objects.create(address=booking)
-#         data = Buy2.objects.create(
-#             user=user,
-#             product=product,
-#             price=product.price,
-#             address=user_address,
-#             email = user.email,
-#             order=order
-#         )
-#         data.save()
-
-#         return redirect(view_bookings)
-
-#     return render(req, 'user/view_pro_booking.html')
 @login_required
 def pay2(req):
     user = User.objects.get(username=req.session['user'])  
