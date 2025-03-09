@@ -123,11 +123,10 @@
   top: 50%;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 
-  right: 60%; /* This keeps the text on the right side */
   transform: translateY(-50%); /* Center the text vertically */
   color: white; /* Text color */
   text-align: left; /* Align text to the right */
-  z-index: 10;
+  z-index: 5;
   font-size: 20px; /* You can adjust the size */
 }
 
@@ -146,11 +145,10 @@
 .text-overlay {
   position: absolute;
   top: 50%;
-  right: 80px; /* Keep text on the right */
   transform: translateY(-50%); /* Center the text vertically */
   color: rgb(231, 230, 233);
   text-align: left;
-  z-index: 10;
+  z-index: 5;
   font-size: 20px; /* Adjust the font size */
   max-width: 50%; /* Ensure the text doesn't overflow */
 }
@@ -454,25 +452,67 @@
         <h3 style="font-size: 1.8em; color: #333; text-align: center; margin-bottom: 20px;">{{ band.name }}</h3>
         
         <div style="margin-top: 30px;">
-            <!-- <h4 style="font-size: 1.5em; color: #444; text-align: center;">Products:</h4> -->
-            <ul style="display: flex; flex-wrap: wrap; justify-content: center; list-style-type: none; padding-left: 0; margin: 0;">
+            <!-- Scrollable container -->
+            <div class="scrollable-content" style="display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; padding-left: 5px;">
                 {% for product in band.products %}
-                    <li style="display: inline-block; width: 200px; text-align: center; margin: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <div class="img1" style="flex: 0 0 auto; width: 200px; text-align: center; padding: 15px; border: 1px solid #ddd; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <div>
                             <strong style="display: block; font-size: 1.2em; color: #333;">{{ product.name }}</strong>
                         </div>
                         <!-- Display product image -->
                         {% if product.image %}
-                           <a href="{% url 'product_detail' product.id %}"><img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto; max-width: 100px; margin: 10px 0; border-radius: 10px;"></a>
+                            <a href="{% url 'product_detail' product.id %}">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto; max-width: 100px; margin: 10px 0; border-radius: 10px;">
+                            </a>
                         {% else %}
                             <p>No image available for this product.</p>
                         {% endif %}
-                    </li>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
 {% endfor %}
+<!-- {% for band in bands %}
+    <div style="border: 1px solid #ddd; padding: 20px; margin: 15px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <h3 style="font-size: 1.8em; color: #333; text-align: center; margin-bottom: 20px;">{{ band.name }}</h3>
+        
+        <div style="margin-top: 30px; overflow: hidden; position: relative;">
+            <div class="scrollable-content" style="display: flex; gap: 15px; padding-left: 5px; padding-bottom: 10px; width: 100%; flex-wrap: nowrap;">
+                {% for product in band.products %}
+                    <div class="img1" style="flex: 0 0 auto; width: 200px; text-align: center; padding: 15px; border: 1px solid #ddd; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div>
+                            <strong style="display: block; font-size: 1.2em; color: #333;">{{ product.name }}</strong>
+                        </div>
+                        {% if product.image %}
+                            <a href="{% url 'product_detail' product.id %}">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto; max-width: 100px; margin: 10px 0; border-radius: 10px;">
+                            </a>
+                        {% else %}
+                            <p>No image available for this product.</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<style>
+    .scrollable-content {
+        display: flex;
+        animation: scrollLeft 30s linear infinite;
+
+    @keyframes scrollLeft {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+    }
+
+    .scrollable-content {
+        animation: scrollLeft 30s linear infinite;
+    }
+</style> -->
+
 
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
