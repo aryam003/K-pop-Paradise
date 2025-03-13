@@ -123,34 +123,32 @@
   top: 50%;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 
-  transform: translateY(-50%); /* Center the text vertically */
-  color: white; /* Text color */
-  text-align: left; /* Align text to the right */
+  transform: translateY(-50%);
+  color: white; 
+  text-align: left; 
   z-index: 5;
-  font-size: 20px; /* You can adjust the size */
+  font-size: 20px; 
 }
 
 .text-overlay h2 {
-  font-size: 30px; /* Adjust header size */
+  font-size: 30px; 
   margin: 0;
 }
 
 .text-overlay p {
-  font-size: 16px; /* Adjust paragraph size */
+  font-size: 16px; 
   margin: 5px 0 0;
 }
 
-
-/* Text styling */
 .text-overlay {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%); /* Center the text vertically */
+  transform: translateY(-50%);
   color: rgb(231, 230, 233);
   text-align: left;
   z-index: 5;
-  font-size: 20px; /* Adjust the font size */
-  max-width: 50%; /* Ensure the text doesn't overflow */
+  font-size: 20px;
+  max-width: 50%; 
 }
 
 
@@ -160,42 +158,66 @@
   margin: 5px 0 0;
   
 }
+  p {
+    width: 100%;
+    height: 50px;
+    background-color: rgba(194, 192, 192, 0.493);
+    top: 5px;
+    text-align: center;
+    padding-top: 15px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 12px;
+  }
 
-/* Make the text smaller and more readable on small screens */
+
+  @media (max-width: 600px) {
+    p {
+      font-size: 6px; 
+      height: auto;   
+      padding-top: 10px; 
+    }
+  }
+
+  @media (max-width: 400px) {
+    p {
+      font-size: 5px; 
+      padding-top: 5px; 
+    }
+  }
 @media (max-width: 768px) {
   .text-overlay {
-    right: 20px; /* Provide some spacing on smaller screens */
-    font-size: 16px; /* Smaller font size */
-    max-width: 80%; /* Allow more space for text on smaller screens */
+    right: 20px; 
+    font-size: 16px; 
+    max-width: 80%; 
   }
 
   .text-overlay h2 {
-    font-size: 24px; /* Adjust the heading size */
+    font-size: 24px; 
   }
 
   .text-overlay p {
-    font-size: 14px; /* Adjust paragraph size */
+    font-size: 14px; 
     left: 20%;
   }
 }
 
 @media (max-width: 576px) {
   .text-overlay {
-    font-size: 14px; /* Further reduce font size */
-    max-width: 90%; /* Allow even more space for text on very small screens */
+    font-size: 14px;
+    max-width: 90%; 
   }
 
   .text-overlay h2 {
-    font-size: 22px; /* Smaller heading size */
+    font-size: 22px; 
   }
 
   .text-overlay p {
-    font-size: 12px; /* Smaller paragraph size */
+    font-size: 12px; 
     left: 20%;
   }
 }
 
-        /* Responsiveness */
+      
         @media (max-width: 768px) {
             .footer {
                 padding: 30px 10px;
@@ -251,8 +273,10 @@
             </div>
         </nav>
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-      <!-- <h1 style="width: 100%; height: 50px; background-color: whitesmoke;"></h1> -->
+<p style="width: 100%; height: 50px; background-color: rgba(211, 211, 211, 0.564); top: 5px; text-align: center; padding-top: 15px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: 12px;">
+  THE WORLD OF K-POP BRINGS INCREDIBLE MUSIC, PERFORMANCES, AND PASSIONATE FANDOMS TOGETHER. ENJOY THE VIBRANT CULTURE!
+</p>
+      <!-- <p style="width: 100%; height: 50px; background-color: rgba(194, 192, 192, 0.493); top: 5px; text-align: center; padding-top: 15px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: 12px;">THE WORLD OF K-POP BRINGS INCREDIBLE MUSIC, PERFORMANCES, AND PASSIONATE FANDOMS TOGETHER. ENJOY THE VIBRANT CULTURE!</p> -->
 <div id="demo" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
@@ -275,7 +299,7 @@
       <img src="{% static 'image/carousel9.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p> -->
       </div>
     </div>
   </div>
@@ -284,7 +308,7 @@
       <img src="{% static 'image/carousel10.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p> -->
       </div>
     </div>
   </div>
@@ -293,7 +317,7 @@
       <img src="{% static 'image/carousel8.jpg' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p> -->
       </div>
     </div>
   </div>
@@ -302,7 +326,7 @@
       <img src="{% static 'image/carousel7.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p> -->
       </div>
     </div>
   </div>
@@ -311,7 +335,7 @@
       <img src="{% static 'image/carousel6.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p> -->
       </div>
     </div>
   </div>
@@ -320,7 +344,7 @@
       <img src="{% static 'image/carousel5.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p> -->
       </div>
     </div>
   </div>
@@ -329,7 +353,7 @@
       <img src="{% static 'image/carousel4.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together.</p> -->
       </div>
     </div>
   </div>
@@ -338,7 +362,7 @@
       <img src="{% static 'image/carousel1.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together.</p> -->
       </div>
     </div>
   </div>
@@ -347,7 +371,7 @@
       <img src="{% static 'image/carousel3.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p> -->
       </div>
     </div>
   </div>
@@ -356,7 +380,7 @@
       <img src="{% static 'image/carousel2.png' %}" alt="">
       <div class="text-overlay">
         <!-- <h2>K-pop</h2> -->
-        <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p>
+        <!-- <p>The world of K-pop brings incredible music, performances, and passionate fandoms together. Enjoy the vibrant culture!</p> -->
       </div>
     </div>
   </div>
@@ -413,49 +437,23 @@
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
-  <!-- <div class="container mt-5">
-    <h1 class="text-center" style=" border: 4px solid rgba(222, 184, 135, 0.266); width: 100%;padding: 10px; border-radius: 10px;">K-Pop Bands</h1>
-    <div class="row" style="padding: 10px;">
-        {% for band in bands %}
-            <div class="col-md-4 text-center">
-                <div class="card" style="padding: 10px;border:none;">
-                    {% if band.image %}
-                    <a href="../user_band/{{ band.id }}/" class="btn "><img src="{{ band.image.url }}" class="card-img-top" alt="{{ band.name }}" style="height: 330px; border-radius: 20px;"></a>
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ band.name }}</h5>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</div> -->
+<p style="width: 100%; height: 60px; background-color: rgb(0, 0, 0); top: 20px; text-align: center; padding-top: 19px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: 12px; color: white; border-radius: 10px;">
+  THE WORLD OF K-POP .
+</p>
 
-<!-- {% for band in bands %}
-    <h3>{{ band.name }}</h3>
-    <ul>
-        {% for product in band.products %}
-            <li>
-                {{ product.name }}
-                Display product image
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100px; height: auto;">
-                {% else %}
-                    <p>No image available for this product.</p>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-{% endfor %} -->
+
 {% for band in bands %}
-    <div style="border: 1px solid #ddd; padding: 20px; margin: 15px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <h3 style="font-size: 1.8em; color: #333; text-align: center; margin-bottom: 20px;">{{ band.name }}</h3>
+    <div style=" padding: 20px; margin: 15px; border-radius: 10px;">
+        <h3 style="font-size: 1.8em; color: #333; text-align: center; margin-bottom: 20px; background-color: rgb(0, 0, 0); color: white; padding: 10px; border-top-left-radius: 15px;
+border-top-right-radius: 15px;">
+            {{ band.name }}
+        </h3>
         
         <div style="margin-top: 30px;">
             <!-- Scrollable container -->
             <div class="scrollable-content" style="display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; padding-left: 5px;">
                 {% for product in band.products %}
-                    <div class="img1" style="flex: 0 0 auto; width: 200px; text-align: center; padding: 15px; border: 1px solid #ddd; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <div class="img1" style="flex: 0 0 auto; width: 200px; text-align: center; padding: 15px;  border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <div>
                             <strong style="display: block; font-size: 1.2em; color: #333;">{{ product.name }}</strong>
                         </div>
@@ -473,46 +471,6 @@
         </div>
     </div>
 {% endfor %}
-<!-- {% for band in bands %}
-    <div style="border: 1px solid #ddd; padding: 20px; margin: 15px; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <h3 style="font-size: 1.8em; color: #333; text-align: center; margin-bottom: 20px;">{{ band.name }}</h3>
-        
-        <div style="margin-top: 30px; overflow: hidden; position: relative;">
-            <div class="scrollable-content" style="display: flex; gap: 15px; padding-left: 5px; padding-bottom: 10px; width: 100%; flex-wrap: nowrap;">
-                {% for product in band.products %}
-                    <div class="img1" style="flex: 0 0 auto; width: 200px; text-align: center; padding: 15px; border: 1px solid #ddd; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                        <div>
-                            <strong style="display: block; font-size: 1.2em; color: #333;">{{ product.name }}</strong>
-                        </div>
-                        {% if product.image %}
-                            <a href="{% url 'product_detail' product.id %}">
-                                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto; max-width: 100px; margin: 10px 0; border-radius: 10px;">
-                            </a>
-                        {% else %}
-                            <p>No image available for this product.</p>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-{% endfor %}
-
-<style>
-    .scrollable-content {
-        display: flex;
-        animation: scrollLeft 30s linear infinite;
-
-    @keyframes scrollLeft {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-100%); }
-    }
-
-    .scrollable-content {
-        animation: scrollLeft 30s linear infinite;
-    }
-</style> -->
-
 
 
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
