@@ -21,7 +21,7 @@
         
         /* Navigation */
         .navbar {
-            background: radial-gradient(circle, violet, lavender);
+            background: radial-gradient(circle, rgb(255, 255, 255), lavender);
         }
         .navbar-brand {
             font-size: 30px;
@@ -30,55 +30,6 @@
         }
         .navbar-toggler-icon {
             background-color: #5b0ca5;
-        }
-
-        /* Ticket Container */
-        .ticket-container {
-            display: flex;
-            border: 2px solid #b9b9b9;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            background-color: #fff;
-        }
-
-        .ticket-image {
-            width: 40%;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .ticket-details {
-            padding: 20px;
-            width: 60%;
-            background-color: #f8f9fa;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: left;
-        }
-
-        .ticket-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .ticket-description {
-            font-size: 1rem;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .ticket-footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-        .ticket-footer .btn {
-            background-color: #007bff;
-            color: white;
         }
 
         /* Card Styles */
@@ -174,6 +125,103 @@
             font-size: 0.9rem;
             color: #95a5a6;
         }
+/* Container for ticket card */
+.ticket-card {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    border: 2px solid #ddd;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+    height: 450px; /* Adjust height to accommodate content */
+    margin-bottom: 20px;
+}
+
+/* Ticket image style as background */
+.ticket-image {
+    height: 200px; /* Set a fixed height for the image */
+    background-size: cover; /* Makes the image cover the area */
+    background-position: center; /* Center the image */
+    border-top-left-radius: 12px; /* Rounded corners on top */
+    border-top-right-radius: 12px; /* Rounded corners on top */
+}
+
+/* Ticket details section */
+.ticket-details {
+    padding: 15px;
+    text-align: left;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.85); /* Semi-transparent background */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-sizing: border-box;
+}
+
+/* Title for the concert */
+.ticket-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Description of the concert */
+.ticket-description {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Artist info */
+.ticket-artist {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Ticket information (Date, Location, Price, etc.) */
+.ticket-info {
+    font-size: 14px;
+    color: #777;
+}
+
+.ticket-info p {
+    margin: 5px 0;
+}
+
+/* Styling for Date, Location, Price, and Tickets Available */
+.ticket-date,
+.ticket-location,
+.ticket-price,
+.ticket-available {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Button to book ticket */
+.btn {
+    width: 100%;
+    padding: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: black;
+}
+
+/* Hover effect for the ticket card */
+.ticket-card:hover {
+    transform: scale(1.05);
+}
+
+/* Style for when item is in the cart */
+.alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
 
         /* Responsiveness */
         @media (max-width: 768px) {
@@ -254,68 +302,84 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: rgb(187, 33, 33) ; height: 50px;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <span class="deep-violet">K-pop</span> <span class="black">Paradise</span>
-            </a>
+            <a class="navbar-brand" href="#" style="font-size: 30px; "><strong><img src="{% static 'image/kpop.png' %}" alt="Login Icon" class="img-fluid" style="max-width: 50px; "></strong></a>
+            <!-- <h6> KPOP PARADISE</h6> -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/user_home"><i class="bi bi-arrow-left"></i></a>
+                        <a class="nav-link" href="/../user_home">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/profile/"><i class="bi bi-person-circle"></i></a>
+                      <a class="nav-link" href="/../view-bookings/">BOOKINGS</a>
+                  </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/../about/">ABOUT</a>
                     </li>
-                    
+                    <li class="nav-item">
+                      <a class="nav-link" href="/../logout">LOGOUT</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="/../cart/"><i class="bi bi-cart"></i></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="/../profile/"><i class="bi bi-person-circle"></i></i></a>
+                    </li>
+                   
                 </ul>
             </div>
         </div>
     </nav>
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<p style="width: 100%; height: 50px; background-color: rgba(211, 211, 211, 0.564); top: 5px; text-align: center; padding-top: 15px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: 12px; ">
+THE WORLD OF K-POP BRINGS INCREDIBLE MUSIC, PERFORMANCES, AND PASSIONATE FANDOMS TOGETHER. ENJOY THE VIBRANT CULTURE!
+</p>
 
-    <div class="container mt-5">
-        <h1 class="text-center">Concerts for {{ band.name }}</h1>
-        <div class="row">
-            {% for concert in concerts %}
-                <div class="col-md-12 text-center mb-4">
-                    <div class="ticket-container">
-                        <div class="ticket-image" style="background-image: url('{{ concert.image.url }}');"></div>
-                        <div class="ticket-details">
-                            <div class="ticket-title">{{ concert.band.name }}</div>
-                            <div class="ticket-description">
-                                <p>{{ concert.band.description }}</p>
-                                <p>{{ concert.artist }}</p>
-                            </div>
-                            <div>
-                                <p>Date: {{ concert.date }}</p>
-                                <p>Location: {{ concert.location }}</p>
-                                <p>Price: ${{ concert.price }}</p>
-                                <p>Tickets: {{ concert.total_ticket }}</p>
-                            </div>
-                            {% if cart %}
-                                <div class="alert alert-info mt-3">
-                                    <strong>Item already in your cart.</strong>
-                                </div>
-                            {% else %}
-                                <div class="mt-4">
-                                    <a href="{% url 'book_ticket' concert.id %}" class="btn btn-success">Book Now</a>
-                                </div>
-                            {% endif %}
-                        </div>
+<div class="container mt-5">
+    <h1 class="text-center">Concerts for {{ band.name }}</h1>
+    <div class="row">
+        {% for concert in concerts %}
+        <div class="col-md-4 mb-4">
+            <div class="ticket-card">
+                <!-- The image is now applied as a background to the ticket-card -->
+                <div class="ticket-image" style="background-image: url('{{ concert.image.url }}');"></div>
+                <div class="ticket-details">
+                    <!-- <h3 class="ticket-title">{{ concert.band.name }}</h3>
+                    <p class="ticket-description">{{ concert.band.description }}</p> -->
+                    <p class="ticket-artist">{{ concert.artist }}</p>
+                    <div class="ticket-info">
+                        <p>Date: <span class="ticket-date">{{ concert.date }}</span></p>
+                        <p>Location: <span class="ticket-location">{{ concert.location }}</span></p>
+                        <p>Price: <span class="ticket-price">${{ concert.price }}</span></p>
+                        <p>Tickets Available: <span class="ticket-available">{{ concert.total_ticket }}</span></p>
                     </div>
-                </div>
-            {% empty %}
-                <p>No concerts available</p>
-            {% endfor %}
-        </div>
-    </div>
 
-    <h2 class="text-center my-5" style="background: radial-gradient(circle, lightblue, pink); padding: 10px; border-radius: 10px; width: 100%; box-sizing: border-box; font-size: 2.5rem; color: #333;">
+                    {% if cart %}
+                    <div class="alert alert-info mt-3">
+                        <strong>Item already in your cart.</strong>
+                    </div>
+                    {% else %}
+                    <div class="mt-4">
+                        <a href="{% url 'book_ticket' concert.id %}" class="btn btn-success btn-block">Book Now</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No concerts available</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+    <h4 class="text-center my-5" style="background: radial-gradient(circle, black, rgb(0, 0, 0)); padding: 10px; border-top-right-radius: 15px;border-top-left-radius: 15px; width: 100%; box-sizing: border-box; font-size: 2.5rem; color: #ffffff;">
         Products for {{ band.name }}
-    </h2>
+    </h4>
     
     <div class="container">
         <div class="row">
