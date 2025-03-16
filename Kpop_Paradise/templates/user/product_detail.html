@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ product.name }} Details</title>
-    <!-- Add custom CSS for styling -->
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -12,9 +15,16 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
             height: 100vh;
+        }
+
+        .navbar {
+            background-color: white;
+            width: 100%;
+            height: 50px;
         }
 
         .product-container {
@@ -28,6 +38,7 @@
             flex-wrap: wrap;
             padding: 20px;
             justify-content: space-between;
+            margin-top: 20px; /* To add some space below the navbar */
         }
 
         .product-image {
@@ -91,8 +102,80 @@
             background-color: #27ae60;
         }
 
-        /* Responsiveness */
+        /* Footer */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .footer h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .footer p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .footer .social-media a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        .footer .social-media a:hover {
+            color: #3498db;
+        }
+
+        .footer .social-media {
+            margin-bottom: 20px;
+        }
+
+        .footer .social-media a.facebook {
+            color: #3b5998;
+        }
+
+        .footer .social-media a.twitter {
+            color: #1da1f2;
+        }
+
+        .footer .social-media a.instagram {
+            color: #e4405f;
+        }
+
+        .footer .social-media a.youtube {
+            color: #ff0000;
+        }
+
+        .footer .copyright {
+            font-size: 0.9rem;
+            color: #95a5a6;
+        }
+
         @media (max-width: 768px) {
+            .footer {
+                padding: 30px 10px;
+            }
+
+            .footer h2 {
+                font-size: 1.5rem;
+            }
+
+            .footer p {
+                font-size: 0.9rem;
+            }
+
+            .footer .social-media a {
+                font-size: 1.2rem;
+            }
+
             .product-container {
                 flex-direction: column;
                 align-items: center;
@@ -139,8 +222,36 @@
     </style>
 </head>
 <body>
-    
-    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: white; height: 50px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-size: 30px;"><strong><img src="{% static 'image/kpop.png' %}" alt="Login Icon" class="img-fluid" style="max-width: 50px;"></strong></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../view-bookings/">BOOKINGS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about/">ABOUT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout">LOGOUT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="cart/"><i class="bi bi-cart"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="profile/"><i class="bi bi-person-circle"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Details Section -->
     <div class="product-container">
         <!-- Product Image -->
         <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
@@ -164,11 +275,27 @@
             {% endif %}
 
             <a href="{% url 'buy_product' product.id %}" class="btn btn-primary">Buy Now</a>
-            <!-- <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/user_home"><i class="bi bi-arrow-left"></i></a> -->
-
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <h2>Welcome to K-pop World</h2>
+        <p>Explore the vibrant and dynamic world of K-pop! Stay updated with the latest K-pop releases, events, and trends. Whether you're an old fan or a new listener, there's always something exciting happening in the K-pop industry!</p>
+        <div class="social-media">
+            <a href="https://www.facebook.com" target="_blank"><i class="bi bi-facebook"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="bi bi-twitter"></i></a>
+            <a href="https://www.instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.youtube.com" target="_blank"><i class="bi bi-youtube"></i></a>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 K-pop World. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 </body>
 </html>
+
+
 
