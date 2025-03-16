@@ -6,7 +6,8 @@
     <title>{{ product.name }} Details</title>
     {% load static %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
@@ -101,14 +102,14 @@
         .btn-secondary:hover {
             background-color: #27ae60;
         }
-
-        /* Footer */
-        .footer {
+  /* Footer */
+  .footer {
             background-color: #2c3e50;
             color: white;
             padding: 40px 20px;
             text-align: center;
             margin-top: 50px;
+            top: 200px;
         }
 
         .footer h2 {
@@ -158,8 +159,7 @@
             font-size: 0.9rem;
             color: #95a5a6;
         }
-
-        @media (max-width: 768px) {
+                @media (max-width: 768px) {
             .footer {
                 padding: 30px 10px;
             }
@@ -176,6 +176,26 @@
                 font-size: 1.2rem;
             }
 
+            .ticket-container {
+                flex-direction: column;
+            }
+
+            .ticket-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .ticket-details {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .card-img-top {
+                height: 150px;
+            }
+        }
+        /* Responsiveness */
+        @media (max-width: 768px) {
             .product-container {
                 flex-direction: column;
                 align-items: center;
@@ -244,7 +264,7 @@
                         <a class="nav-link active" aria-current="page" href="cart/"><i class="bi bi-cart"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="profile/"><i class="bi bi-person-circle"></i></a>
+                        <a class="nav-link active" aria-current="page" href="profile/"><i class="bi bi-person-circle"></i></i></a>
                     </li>
                 </ul>
             </div>
@@ -278,24 +298,14 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <h2>Welcome to K-pop World</h2>
-        <p>Explore the vibrant and dynamic world of K-pop! Stay updated with the latest K-pop releases, events, and trends. Whether you're an old fan or a new listener, there's always something exciting happening in the K-pop industry!</p>
-        <div class="social-media">
-            <a href="https://www.facebook.com" target="_blank"><i class="bi bi-facebook"></i></a>
-            <a href="https://twitter.com" target="_blank"><i class="bi bi-twitter"></i></a>
-            <a href="https://www.instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.youtube.com" target="_blank"><i class="bi bi-youtube"></i></a>
-        </div>
-        <div class="copyright">
-            <p>&copy; 2025 K-pop World. All rights reserved.</p>
-        </div>
-    </footer>
 
+    
+
+
+    
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
 </body>
 </html>
-
 
 
