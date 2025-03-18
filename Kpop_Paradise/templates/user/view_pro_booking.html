@@ -1,37 +1,4 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Your Bookings</h1>
 
-{% if bookings %}
-    <ul>
-        {% for booking in bookings %}
-            <li>
-                <h3>Product Details:</h3>
-                <strong>Product Name:</strong> {{ booking.product.name }} <br>
-                <strong>Description:</strong> {{ booking.product.description }} <br>
-                <strong>Price:</strong> ${{ booking.product.price }} <br>
-                <strong>Product Image:</strong> <img src="{{ booking.product.image.url }}" alt="{{ booking.product.name }}" width="100" height="100"> <br>
-                
-                <h3>Booking Details:</h3>
-                <strong>Buyer Name:</strong> {{ booking.buyer_name }} <br>
-                <strong>Email:</strong> {{ booking.email }} <br>
-                <strong>Booking Date:</strong> {{ booking.booking_date }} <br>
-            </li>
-            <hr>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>You have no bookings.</p>
-{% endif %}
-
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,15 +19,16 @@
         }
 
         h1 {
-            background-color: #5b4caf;
-            color: white;
+            /* background-color: #c4c0da; */
+            color: rgb(205, 206, 232);
             padding: 20px;
             text-align: center;
             margin: 0;
+            height: 50px;
         }
 
         .container {
-            width: 80%;
+            width: 100%;
             margin: 30px auto;
         }
 
@@ -170,7 +138,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light " style="background: radial-gradient(Circle, Violet, Lavender);">
+    <nav class="navbar navbar-expand-lg navbar-light " style="background: radial-gradient(Circle, rgb(255, 255, 255), rgb(253, 253, 253));">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" style="font-size: 30px; "><span class="deep-violet">K-pop</span><span class="deep-violet"></span> <span class="black">Paradise</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
