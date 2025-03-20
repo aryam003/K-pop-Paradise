@@ -84,7 +84,7 @@
         </div>
         
         {% if concert.total_ticket <= 0 %}
-            <div class="sold-out">Sorry, this concert is sold out.</div>
+            <div class="sold-out">Sorry, this ticket is sold out.</div>
         {% else %}
             <form method="POST" id="ticketForm">
                 {% csrf_token %}
