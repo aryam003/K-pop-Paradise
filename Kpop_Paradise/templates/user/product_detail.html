@@ -271,12 +271,9 @@
         </div>
     </nav>
 
-    <!-- Product Details Section -->
     <div class="product-container">
-        <!-- Product Image -->
         <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
 
-        <!-- Product Information -->
         <div class="product-info">
             <h1>{{ product.name }}</h1>
             <p class="product-details"><strong>Band:</strong> {{ product.band.name }}</p>
@@ -284,7 +281,6 @@
             <p class="product-details"><strong>Created at:</strong> {{ product.created_at }}</p>
             <p class="product-description"><strong>Description:</strong> {{ product.description }}</p>
 
-            <!-- Add to Cart or Already in Cart Button -->
             {% if product_in_cart %}
                 <a href="{% url 'cart_view' %}" class="btn btn-secondary">Go to Cart</a>
             {% else %}

@@ -255,25 +255,13 @@
                                 <i class="fa-solid fa-trash"></i> Cancel
                             </a>
                             <form action="../confirm_order/{{ buy.pk }}" method="post" style="display:inline;">
-                                <!-- {% csrf_token %}
-                                {% if buy.is_confirmed %}
-                                    <button type="submit" class="btn btn-success" disabled>
-                                        <i class="fa-solid fa-check"></i> Confirmed
-                                    </button>
-                                {% else %}
-                                    <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to confirm this order?')">
-                                        <i class="fa-solid fa-clock"></i> Pending
-                                    </button>
-                                {% endif %}
-                            </form> -->
+                       
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-
-        <!-- Pagination -->
         <div class="pagination">
             <span class="step-links">
                 {% if tickets.has_previous %}
