@@ -273,16 +273,9 @@ def delete_concert(req, id):
     
     return redirect(shop_home) 
 
-# def booking_list(request):
-#     # Fetch all bookings from the database, ordered by the most recent
-#     bookings = Booking.objects.all().order_by('-booking_date')
 
-#     # Pass the bookings to the template
-#     return render(request, 'shop/booking_list.html', {'bookings': bookings})
- # Import necessary models
 
 def booking_list(request):
-    # Retrieve all concerts, tickets, orders, and purchases
     concerts = Concert.objects.all()
     tickets = Ticket.objects.select_related('concert', 'user').all()
     orders = Order.objects.select_related('concert', 'user').all()
@@ -299,25 +292,12 @@ def booking_list(request):
 
 
 #-----USER---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
-
-
-# def user_home(req):
-#     if 'user' in req.session:
-#         bands=Band.objects.all()
-#         product=products.objects.all()
-#         return render(req,'user/home.html',{'bands':bands,'product':product})
-#     else:
-#         return redirect(shop_login) 
+ 
 def user_home(req):
     if 'user' in req.session:
-        # Fetch all bands
         bands = Band.objects.all()
-
-        # Fetch products for each band and add it as a list
         for band in bands:
             band.products = products.objects.filter(band=band)
-
-        # Pass the bands with their associated products to the template
         return render(req, 'user/home.html', {'bands': bands})
     else:
         return redirect(shop_login)
@@ -348,14 +328,12 @@ def book_ticket(req, concert_id):
         email = req.POST.get('email')
         quantity = int(req.POST.get("quantity"))
 
-        # Ensure enough tickets are available
         if quantity > concert.total_ticket:
             messages.error(req, "Not enough tickets available.")
             return redirect('book_ticket', concert_id=concert.id)
 
         total_price = concert.price * quantity
 
-        # Update existing ticket or create a new one
         if user_address:
             user_address.buyer_name = name
             user_address.email = email
@@ -373,11 +351,9 @@ def book_ticket(req, concert_id):
                 total_price=total_price
             )
 
-        # **Reduce the available tickets**
         concert.total_ticket -= quantity
         concert.save()
 
-        # Email setup
         subject = f"Your Ticket for {concert.band.name} Concert"
         html_message = render_to_string('user/ticket_email.html', {
             'buyer_name': name,
@@ -393,7 +369,6 @@ def book_ticket(req, concert_id):
             to=[email],
         )
 
-        # Attach concert image if available
         if concert.image:
             concert_image_path = concert.image.path
             with open(concert_image_path, 'rb') as img_file:
@@ -401,7 +376,6 @@ def book_ticket(req, concert_id):
 
         email_message.send()
 
-        # Save session data for payment processing
         req.session['concert'] = concert_id
         req.session['quantity'] = quantity
 
@@ -423,7 +397,6 @@ def order_payment(req):
 
         amount_in_paise = int(total_price * 100)
         razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        # razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
         razorpay_order = razorpay_client.order.create({
             "amount": amount_in_paise,
             "currency": "INR",
@@ -616,15 +589,15 @@ def pay2(req):
     if req.method == 'GET':
         user_address = Booking.objects.filter(user=user).order_by('-id').first()
         if user_address:
-            address_text = user_address.address  # Extract address as text
+            address_text = user_address.address  
         else:
-            address_text = ""  # Provide a fallback if no address is found
+            address_text = ""
 
         data = Buy2.objects.create(
             user=user,
             product=product,
             price=product.price,
-            address=address_text,  # Assign the address as text
+            address=address_text,  
             email=user.email,
             order=order
         )
@@ -740,14 +713,9 @@ def delete_cart(req, id):
 
 
 def view_bookings(request):
-    # Get current time and one day ago
     now = timezone.now()
     now_minus_one_day = now - timedelta(days=1)
-
-    # Fetch bookings for the user
     bookings = Booking.objects.filter(user=request.user)
-
-    # Pass the time calculated in the view
     return render(request, 'user/view_pro_booking.html', {
         'bookings': bookings,
         'now_minus_one_day': now_minus_one_day
@@ -756,22 +724,13 @@ def view_bookings(request):
 from datetime import timedelta
 
 def delete_booking(request, booking_id):
-    # Get the booking by id
     booking = Booking.objects.get( id=booking_id)
-    # product = products.objects.get(id=product_id)  
-
-    # Check if the booking is made within the last 24 hours
     if booking.booking_date > timezone.now() - timedelta(days=1):
         booking.delete()
     
-    # Redirect the user back to their bookings page
-    return redirect('view_bookings') # Redirect back to the bookings page
+    return redirect('view_bookings')
 
-# def ticket_booking_details(request):
-#     tickets = Ticket.objects.select_related('concert', 'user').all()
-#     return render(request, 'shop/booking_details.html', {'tickets': tickets})
 def ticket_booking_details(request):
-    # Retrieve all bookings, orders, and purchases
     bookings = Booking.objects.select_related('product', 'user').all()
     orders = Order2.objects.select_related('product', 'user').all()
     buys = Buy2.objects.select_related('product', 'user').all()
@@ -819,39 +778,29 @@ def add_edit_profile(request):
 
 
 def cart_address_page(req):
-    user = User.objects.get(username=req.session['user'])  # Get the logged-in user
+    user = User.objects.get(username=req.session['user'])  
     
-    # Retrieve the first booking address of the user (Booking is now assumed to be the address table)
     user_address = Booking.objects.filter(user=user).first()
 
     if req.method == 'POST':
-        # Retrieve data from POST request
         name = req.POST.get('name')
         address = req.POST.get('address')
         phone_number = req.POST.get('phone_number')
 
         if user_address:
-            # Update the user's saved address
             user_address.buyer_name = name
             user_address.address = address
-            user_address.email = req.user.email  # Assuming email is the logged-in user's email
-            user_address.price = 0.00  # Adjust according to the logic, here we're just setting a placeholder value
+            user_address.email = user.email 
+            user_address.price = 0.00 
             user_address.save()
         else:
-            # If no address exists, create a new one
-            Booking.objects.create(user=user, buyer_name=name, address=address, phone_number=phone_number, email=req.user.email)
-
-        # Get the user's cart items
+            Booking.objects.create(user=user, buyer_name=name, address=address, phone_number=phone_number, email=user.email)
         cart_items = Cart.objects.filter(user=user)
-
-        # Iterate over the cart items to calculate the total price for each item
         for cart_item in cart_items:
             cart_item.total_price = cart_item.product.price * cart_item.quantity
         
-        # Optionally, update session with cart items
         req.session['cart_items'] = list(cart_items.values_list('id', flat=True))
 
-        # Redirect to the next step (for example: order_payment2)
         return redirect(order_payment3)
 
     return render(req, 'user/cart_order.html', {'user_address': user_address, 'cart_items': Cart.objects.filter(user=user)})
@@ -864,36 +813,25 @@ def order_payment3(req):
         cart_items = Cart.objects.filter(id__in=req.session.get('cart_items', []))
 
         if not cart_items.exists():
-            return redirect('cart_display')
+            return redirect(cart_view)
 
-        # Calculate total amount
         total_amount = sum(cart.product.price * cart.quantity for cart in cart_items)
-
-        # Razorpay API integration to create an order
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
         razorpay_order = client.order.create({
-            "amount": int(total_amount * 100),  # Razorpay expects the amount in paise (1 INR = 100 paise)
+            "amount": int(total_amount * 100), 
             "currency": "INR",
             "payment_capture": "1"
         })
-
-        # For simplicity, assume we take the first product from the cart
         product = cart_items.first().product
-
-        # Create an Order2 object
         order = Order2.objects.create(
             user=user,
             price=total_amount,
             provider_order_id=razorpay_order['id'],
             payment_id='',
             signature_id='',
-            product=product  # Associate the product from the cart
+            product=product 
         )
-
-        # Store the order id in the session
         req.session['order_id'] = order.pk
-
-        # Return the response with the Razorpay integration details
         return render(req, "user/payment.html", {
             "callback_url": "http://127.0.0.1:8000/callback2/",
             "razorpay_key": settings.RAZORPAY_KEY_ID,
@@ -990,12 +928,9 @@ def cancel_order(req,id):
 def confirm_order(request, order_id):
     order = get_object_or_404(Buy, pk=order_id)
 
-    # Check if the order is already confirmed to avoid unnecessary updates
     if not order.is_confirmed:
         order.is_confirmed = True
         order.save()
-
-        # Send confirmation email
         subject = "Order Confirmation"
         message = f"Dear {order.user.first_name},\n\nYour order for {order.product} has been confirmed. Thank you for shopping with us!\n\nBest regards,\nYour Store Team"
         recipient_email = order.user.email  
@@ -1003,10 +938,9 @@ def confirm_order(request, order_id):
         send_mail(
             subject,
             message,
-            settings.EMAIL_HOST_USER,  # This will be your email settings
+            settings.EMAIL_HOST_USER,  
             [recipient_email],
             fail_silently=False,
         )
     
-    # After confirming the order, redirect to the order details or shop home page
-    return redirect(shop_home)  # Replace with the actual URL name if it's different
+    return redirect(shop_home)  
